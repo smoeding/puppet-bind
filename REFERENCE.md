@@ -36,7 +36,7 @@
 
 ### Resource types
 
-* [`dnssec_key`](#dnssec_key): Manage DNSSEC keys for the Bind9 DNS server. This type creates, deletes and maintains key files in a directory on the DNS server.  Examples: 
+* [`dnssec_key`](#dnssec_key): Create, delete and maintain DNSSEC key files on the DNS server.  Caution: This functionality is in beta and is subject to change. The design 
 
 ### Functions
 
@@ -1905,8 +1905,10 @@ Default value: `'30'`
 
 ### `dnssec_key`
 
-Manage DNSSEC keys for the Bind9 DNS server. This type creates, deletes
-and maintains key files in a directory on the DNS server.
+Create, delete and maintain DNSSEC key files on the DNS server.
+
+Caution: This functionality is in beta and is subject to change. The
+design and code is less mature than other features.
 
 Examples:
 

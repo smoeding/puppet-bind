@@ -3,8 +3,10 @@
 Puppet::Type.newtype(:dnssec_key) do
   desc <<-EOT
 
-    Manage DNSSEC keys for the Bind9 DNS server. This type creates, deletes
-    and maintains key files in a directory on the DNS server.
+    Create, delete and maintain DNSSEC key files on the DNS server.
+
+    Caution: This functionality is in beta and is subject to change. The
+    design and code is less mature than other features.
 
     Examples:
 

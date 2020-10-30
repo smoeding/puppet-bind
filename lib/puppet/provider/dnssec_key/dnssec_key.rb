@@ -1,7 +1,8 @@
 # dnssec_key.rb --- Provider for dnssec_key type
 
 Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
-  desc '.'
+  desc 'Caution: This functionality is in beta and is subject to change. The
+    design and code is less mature than other features.'
 
   commands dnssec_keygen: 'dnssec-keygen'
 
