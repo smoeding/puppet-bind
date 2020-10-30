@@ -79,8 +79,8 @@ describe 'bind' do
 
             is_expected.to contain_bind__key('rndc-key')
               .with_keyfile('/etc/bind/rndc.key')
-              .with_algorithm('hmac-md5')
-              .with_seed('rndc')
+              .with_manage_content(false)
+              .that_requires('File[/etc/bind]')
               .that_notifies('Service[bind]')
           }
 
@@ -568,6 +568,16 @@ describe 'bind' do
             .with_address_match_list(['any'])
             .with_target('named.conf.options')
             .with_order('31')
+        }
+      end
+
+      context 'with manage_rndc_keyfile => false' do
+        let(:params) do
+          { manage_rndc_keyfile: false }
+        end
+
+        it {
+          is_expected.not_to contain_bind__key('rndc-key')
         }
       end
     end
