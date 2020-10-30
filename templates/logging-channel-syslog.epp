@@ -1,0 +1,14 @@
+  channel <%= $channel %> {
+    syslog   <%= $facility -%>;
+    severity <%= $severity -%>;
+<% if $print_category { -%>
+    print-category yes;
+<% } -%>
+<% if $print_severity { -%>
+    print-severity yes;
+<% } -%>
+<% if $print_time { -%>
+    print-time yes;
+<% } -%>
+  };
+<%# empty line %>

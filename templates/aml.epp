@@ -1,0 +1,20 @@
+<% if $initial_empty_line { -%>
+<%# empty line %>
+<% } -%>
+<% if $comment { -%>
+<%= $indent %>// <%= $comment %>
+<% } -%>
+<% if empty($address_match_list) { -%>
+<%= $indent %><%= $item %> { };
+<% } elsif length($address_match_list) == 1 { -%>
+<%= $indent %><%= $item %> { <%= $address_match_list[0] -%>; };
+<% } else { -%>
+<%= $indent %><%= $item %> {
+<% $address_match_list.each |$entry| { -%>
+<%= $indent %>  <%= $entry -%>;
+<% } -%>
+<%= $indent %>};
+<% } -%>
+<% if $final_empty_line { -%>
+<%# empty line %>
+<% } -%>

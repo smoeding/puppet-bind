@@ -1,0 +1,4 @@
+<%# empty line %>
+options {
+  directory "<%= $cachedir -%>";
+<%# empty line %>

@@ -1,0 +1,20 @@
+<%# empty line %>
+<% if $comment { -%>
+<%= $indent %>// <%= $comment %>
+<% } -%>
+<%= $indent %>zone "<%= $zone -%>" <%= $class %> {
+<%= $indent %>  type forward;
+
+<% if $forward { -%>
+<%= $indent %>  forward <%= $forward -%>;
+<% } -%>
+<% if empty($forwarders) { -%>
+<%= $indent %>  forwarders { };
+<% } else { -%>
+<%= $indent %>  forwarders {
+<% $forwarders.each |$host| { -%>
+<%= $indent %>    <%= $host -%>;
+<% } -%>
+<%= $indent %>  };
+<% } -%>
+<%= $indent %>};

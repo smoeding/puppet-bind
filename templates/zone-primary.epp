@@ -1,0 +1,31 @@
+<%# empty line %>
+<% if $comment { -%>
+<%= $indent %>// <%= $comment %>
+<% } -%>
+<%= $indent %>zone "<%= $zone -%>" <%= $class %> {
+<%= $indent %>  type master;
+<%= $indent %>  file "<%= $file -%>";
+<% if $notify { -%>
+
+<%= $indent %>  notify <%= $notify -%>;
+<% } -%>
+<% unless empty($also_notify) { -%>
+
+<%= $indent %>  also-notify {
+<% $also_notify.each |$item| { -%>
+<%= $indent %>    <%= $item -%>;
+<% } -%>
+<%= $indent %>  };
+<% } -%>
+<% if $dnssec { -%>
+
+<%= $indent %>  dnssec-enable  <%= bool2str($dnssec, 'yes', 'no') -%>;
+<%= $indent %>  auto-dnssec    <%= $auto_dnssec -%>;
+<%= $indent %>  inline-signing <%= bool2str($inline_signing, 'yes', 'no') -%>;
+<%= $indent %>  key-directory  "<%= $key_directory -%>";
+<% } -%>
+<% if $statistics { -%>
+
+<%= $indent %>  zone-statistics <%= bool2str($statistics, 'yes', 'no') -%>;
+<% } -%>
+<%= $indent %>};

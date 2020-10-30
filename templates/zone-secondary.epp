@@ -1,0 +1,17 @@
+<%# empty line %>
+<% if $comment { -%>
+<%= $indent %>// <%= $comment %>
+<% } -%>
+<%= $indent %>zone "<%= $zone -%>" <%= $class %> {
+<%= $indent %>  type slave;
+<%= $indent %>  masters { <%= $masters -%>; };
+<%= $indent %>  file "<%= $file -%>";
+<% if $multi_master { -%>
+
+<%= $indent %>  multi-master <%= bool2str($multi_master, 'yes', 'no') -%>;
+<% } -%>
+<% if $statistics { -%>
+
+<%= $indent %>  zone-statistics <%= bool2str($statistics, 'yes', 'no') -%>;
+<% } -%>
+<%= $indent %>};

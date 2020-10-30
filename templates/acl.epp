@@ -1,0 +1,9 @@
+<%# empty line %>
+acl "<%= $acl -%>" {
+<% if $comment { -%>
+  // <%= $comment %>
+<% } -%>
+<% $address_match_list.each |$entry| { -%>
+  <%= $entry -%>;
+<% } -%>
+};

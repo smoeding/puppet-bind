@@ -1,0 +1,6 @@
+// This file is managed by Puppet. DO NOT EDIT.
+
+key "<%= $key -%>" {
+  algorithm <%= $algorithm -%>;
+  secret    "<%= $hash -%>";
+};

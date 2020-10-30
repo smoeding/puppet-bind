@@ -1,0 +1,5 @@
+<%# empty line %>
+statistics-channels {
+  inet <%= $ip %><% if $port { %> port <%= $port %><% } %><% unless empty($allow) { %> allow { <%= join($allow, '; ') %>; }<% } %>;
+};
+

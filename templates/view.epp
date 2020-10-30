@@ -1,0 +1,77 @@
+<%# empty line %>
+view "<%= $view -%>" {
+  match-clients {
+<% $match_clients.each |$item| { -%>
+    <%= $item -%>;
+<% } -%>
+  };
+<% unless empty($match_destinations) { -%>
+  match_destinations {
+<% $match_destinations.each |$item| { -%>
+    <%= $item -%>;
+<% } -%>
+  };
+<% } -%>
+<% if $match_recursive_only { -%>
+  match-recursive-only yes;
+<% } -%>
+<% unless empty($allow_query) { -%>
+
+  allow-query {
+<% $allow_query.each |$item| { -%>
+    <%= $item -%>;
+<% } -%>
+  };
+<% } -%>
+<% unless empty($allow_query_on) { -%>
+
+  allow-query-on {
+<% $allow_query_on.each |$item| { -%>
+    <%= $item -%>;
+<% } -%>
+  };
+<% } -%>
+
+  recursion <%= $recursion -%>;
+<% if ($recursion == 'yes') { -%>
+<% unless empty($allow_recursion) { -%>
+
+  allow-recursion {
+<% $allow_recursion.each |$item| { -%>
+    <%= $item -%>;
+<% } -%>
+  };
+<% } -%>
+<% unless empty($allow_recursion_on) { -%>
+
+  allow-recursion-on {
+<% $allow_recursion_on.each |$item| { -%>
+    <%= $item -%>;
+<% } -%>
+  };
+<% } -%>
+<% unless empty($allow_query_cache) { -%>
+
+  allow-query-cache {
+<% $allow_query_cache.each |$item| { -%>
+    <%= $item -%>;
+<% } -%>
+  };
+<% } -%>
+<% unless empty($allow_query_cache_on) { -%>
+
+  allow-query-cache-on {
+<% $allow_query_cache_on.each |$item| { -%>
+    <%= $item -%>;
+<% } -%>
+  };
+<% } -%>
+<% } -%>
+<% unless empty($allow_transfer) { -%>
+
+  allow-transfer {
+<% $allow_transfer.each |$item| { -%>
+    <%= $item -%>;
+<% } -%>
+  };
+<% } -%>

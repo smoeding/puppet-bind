@@ -1,0 +1,10 @@
+This directory and its subdirectories are used for primary zone files.
+
+The zone files are organized by top and second level domains:
+
+Zone            | Subdirectory
+----------------+-------------
+example.net     | net/example/
+10.in-addr.arpa | arpa/in-addr/
+
+All files and directories are managed by Puppet!

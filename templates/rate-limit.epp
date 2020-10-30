@@ -1,0 +1,54 @@
+<%# empty line %>
+  rate-limit {
+<% if $window > 0 { -%>
+    window    <%= $window -%>;
+<% } -%>
+<% if $slip { -%>
+    slip      <%= $slip -%>;
+<% } -%>
+<% if $qps_scale { -%>
+    qps_scale <%= $qps_scale -%>;
+<% } -%>
+<% if $all_per_second { -%>
+    all-per-second       <%= $all_per_second -%>;
+<% } -%>
+<% if $errors_per_second { -%>
+    errors-per-second    <%= $errors_per_second -%>;
+<% } -%>
+<% if $responses_per_second { -%>
+    responses-per-second <%= $responses_per_second -%>;
+<% } -%>
+<% if $referrals_per_second { -%>
+    referrals-per-second <%= $referrals_per_second -%>;
+<% } -%>
+<% if $nodata_per_second { -%>
+    nodata-per-second    <%= $nodata_per_second -%>;
+<% } -%>
+<% if $nxdomains_per_second { -%>
+    nxdomains-per-second <%= $nxdomains_per_second -%>;
+<% } -%>
+<% if $ipv4_prefix_length > 0 { -%>
+
+    // default: 24
+    ipv4-prefix-length <%= $ipv4_prefix_length -%>;
+<% } -%>
+<% if $ipv6_prefix_length > 0 { -%>
+
+    // default: 56
+    ipv6-prefix-length <%= $ipv6_prefix_length -%>;
+<% } -%>
+<% unless empty($exempt_clients) { -%>
+
+  <%- if count($exempt_clients) > 1 { -%>
+    exempt-clients {
+    <%- $exempt_clients.each |$item| { -%>
+      <%= $item -%>;
+    <%- } -%>
+    };
+  <%- } else { -%>
+    exempt-clients { <%= $exempt_clients[0] -%>; };
+  <%- } -%>
+<% } -%>
+
+    <% unless $log_only { -%>//<% } -%>log-only yes;
+  };

@@ -1,0 +1,7 @@
+<%# empty line %>
+<% if $comment { -%>
+<%= $indent %>// <%= $comment %>
+<% } -%>
+<%= $indent %>zone "<%= $zone -%>" <%= $class %> {
+<%= $indent %>  type mirror;
+<%= $indent %>};

@@ -1,0 +1,61 @@
+  // DNSSEC
+<% if $dnssec_enable { -%>
+  dnssec-enable     yes;
+  dnssec-validation auto;
+  dnssec-lookaside  no;
+<% } else { -%>
+  dnssec-enable     no;
+<% } -%>
+<% if $report_hostname { -%>
+
+  // hide hostname
+<% if empty($report_hostname) { -%>
+  hostname none;
+<% } else { -%>
+  hostname "<%= $report_hostname %>";
+<% } -%>
+<% } -%>
+<% if $report_version { -%>
+
+  // hide version
+<% if empty($report_version) { -%>
+  version none;
+<% } else { -%>
+  version "<%= $report_version %>";
+<% } -%>
+<% } -%>
+
+  key-directory "<%= $confdir -%>/keys";
+
+  auth-nxdomain no;
+<% if ($servfail_ttl > 0) { -%>
+  servfail-ttl <%= $servfail_ttl %>;
+<% } -%>
+<% if ($min_cache_ttl > 0) { -%>
+  min-cache-ttl <%= $min_cache_ttl %>;
+<% } -%>
+<% if ($max_cache_ttl > 0) { -%>
+  max-cache-ttl <%= $max_cache_ttl %>;
+<% } -%>
+<% if ($min_ncache_ttl > 0) { -%>
+  min-ncache-ttl <%= $min_ncache_ttl -%>;
+<% } -%>
+<% if ($max_ncache_ttl > 0) { -%>
+  max-ncache-ttl <%= $max_ncache_ttl -%>;
+<% } -%>
+<% if ($max_cache_size > 0) { -%>
+  max-cache-size <%= $max_cache_size -%>;
+<% } -%>
+<% unless ($filter_aaaa_on_v4 == 'no') { -%>
+
+  // Remove AAAA records from lookups
+  filter-aaaa-on-v4 <%= $filter_aaaa_on_v4 %>;
+<% } -%>
+<%- unless $querylog_enable =~ Undef { -%>
+
+  querylog <%= bool2str($querylog_enable, 'yes', 'no') -%>;
+<%- } -%>
+<%- if (!$empty_zones_enable) { -%>
+
+  empty-zones-enable <%= bool2str($empty_zones_enable, 'yes', 'no') -%>;
+<% } -%>

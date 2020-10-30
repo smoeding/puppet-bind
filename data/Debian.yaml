@@ -1,0 +1,15 @@
+# Debian.yaml --- Settings for Debian
+---
+
+bind::confdir:  '/etc/bind'
+bind::vardir:   '/var/lib/bind'
+bind::cachedir: '/var/cache/bind'
+
+bind::rndc_keyfile: '/etc/bind/rndc.key'
+bind::rndc_program: '/usr/sbin/rndc'
+bind::rndc_key_algorithm: 'hmac-md5'
+
+bind::bind_user: 'bind'
+bind::bind_group: 'bind'
+bind::package_name: 'bind9'
+bind::service_name: 'bind9'

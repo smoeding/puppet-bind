@@ -1,0 +1,16 @@
+// This file is managed by Puppet. DO NOT EDIT.
+
+// The primary configuration file for BIND/DNS.
+
+include "<%= $confdir -%>/named.conf.keys";
+include "<%= $confdir -%>/named.conf.acls";
+include "<%= $confdir -%>/named.conf.logging";
+include "<%= $confdir -%>/named.conf.options";
+<% if $views_enable { -%>
+include "<%= $confdir -%>/named.conf.views";
+<% } else { -%>
+
+include "<%= $confdir -%>/named.conf.zones";
+<% } -%>
+
+include "<%= $confdir -%>/named.conf.local";
