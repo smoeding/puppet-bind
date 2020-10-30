@@ -44,15 +44,15 @@
 
 ### Data types
 
-* [`Bind::AddressMatchList`](#bindaddressmatchlist)
-* [`Bind::Auto_dnssec`](#bindauto_dnssec)
-* [`Bind::Filter_aaaa_on_v4`](#bindfilter_aaaa_on_v4)
-* [`Bind::Forward`](#bindforward)
-* [`Bind::Key::Algorithm`](#bindkeyalgorithm)
-* [`Bind::Notify_secondaries`](#bindnotify_secondaries)
-* [`Bind::Syslog::Facility`](#bindsyslogfacility)
-* [`Bind::Syslog::Severity`](#bindsyslogseverity)
-* [`Bind::Zone::Class`](#bindzoneclass)
+* [`Bind::AddressMatchList`](#bindaddressmatchlist): Type to match allowed values for an address match list
+* [`Bind::Auto_dnssec`](#bindauto_dnssec): Type to match allowed values for the auto-dnssec option
+* [`Bind::Filter_aaaa_on_v4`](#bindfilter_aaaa_on_v4): Type to match allowed values for the filter-aaaa-on-v4 option
+* [`Bind::Forward`](#bindforward): Type to match allowed values for the forward option
+* [`Bind::Key::Algorithm`](#bindkeyalgorithm): Type to match allowed values for the key algorithm
+* [`Bind::Notify_secondaries`](#bindnotify_secondaries): Type to match allowed values for the notify option
+* [`Bind::Syslog::Facility`](#bindsyslogfacility): Type to match allowed values for the syslog facility
+* [`Bind::Syslog::Severity`](#bindsyslogseverity): Type to match allowed values for the syslog severity
+* [`Bind::Zone::Class`](#bindzoneclass): Type to match allowed values for the zone class
 
 ## Classes
 
@@ -1900,7 +1900,9 @@ The following properties are available in the `dnssec_key` type.
 
 Valid values: `present`, `absent`
 
-The basic property that the resource should be in.
+Specifies whether the destination file should exist. Setting to
+"absent" tells Puppet to delete the destination file if it exists,
+and negates the effect of any other parameters.
 
 Default value: `present`
 
@@ -2018,67 +2020,69 @@ zonefile_path.pp --- Generate zonefile name from zone
 
 zonefile_path.pp --- Generate zonefile name from zone
 
-Returns: `String`
+Returns: `String` The relative path and filename where the zonefile should be
+stored.  Example: 'com/example/db.example.com'
 
 ##### `zone`
 
 Data type: `String`
 
-
+The name of the zone for which the path should be
+returned.  Example: 'example.com'
 
 ## Data types
 
 ### `Bind::AddressMatchList`
 
-The Bind::AddressMatchList data type.
+Type to match allowed values for an address match list
 
 Alias of `Variant[String, Array[String]]`
 
 ### `Bind::Auto_dnssec`
 
-The Bind::Auto_dnssec data type.
+Type to match allowed values for the auto-dnssec option
 
 Alias of `Enum['allow', 'maintain', 'off']`
 
 ### `Bind::Filter_aaaa_on_v4`
 
-The Bind::Filter_aaaa_on_v4 data type.
+Type to match allowed values for the filter-aaaa-on-v4 option
 
 Alias of `Enum['no', 'yes', 'break-dnssec']`
 
 ### `Bind::Forward`
 
-The Bind::Forward data type.
+Type to match allowed values for the forward option
 
 Alias of `Enum['first', 'only']`
 
 ### `Bind::Key::Algorithm`
 
-The Bind::Key::Algorithm data type.
+Type to match allowed values for the key algorithm
 
 Alias of `Enum['hmac-md5', 'hmac-sha1', 'hmac-sha224', 'hmac-sha256', 'hmac-sha384', 'hmac-sha512']`
 
 ### `Bind::Notify_secondaries`
 
-The Bind::Notify_secondaries data type.
+Type to match allowed values for the notify option
 
 Alias of `Enum['yes', 'no', 'explicit']`
 
 ### `Bind::Syslog::Facility`
 
-The Bind::Syslog::Facility data type.
+Type to match allowed values for the syslog facility
 
 Alias of `Enum['auth', 'authpriv', 'cron', 'daemon', 'ftp', 'kern', 'local0', 'local1', 'local2', 'local3', 'local4', 'local5', 'local6', 'local7', 'lpr', 'mail', 'news', 'syslog', 'user', 'uucp']`
 
 ### `Bind::Syslog::Severity`
 
-The Bind::Syslog::Severity data type.
+Type to match allowed values for the syslog severity
 
 Alias of `Enum['critical', 'error', 'warning', 'notice', 'info', 'debug', 'dynamic']`
 
 ### `Bind::Zone::Class`
 
-The Bind::Zone::Class data type.
+Type to match allowed values for the zone class
 
 Alias of `Enum['IN', 'HS', 'CH']`
 

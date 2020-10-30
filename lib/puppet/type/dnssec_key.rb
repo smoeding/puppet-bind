@@ -63,6 +63,10 @@ Puppet::Type.newtype(:dnssec_key) do
   end
 
   ensurable do
+    desc 'Specifies whether the destination file should exist. Setting to
+      "absent" tells Puppet to delete the destination file if it exists,
+      and negates the effect of any other parameters.'
+
     defaultvalues
     defaultto :present
   end
