@@ -798,6 +798,33 @@ The file mode for the key file.
 
 Default value: `'0640'`
 
+##### `manage_keyfile`
+
+Data type: `Boolean`
+
+Should the key file be managed by this defined type. Set this to `false`
+if you need to manage the key file from your own Puppet code. The code to
+include the key file in the daemon configuration is still generated when
+this parameter is false.
+
+Default value: ``true``
+
+##### `manage_content`
+
+Data type: `Boolean`
+
+Should the content of the key file be managed by this defined type. Set
+this to `false` if you want to manage file permissions but do not want to
+manage the content of the file. This is useful for the key file used by
+the `rndc` utility. Normally a secret key for `rndc` is created during
+installation. Updating this key with Puppet creates a problem since the
+service can't be restarted cleanly after the file has been changed when
+the daemon still uses the old secret. So the key for the `rndc` tool is
+best left alone. The code to include the key file in the daemon
+configuration is still generated when this parameter is false.
+
+Default value: ``true``
+
 ##### `keyfile`
 
 Data type: `Optional[Stdlib::Absolutepath]`
