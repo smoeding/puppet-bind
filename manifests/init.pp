@@ -37,13 +37,6 @@
 #
 #   Default: operating system specific
 #
-# @param rndc_key_algorithm
-#   The authentication algorithm used on the communication channel between
-#   rndc and the Bind daemon. Supported valued: `hmac-md5`, `hmac-sha1`,
-#   `hmac-sha224`, `hmac-sha256`, `hmac-sha384`, `hmac-sha512`.
-#
-#   Default: operating system specific
-#
 # @param bind_user
 #   Run the Bind daemon as this user. This parameter is also used to set the
 #   owner of some directories and files that the Bind daemon needs to write
@@ -198,7 +191,6 @@ class bind (
   Stdlib::Absolutepath    $cachedir,
   Stdlib::Absolutepath    $rndc_keyfile,
   Stdlib::Absolutepath    $rndc_program,
-  Bind::Key::Algorithm    $rndc_key_algorithm,
   String                  $bind_user,
   String                  $bind_group,
   String                  $package_name,
