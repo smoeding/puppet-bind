@@ -3,10 +3,11 @@
 # @example Install a local caching resolver
 #
 #   class { 'bind':
-#     listen_on       => [ '127.0.0.1' ],
-#     listen_on_v6    => [ '::1' ],
-#     allow_query     => [ '127.0.0.1', '::1' ],
-#     allow_recursion => [ '127.0.0.1', '::1' ],
+#     listen_on         => [ '127.0.0.1' ],
+#     listen_on_v6      => [ '::1' ],
+#     allow_query       => [ '127.0.0.1', '::1' ],
+#     allow_query_cache => [ '127.0.0.1', '::1' ],
+#     allow_recursion   => [ '127.0.0.1', '::1' ],
 #   }
 #
 # @param confdir
