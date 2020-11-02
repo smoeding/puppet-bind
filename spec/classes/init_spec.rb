@@ -182,17 +182,12 @@ describe 'bind' do
             is_expected.to contain_concat__fragment('named.conf.options-main')
               .with_target('named.conf.options')
               .with_order('75')
-              .with_content("  // DNSSEC\n  dnssec-enable     yes;\n  dnssec-validation auto;\n  dnssec-lookaside  no;\n\n  key-directory \"/etc/bind/keys\";\n\n  auth-nxdomain no;\n")
+              .with_content("\n  // DNSSEC\n  dnssec-enable     yes;\n  dnssec-validation auto;\n  dnssec-lookaside  no;\n\n  key-directory \"/etc/bind/keys\";\n\n  auth-nxdomain no;\n")
 
             is_expected.to contain_concat__fragment('named.conf.options-tail')
               .with_target('named.conf.options')
               .with_order('85')
               .with_content("};\n")
-
-            is_expected.to contain_concat__fragment('named.conf.controls')
-              .with_target('named.conf.options')
-              .with_order('90')
-              .with_content("\ncontrols {\n  inet 127.0.0.1 port 953 allow { 127.0.0.1; } keys { \"rndc-key\"; };\n};\n")
           }
 
           #
@@ -578,6 +573,19 @@ describe 'bind' do
 
         it {
           is_expected.not_to contain_bind__key('rndc-key')
+        }
+      end
+
+      context 'with control_channels_enable => false' do
+        let(:params) do
+          { control_channels_enable: false }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.controls')
+            .with_target('named.conf.options')
+            .with_order('90')
+            .with_content("\n// Disable controls\ncontrols { };\n")
         }
       end
     end

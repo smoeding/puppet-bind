@@ -15,6 +15,8 @@
 
 * [`bind::acl`](#bindacl): Manage ACL entries
 * [`bind::config`](#bindconfig): Manage configuration files
+* [`bind::controls::inet`](#bindcontrolsinet): Manage an inet control channel
+* [`bind::controls::unix`](#bindcontrolsunix): Manage a unix control channel
 * [`bind::key`](#bindkey): Manage keys
 * [`bind::listen_on`](#bindlisten_on): Manage listen-on option clause
 * [`bind::listen_on_v6`](#bindlisten_on_v6): Manage listen-on-v6 option clause
@@ -240,6 +242,20 @@ Data type: `Boolean`
 Should a local mirror zone the root zone be configured.
 
 Default value: ``false``
+
+##### `control_channels_enable`
+
+Data type: `Boolean`
+
+Should control channels be enabled. All `bind::controls::unix` and
+`bind::controls::inet` configuration items will be ignored if this is set
+to `false`. In this case an empty controls statement will be generated and
+the default control channel will also be disabled. The default control
+channel will be enabled automatically if this parameter is `true` and no
+explicit channels are created using the `bind::controls::unix` or
+`bind::controls::inet` defined type.
+
+Default value: ``true``
 
 ##### `allow_query`
 
@@ -751,6 +767,136 @@ The file content for the configuration file. Either the parameter
 See the Puppet standard `file` type.
 
 Default value: ``undef``
+
+### `bind::controls::inet`
+
+Manage an inet control channel
+
+#### Examples
+
+##### Using the defined type
+
+```puppet
+
+bind::controls::inet { '*':
+  keys => [ 'rndc.key', ],
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `bind::controls::inet` defined type.
+
+##### `allow`
+
+Data type: `Bind::AddressMatchList`
+
+The client addresses that are allowed to access this control channel.
+
+Default value: `[]`
+
+##### `keys`
+
+Data type: `Array[String]`
+
+The name of the keys that will be used to authenticate access to this
+control channel.
+
+Default value: `[]`
+
+##### `read_only`
+
+Data type: `Boolean`
+
+Should the control channel only allow read-only access.
+
+Default value: ``false``
+
+##### `address`
+
+Data type: `String`
+
+The IPv4 or IPv6 address where the control channel will be created. This
+can also be the string `*` for all local IPv4 addresses or the string `::`
+for all local IPv6 addresses.
+
+Default value: `$name`
+
+##### `port`
+
+Data type: `Optional[Stdlib::Port]`
+
+The port where the control channel will be listening. The default port 953
+will be ised if this is unset.
+
+Default value: ``undef``
+
+### `bind::controls::unix`
+
+Manage a unix control channel
+
+#### Examples
+
+##### Using the defined type
+
+```puppet
+
+bind::controls::unix { '/run/named.ctl':
+  owner => 0,
+  group => 0,
+  perm  => '0640',
+  keys  => [ 'rndc.key', ],
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `bind::controls::unix` defined type.
+
+##### `owner`
+
+Data type: `Integer`
+
+The owner of the unix control channel socket. This must be the integer
+value of the owner's user id.
+
+##### `group`
+
+Data type: `Integer`
+
+The group of the unix control channel socket. This must be the integer
+value of the owner's group id.
+
+##### `perm`
+
+Data type: `Stdlib::Filemode`
+
+The file permisssions of the unix control channel socket.
+
+##### `keys`
+
+Data type: `Array[String]`
+
+The name of the keys that will be used to authenticate access to this
+control channel.
+
+Default value: `[]`
+
+##### `read_only`
+
+Data type: `Boolean`
+
+Should the control channel only allow read-only access.
+
+Default value: ``false``
+
+##### `path`
+
+Data type: `Stdlib::AbsolutePath`
+
+The file path of the unix control socket to create.
+
+Default value: `$name`
 
 ### `bind::key`
 

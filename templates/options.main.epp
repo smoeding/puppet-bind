@@ -1,3 +1,4 @@
+<%# empty line %>
   // DNSSEC
 <% if $dnssec_enable { -%>
   dnssec-enable     yes;

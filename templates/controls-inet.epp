@@ -1,0 +1,5 @@
+  inet <%= $address -%>
+<%- if $port { %> port <%= $port %><% } -%>
+<%- if $allow { %> allow { <%= $allow %>}<% } -%>
+<%- if $keys { %> keys { <%= $keys %>}<% } -%>
+<%- if $read_only { %> read-only yes<% } -%>

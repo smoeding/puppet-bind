@@ -102,6 +102,15 @@
 # @param root_mirror_enable
 #   Should a local mirror zone the root zone be configured.
 #
+# @param control_channels_enable
+#   Should control channels be enabled. All `bind::controls::unix` and
+#   `bind::controls::inet` configuration items will be ignored if this is set
+#   to `false`. In this case an empty controls statement will be generated and
+#   the default control channel will also be disabled. The default control
+#   channel will be enabled automatically if this parameter is `true` and no
+#   explicit channels are created using the `bind::controls::unix` or
+#   `bind::controls::inet` defined type.
+#
 # @param allow_query
 #   An array of IP addresses/networks or ACL names that are allowed to query
 #   this Bind server.
@@ -202,6 +211,7 @@ class bind (
   Boolean                 $dnssec_enable              = true,
   Boolean                 $empty_zones_enable         = true,
   Boolean                 $root_mirror_enable         = false,
+  Boolean                 $control_channels_enable    = true,
   Bind::AddressMatchList  $allow_query                = [],
   Bind::AddressMatchList  $allow_query_cache          = [],
   Bind::AddressMatchList  $allow_recursion            = [],
@@ -429,17 +439,20 @@ class bind (
 
   # Order of fragments in Concat['named.conf.options']:
   # 10 options {
-  # 11 listen-on { }
-  # 12 listen-on port ... { }
-  # 13 listen-on-v6 { }
-  # 14 listen-on-v6 port ... { }
-  # 20 forwarders
-  # 21 forward
-  # 40 blackhole
-  # 75 main
-  # 80 rate-limit { }
+  # 11   listen-on { }
+  # 12   listen-on port ... { }
+  # 13   listen-on-v6 { }
+  # 14   listen-on-v6 port ... { }
+  # 20   forwarders
+  # 21   forward
+  # 40   blackhole
+  # 75   main
+  # 80   rate-limit { }
   # 85 }
-  # 90 controls
+  # 90 controls {
+  # 91   unix ...
+  # 92   inet ...
+  # 93 }
 
   concat::fragment { 'named.conf.options-head':
     target  => 'named.conf.options',
@@ -457,12 +470,6 @@ class bind (
     target  => 'named.conf.options',
     order   => '85',
     content => "};\n",
-  }
-
-  concat::fragment { 'named.conf.controls':
-    target  => 'named.conf.options',
-    order   => '90',
-    content => epp("${module_name}/controls.epp", $options),
   }
 
   #
@@ -528,6 +535,8 @@ class bind (
       address_match_list => $allow_recursion,
       target             => 'named.conf.options',
       order              => '36',
+      initial_empty_line => true,
+      final_empty_line   => false,
     }
   }
 
@@ -536,6 +545,35 @@ class bind (
       address_match_list => $blackhole,
       target             => 'named.conf.options',
       order              => '40',
+      initial_empty_line => true,
+      final_empty_line   => false,
+    }
+  }
+
+  #
+  # Controls
+  #
+
+  if $control_channels_enable {
+    @concat::fragment { 'named.conf.controls-head':
+      target  => 'named.conf.options',
+      order   => '90',
+      tag     => [ 'named.conf.controls', ],
+      content => "\ncontrols {\n",
+    }
+
+    @concat::fragment { 'named.conf.controls-tail':
+      target  => 'named.conf.options',
+      order   => '93',
+      tag     => [ 'named.conf.controls', ],
+      content => "};\n",
+    }
+  }
+  else {
+    concat::fragment { 'named.conf.controls':
+      target  => 'named.conf.options',
+      order   => '90',
+      content => "\n// Disable controls\ncontrols { };\n",
     }
   }
 
