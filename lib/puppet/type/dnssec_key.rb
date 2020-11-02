@@ -26,6 +26,7 @@ Puppet::Type.newtype(:dnssec_key) do
           bits          => 2048,
         }
 
+    The following diagram illustrates the lifecycle of the keys:
 
         key-1 ------ active ----------><-- retired --><-- deleted --
 
