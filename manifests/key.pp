@@ -1,4 +1,4 @@
-# @summary Manage keys
+# @summary Manage secret keys
 #
 # @example Using the defined type
 #

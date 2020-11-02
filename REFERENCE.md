@@ -14,10 +14,9 @@
 #### Public Defined types
 
 * [`bind::acl`](#bindacl): Manage ACL entries
-* [`bind::config`](#bindconfig): Manage configuration files
 * [`bind::controls::inet`](#bindcontrolsinet): Manage an inet control channel
 * [`bind::controls::unix`](#bindcontrolsunix): Manage a unix control channel
-* [`bind::key`](#bindkey): Manage keys
+* [`bind::key`](#bindkey): Manage secret keys
 * [`bind::listen_on`](#bindlisten_on): Manage listen-on option clause
 * [`bind::listen_on_v6`](#bindlisten_on_v6): Manage listen-on-v6 option clause
 * [`bind::logging::category`](#bindloggingcategory): Manage logging category
@@ -35,6 +34,7 @@
 #### Private Defined types
 
 * `bind::aml`: Manage an address match list
+* `bind::config`: Manage configuration files
 
 ### Resource types
 
@@ -69,10 +69,11 @@ Manage the Bind DNS daemon and configuration
 ```puppet
 
 class { 'bind':
-  listen_on       => [ '127.0.0.1' ],
-  listen_on_v6    => [ '::1' ],
-  allow_query     => [ '127.0.0.1', '::1' ],
-  allow_recursion => [ '127.0.0.1', '::1' ],
+  listen_on         => [ '127.0.0.1' ],
+  listen_on_v6      => [ '::1' ],
+  allow_query       => [ '127.0.0.1', '::1' ],
+  allow_query_cache => [ '127.0.0.1', '::1' ],
+  allow_recursion   => [ '127.0.0.1', '::1' ],
 }
 ```
 
@@ -120,16 +121,6 @@ Default: operating system specific
 Data type: `Stdlib::Absolutepath`
 
 The full path of the rndc program.
-
-Default: operating system specific
-
-##### `rndc_key_algorithm`
-
-Data type: `Bind::Key::Algorithm`
-
-The authentication algorithm used on the communication channel between
-rndc and the Bind daemon. Supported valued: `hmac-md5`, `hmac-sha1`,
-`hmac-sha224`, `hmac-sha256`, `hmac-sha384`, `hmac-sha512`.
 
 Default: operating system specific
 
@@ -687,87 +678,6 @@ The name of the ACL. Defaults to the name of the resource.
 
 Default value: `$name`
 
-### `bind::config`
-
-Manage configuration files
-
-#### Examples
-
-##### Install the named.conf config file
-
-```puppet
-
-bind::config { 'named.conf':
-  source => "puppet:///modules/local/named.conf",
-}
-```
-
-#### Parameters
-
-The following parameters are available in the `bind::config` defined type.
-
-##### `ensure`
-
-Data type: `Enum['present','absent']`
-
-The state of the resource. Must be either `present` or `absent`.
-
-Default value: `'present'`
-
-##### `file`
-
-Data type: `String`
-
-The name of the configuration file. This must be only the basename of the
-file and not an absolute pathname. Default is the name of the resource.
-
-Default value: `$name`
-
-##### `owner`
-
-Data type: `String`
-
-The file owner for the config file.
-
-Default value: `'root'`
-
-##### `group`
-
-Data type: `String`
-
-The file group for the key file. Default is the value of the class
-parameter `bind::bind_group`.
-
-Default value: `$::bind::bind_group`
-
-##### `mode`
-
-Data type: `Stdlib::Filemode`
-
-The file mode for the key file.
-
-Default value: `'0640'`
-
-##### `source`
-
-Data type: `Optional[String]`
-
-The file source for the configuration file. Either the parameter `source`
-or `content` should be set to actually manage any file content. See the
-Puppet standard `file` type.
-
-Default value: ``undef``
-
-##### `content`
-
-Data type: `Optional[String]`
-
-The file content for the configuration file. Either the parameter
-`source` or `content` should be set to actually manage any file content.
-See the Puppet standard `file` type.
-
-Default value: ``undef``
-
 ### `bind::controls::inet`
 
 Manage an inet control channel
@@ -900,7 +810,7 @@ Default value: `$name`
 
 ### `bind::key`
 
-Manage keys
+Manage secret keys
 
 #### Examples
 
@@ -2060,28 +1970,28 @@ Examples:
 
 Create a key-signing-key for the example.com domain using defaults:
 
-  dnssec_key { 'example.com':
-    key_directory => '/etc/bind/keys',
-    ksk           => true,
-  }
+    dnssec_key { 'example.com':
+      key_directory => '/etc/bind/keys',
+      ksk           => true,
+    }
 
 Create a zone-signing-key for the example.com domain using a specified
 algorithm and key size:
 
-  dnssec_key { 'example.com-ZSK':
-    key_directory => '/etc/bind/keys',
-    algorithm     => 'RSASHA256',
-    bits          => 2048,
-  }
+    dnssec_key { 'example.com-ZSK':
+      key_directory => '/etc/bind/keys',
+      algorithm     => 'RSASHA256',
+      bits          => 2048,
+    }
 
 
-key-1 ------ active ----------><-- retired --><-- deleted --
+    key-1 ------ active ----------><-- retired --><-- deleted --
 
-key-2       <--- published ---><---------- active ----------><-- retired -->
+    key-2       <--- published ---><---------- active ----------><-- retired -->
 
-            <----------------->
-               prepublication
-                  interval
+                <----------------->
+                   prepublication
+                      interval
 
 #### Properties
 

@@ -1,5 +1,7 @@
 # @summary Manage configuration files
 #
+# @api private
+#
 # @example Install the named.conf config file
 #
 #   bind::config { 'named.conf':

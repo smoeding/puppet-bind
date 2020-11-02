@@ -12,28 +12,28 @@ Puppet::Type.newtype(:dnssec_key) do
 
     Create a key-signing-key for the example.com domain using defaults:
 
-      dnssec_key { 'example.com':
-        key_directory => '/etc/bind/keys',
-        ksk           => true,
-      }
+        dnssec_key { 'example.com':
+          key_directory => '/etc/bind/keys',
+          ksk           => true,
+        }
 
     Create a zone-signing-key for the example.com domain using a specified
     algorithm and key size:
 
-      dnssec_key { 'example.com-ZSK':
-        key_directory => '/etc/bind/keys',
-        algorithm     => 'RSASHA256',
-        bits          => 2048,
-      }
+        dnssec_key { 'example.com-ZSK':
+          key_directory => '/etc/bind/keys',
+          algorithm     => 'RSASHA256',
+          bits          => 2048,
+        }
 
 
-    key-1 ------ active ----------><-- retired --><-- deleted --
+        key-1 ------ active ----------><-- retired --><-- deleted --
 
-    key-2       <--- published ---><---------- active ----------><-- retired -->
+        key-2       <--- published ---><---------- active ----------><-- retired -->
 
-                <----------------->
-                   prepublication
-                      interval
+                    <----------------->
+                       prepublication
+                          interval
   EOT
 
   def munge_duration(value)
