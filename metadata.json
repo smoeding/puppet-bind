@@ -2,7 +2,7 @@
   "name": "stm-bind",
   "version": "0.1.0",
   "author": "stm",
-  "summary": "Manage the Bind nameserver.",
+  "summary": "Manage the BIND name server.",
   "license": "BSD-2-Clause",
   "source": "https://github.com/smoeding/puppet-bind",
   "project_page": "https://github.com/smoeding/puppet-bind",
