@@ -35,6 +35,8 @@ Set up a caching name server on localhost:
 
 ```puppet
 class { 'bind':
+  listen_on         => [ '127.0.0.1', ],
+  listen_on_v6      => [ 'none', ],
   allow_query       => [ 'localhost', ],
   allow_query_cache => [ 'localhost', ],
   allow_recursion   => [ 'localhost', ],
@@ -47,7 +49,6 @@ Set up a caching name server that provides recursive name resolution for a local
 
 ```puppet
 class { 'bind':
-  listen_on         => [ 'any', ],
   allow_query       => [ 'localhost', '10/8', ],
   allow_query_cache => [ 'localhost', '10/8', ],
   allow_recursion   => [ 'localhost', '10/8', ],
@@ -58,7 +59,6 @@ Set up a caching name server that provides recursive name resolution for a local
 
 ```puppet
 class { 'bind':
-  listen_on         => [ 'any', ],
   allow_query       => [ 'localhost', '10/8', ],
   allow_query_cache => [ 'localhost', '10/8', ],
   allow_recursion   => [ 'localhost', '10/8', ],
