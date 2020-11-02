@@ -1,10 +1,8 @@
 # bind
 
-Welcome to your new module. A short overview of the generated parts can be found
-in the [PDK documentation][1].
-
-The README template below provides a starting point with details about what
-information to include in your README.
+[![Build Status](https://travis-ci.org/smoeding/puppet-bind.svg?branch=master)](https://travis-ci.org/smoeding/puppet-bind)
+[![Puppet Forge](http://img.shields.io/puppetforge/v/stm/bind.svg)](https://forge.puppetlabs.com/stm/bind)
+[![License](https://img.shields.io/github/license/smoeding/puppet-bind.svg)](https://raw.githubusercontent.com/smoeding/puppet-bind/master/LICENSE)
 
 ## Table of Contents
 
@@ -19,99 +17,75 @@ information to include in your README.
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your
-module does and what kind of problems users can solve with it.
-
-This should be a fairly short description helps the user decide if your module
-is what they want.
+This module manages the BIND Name Server on Debian and Ubuntu. The module supports setting up a Caching Name Server or an Authoritative Name Server using primary and secondary zones.
 
 ## Setup
 
-### What bind affects **OPTIONAL**
+### What bind affects
 
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
+The module manages the `named` process and related service files. It also managed the configuration and zone files. On Debian and Ubuntu these files are below the `/etc/bind`, `/var/lib/bind` and `/var/cache/bind` directories. The module uses a multi-level directory tree below `/var/lib/bind` to separate primary and secondary zone files.
 
-If there's more that they should know about, though, this is the place to
-mention:
+### Setup Requirements
 
-* Files, packages, services, or operations that the module will alter, impact,
-  or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-another module, etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section here.
+The module uses the `stdlib` and `concat` modules. It is tested on Debian and Ubuntu using Puppet 6.
 
 ### Beginning with bind
 
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most basic
-use of the module.
+Set up a caching name server on localhost:
+
+```puppet
+class { 'bind':
+  allow_query       => [ 'localhost', ],
+  allow_query_cache => [ 'localhost', ],
+  allow_recursion   => [ 'localhost', ],
+}
+```
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your
-users how to use your module to solve problems, and be sure to include code
-examples. Include three to five examples of the most important or common tasks a
-user can accomplish with your module. Show users how to accomplish more complex
-tasks that involve different types, classes, and functions working in tandem.
+Set up a caching name server that provides recursive name resolution for a local subnet:
+
+```puppet
+class { 'bind':
+  listen_on         => [ 'any', ],
+  allow_query       => [ 'localhost', '10/8', ],
+  allow_query_cache => [ 'localhost', '10/8', ],
+  allow_recursion   => [ 'localhost', '10/8', ],
+}
+```
+
+Set up a caching name server that provides recursive name resolution for a local subnet and uses forwarders:
+
+```puppet
+class { 'bind':
+  listen_on         => [ 'any', ],
+  allow_query       => [ 'localhost', '10/8', ],
+  allow_query_cache => [ 'localhost', '10/8', ],
+  allow_recursion   => [ 'localhost', '10/8', ],
+  forwarders        => [ '10.0.0.53', '10.1.1.53', ],
+}
+```
+
+Add a primary zone for the `example.com` domain:
+
+```puppet
+bind::zone::primary { 'example.com':
+  source => 'puppet:///modules/profile/dns/example.com.zone',
+}
+```
+
+The zone file will be managed on the server as `/var/lib/bind/primary/com/example/db.example.com`. This tree structure is better than a flat directory structure if many zones will be managed by the server.
 
 ## Reference
 
-This section is deprecated. Instead, add reference information to your code as
-Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your
-module. For details on how to add code comments and generate documentation with
-Strings, see the [Puppet Strings documentation][2] and [style guide][3].
-
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the
-root of your module directory and list out each of your module's classes,
-defined types, facts, functions, Puppet tasks, task plans, and resource types
-and providers, along with the parameters for each.
-
-For each element (class, defined type, function, and so on), list:
-
-* The data type, if applicable.
-* A description of what the element does.
-* Valid values, if the data type doesn't make it obvious.
-* Default value, if any.
-
-For example:
-
-```
-### `pet::cat`
-
-#### Parameters
-
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
-```
+See [REFERENCE.md](https://github.com/smoeding/puppet-bind/blob/master/REFERENCE.md)
 
 ## Limitations
 
-In the Limitations section, list any incompatibilities, known issues, or other
-warnings.
+Not all BIND features are currently implemented as I started with the options I needed myself. Some options are not yet available and features like DNSSEC inline signing are not well tested.
 
 ## Development
 
-In the Development section, tell other users the ground rules for contributing
-to your project and how they should submit their work.
+You may open Github issues for this module if you need additional options currently not available.
 
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel are
-necessary or important to include here. Please use the `##` header.
-
-[1]: https://puppet.com/docs/pdk/latest/pdk_generating_modules.html
-[2]: https://puppet.com/docs/puppet/latest/puppet_strings.html
-[3]: https://puppet.com/docs/puppet/latest/puppet_strings_style.html
+Feel free to send pull requests for new features.
