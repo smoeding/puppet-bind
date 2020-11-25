@@ -111,7 +111,8 @@ define bind::view (
   }
 
   if pick($root_hints_enable, $::bind::root_hints_enable) {
-    bind::zone::hint { '.':
+    bind::zone::hint { "${view}/.":
+      zone    => '.',
       view    => $view,
       file    => "${::bind::confdir}/db.root",
       comment => 'Prime server with knowledge of the root servers',
@@ -119,7 +120,8 @@ define bind::view (
   }
 
   if $root_mirror_enable {
-    bind::zone::mirror { '.':
+    bind::zone::mirror { "${view}/.":
+      zone    => '.',
       view    => $view,
       comment => 'Local copy of the root zone (see RFC 7706)',
       order   => '11',
@@ -127,7 +129,8 @@ define bind::view (
   }
 
   if pick($localhost_forward_enable, $::bind::localhost_forward_enable) {
-    bind::zone::primary { 'localhost':
+    bind::zone::primary { "${view}/localhost":
+      zone  => 'localhost',
       view  => $view,
       file  => "${::bind::confdir}/db.localhost",
       order => '15',
@@ -135,7 +138,8 @@ define bind::view (
   }
 
   if pick($localhost_reverse_enable, $::bind::localhost_reverse_enable) {
-    bind::zone::primary { '127.in-addr.arpa':
+    bind::zone::primary { "${view}/127.in-addr.arpa":
+      zone  => '127.in-addr.arpa',
       view  => $view,
       file  => "${::bind::confdir}/db.127",
       order => '15',

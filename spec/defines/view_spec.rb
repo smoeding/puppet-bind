@@ -20,19 +20,22 @@ describe 'bind::view' do
             .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n")
             .with_order('10')
 
-          is_expected.to contain_bind__zone__hint('.')
+          is_expected.to contain_bind__zone__hint('foo/.')
+            .with_zone('.')
             .with_view('foo')
             .with_file('/etc/bind/db.root')
             .with_comment('Prime server with knowledge of the root servers')
 
-          is_expected.not_to contain_bind__zone__mirror('.')
+          is_expected.not_to contain_bind__zone__mirror('foo/.')
 
-          is_expected.to contain_bind__zone__primary('localhost')
+          is_expected.to contain_bind__zone__primary('foo/localhost')
+            .with_zone('localhost')
             .with_view('foo')
             .with_file('/etc/bind/db.localhost')
             .with_order('15')
 
-          is_expected.to contain_bind__zone__primary('127.in-addr.arpa')
+          is_expected.to contain_bind__zone__primary('foo/127.in-addr.arpa')
+            .with_zone('127.in-addr.arpa')
             .with_view('foo')
             .with_file('/etc/bind/db.127')
             .with_order('15')
@@ -211,7 +214,8 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_bind__zone__hint('.')
+          is_expected.to contain_bind__zone__hint('foo/.')
+            .with_zone('.')
             .with_view('foo')
             .with_file('/etc/bind/db.root')
             .with_comment('Prime server with knowledge of the root servers')
@@ -224,7 +228,7 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.not_to contain_bind__zone__hint('.')
+          is_expected.not_to contain_bind__zone__hint('foo/.')
         }
       end
 
@@ -234,7 +238,8 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_bind__zone__primary('localhost')
+          is_expected.to contain_bind__zone__primary('foo/localhost')
+            .with_zone('localhost')
             .with_view('foo')
             .with_file('/etc/bind/db.localhost')
             .with_order('15')
@@ -247,7 +252,7 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.not_to contain_bind__zone__primary('localhost')
+          is_expected.not_to contain_bind__zone__primary('foo/localhost')
         }
       end
 
@@ -257,7 +262,8 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_bind__zone__primary('127.in-addr.arpa')
+          is_expected.to contain_bind__zone__primary('foo/127.in-addr.arpa')
+            .with_zone('127.in-addr.arpa')
             .with_view('foo')
             .with_file('/etc/bind/db.127')
             .with_order('15')
@@ -270,7 +276,7 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.not_to contain_bind__zone__primary('127.in-addr.arpa')
+          is_expected.not_to contain_bind__zone__primary('foo/127.in-addr.arpa')
         }
       end
     end
