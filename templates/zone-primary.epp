@@ -19,7 +19,9 @@
 <% } -%>
 <% if $dnssec { -%>
 
+<% unless $zone_in_view { -%>
 <%= $indent %>  dnssec-enable  <%= bool2str($dnssec, 'yes', 'no') -%>;
+<% } -%>
 <%= $indent %>  auto-dnssec    <%= $auto_dnssec -%>;
 <%= $indent %>  inline-signing <%= bool2str($inline_signing, 'yes', 'no') -%>;
 <%= $indent %>  key-directory  "<%= $key_directory -%>";

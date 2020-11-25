@@ -156,6 +156,7 @@ define bind::zone::primary (
     'class'          => $class,
     'comment'        => $comment,
     'indent'         => bool2str($::bind::views_enable, '  ', ''),
+    'zone_in_view'   => ($view =~ NotUndef),
   }
 
   if $::bind::views_enable {
