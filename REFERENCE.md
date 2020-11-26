@@ -1978,24 +1978,37 @@ key-2       <--- published ---><---------- active ----------><-- retired -->
 
 #### Examples
 
-##### Create a key-signing-key using defaults
+##### Create a Key Signing Key using defaults
 
 ```puppet
-
 dnssec_key { 'example.com':
   key_directory => '/etc/bind/keys',
   ksk           => true,
 }
 ```
 
-##### Create a zone-signing-key using a specified algorithm and key size
+##### Create a Zone Signing Key using a specified algorithm and key size
 
 ```puppet
-
-dnssec_key { 'example.com-ZSK':
+dnssec_key { 'ZSK/example.com':
+  zone          => 'example.com',
   key_directory => '/etc/bind/keys',
   algorithm     => 'RSASHA256',
   bits          => 2048,
+}
+```
+
+##### Create Zone Signing Keys using automatic key rollover
+
+```puppet
+dnssec_key { 'ZSK/example.com':
+  zone          => 'example.com',
+  key_directory => '/etc/bind/keys',
+  publish       => '2w',
+  active        => '1y',
+  retire        => '4w',
+  delete        => '1w',
+  successor     => true,
 }
 ```
 
@@ -2061,7 +2074,7 @@ mandatory.
 
 Valid values: ``true``, ``false``
 
-Whether the key should be a key-signing-key.
+Whether the key should be a Key Signing Key.
 
 Default value: ``false``
 
@@ -2102,7 +2115,7 @@ inactive.
 Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
 
 The time interval that the key will have the revoke bit set. This
-parameter may only be used for zone-signing keys.
+parameter may only be used for Zone Signing Keys.
 
 ##### `rrtype`
 

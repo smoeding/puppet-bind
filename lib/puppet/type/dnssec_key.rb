@@ -20,19 +20,29 @@ Puppet::Type.newtype(:dnssec_key) do
                       interval
     ```
 
-    @example Create a key-signing-key using defaults
-
+    @example Create a Key Signing Key using defaults
       dnssec_key { 'example.com':
         key_directory => '/etc/bind/keys',
         ksk           => true,
       }
 
-    @example Create a zone-signing-key using a specified algorithm and key size
-
-      dnssec_key { 'example.com-ZSK':
+    @example Create a Zone Signing Key using a specified algorithm and key size
+      dnssec_key { 'ZSK/example.com':
+        zone          => 'example.com',
         key_directory => '/etc/bind/keys',
         algorithm     => 'RSASHA256',
         bits          => 2048,
+      }
+
+    @example Create Zone Signing Keys using automatic key rollover
+      dnssec_key { 'ZSK/example.com':
+        zone          => 'example.com',
+        key_directory => '/etc/bind/keys',
+        publish       => '2w',
+        active        => '1y',
+        retire        => '4w',
+        delete        => '1w',
+        successor     => true,
       }
   EOT
 
@@ -153,7 +163,7 @@ Puppet::Type.newtype(:dnssec_key) do
   end
 
   newparam(:ksk, boolean: true) do
-    desc 'Whether the key should be a key-signing-key.'
+    desc 'Whether the key should be a Key Signing Key.'
 
     newvalues(:true, :false)
 
@@ -187,7 +197,7 @@ Puppet::Type.newtype(:dnssec_key) do
 
   newparam(:revoke) do
     desc 'The time interval that the key will have the revoke bit set. This
-      parameter may only be used for zone-signing keys.'
+      parameter may only be used for Zone Signing Keys.'
 
     newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
     munge { |value| @resource.munge_duration(value) }
