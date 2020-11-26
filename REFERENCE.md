@@ -38,7 +38,7 @@
 
 ### Resource types
 
-* [`dnssec_key`](#dnssec_key): Create, delete and maintain DNSSEC key files on the DNS server.  Caution: This functionality is in beta and is subject to change. The design 
+* [`dnssec_key`](#dnssec_key): Create, delete and maintain DNSSEC key files on the DNS server.
 
 ### Functions
 
@@ -1961,38 +1961,43 @@ Default value: `'30'`
 
 ### `dnssec_key`
 
-Create, delete and maintain DNSSEC key files on the DNS server.
-
 Caution: This functionality is in beta and is subject to change. The
 design and code is less mature than other features.
 
-Examples:
-
-Create a key-signing-key for the example.com domain using defaults:
-
-    dnssec_key { 'example.com':
-      key_directory => '/etc/bind/keys',
-      ksk           => true,
-    }
-
-Create a zone-signing-key for the example.com domain using a specified
-algorithm and key size:
-
-    dnssec_key { 'example.com-ZSK':
-      key_directory => '/etc/bind/keys',
-      algorithm     => 'RSASHA256',
-      bits          => 2048,
-    }
-
 The following diagram illustrates the lifecycle of the keys:
 
-    key-1 ------ active ----------><-- retired --><-- deleted --
+```
+key-1 ------ active ----------><-- retired --><-- deleted --
 
-    key-2       <--- published ---><---------- active ----------><-- retired -->
+key-2       <--- published ---><---------- active ----------><-- retired -->
 
-                <----------------->
-                   prepublication
-                      interval
+            <----------------->
+               prepublication
+                  interval
+```
+
+#### Examples
+
+##### Create a key-signing-key using defaults
+
+```puppet
+
+dnssec_key { 'example.com':
+  key_directory => '/etc/bind/keys',
+  ksk           => true,
+}
+```
+
+##### Create a zone-signing-key using a specified algorithm and key size
+
+```puppet
+
+dnssec_key { 'example.com-ZSK':
+  key_directory => '/etc/bind/keys',
+  algorithm     => 'RSASHA256',
+  bits          => 2048,
+}
+```
 
 #### Properties
 
