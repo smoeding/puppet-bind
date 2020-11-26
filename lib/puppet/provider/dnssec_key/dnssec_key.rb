@@ -115,13 +115,14 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
 
           # Test flag bit if this is a key signing key
           ksk = (flags.to_i & 1).odd?
+          typ = ksk ? 'KSK' : 'ZSK'
 
           # Skip entry if properties do not match
           next if ksk ^ (resource[:ksk].to_s == 'true')
           next if algorithm(algorithm_id) != resource[:algorithm]
 
-          Puppet.info("dnssec_key: found key file #{key} for zone #{zone}")
-          Puppet.info("dnssec_key: key valid from #{activate} to #{inactive}")
+          Puppet.info("dnssec_key: found #{typ} key #{key} for zone #{zone}")
+          Puppet.info("dnssec_key: key is valid from #{activate} to #{inactive}")
 
           # Key is no longer active, so we ignore it
           next if inactive < now
@@ -157,7 +158,6 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
 
   def create
     Puppet.debug("dnssec_key: calling create for #{resource[:name]}")
-
     args = ['-q']
 
     args << '-3' if resource[:nsec3].to_s == 'true'
@@ -165,14 +165,34 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
     args << '-K' << resource[:key_directory]
     args << '-b' << resource[:bits] if resource[:bits]
 
+    time = 0
+
     unless @keys.empty?
-      args << '-P' << resource[:publish] if resource[:publish]
-      args << '-A' << resource[:activate] if resource[:activate]
+      if resource[:publish]
+        time += resource[:publish]
+        args << '-P' << "+#{time}"
+      end
+      if resource[:activate]
+        time += resource[:activate]
+        args << '-A' << "+#{time}"
+      end
     end
 
-    # args << '-R' << resource[:revoke] if resource[:revoke]
-    # args << '-I' << resource[:retire] if resource[:retire]
-    # args << '-D' << resource[:delete] if resource[:delete]
+    if resource[:revoke]
+      time += resource[:revoke]
+      args << '-R' << "+#{time}"
+    end
+
+    if resource[:retire]
+      time += resource[:retire]
+      args << '-I' << "+#{time}"
+    end
+
+    if resource[:delete]
+      time += resource[:delete]
+      args << '-D' << "+#{time}"
+    end
+
     args << '-f' << 'KSK' if resource[:ksk].to_s == 'true'
     args << '-n' << 'ZONE'
     args << resource[:zone]

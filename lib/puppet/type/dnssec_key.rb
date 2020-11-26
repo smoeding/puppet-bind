@@ -186,8 +186,22 @@ Puppet::Type.newtype(:dnssec_key) do
     munge { |value| @resource.munge_duration(value) }
   end
 
-  newparam(:inactive) do
+  newparam(:revoke) do
+    desc 'The time when the key will have the revoke bit set.'
+
+    newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
+    munge { |value| @resource.munge_duration(value) }
+  end
+
+  newparam(:retire) do
     desc 'The time when the key is still published after it became inactive.'
+
+    newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
+    munge { |value| @resource.munge_duration(value) }
+  end
+
+  newparam(:delete) do
+    desc 'The time when the key will be deleted.'
 
     newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
     munge { |value| @resource.munge_duration(value) }
@@ -196,6 +210,10 @@ Puppet::Type.newtype(:dnssec_key) do
   validate do
     if self[:key_directory].nil?
       raise(Puppet::Error, 'key_directory is a required attribute')
+    end
+
+    if self[:retire] and not self[:ksk]
+      raise(Puppet::Error, 'retire is only supported if key is a KSK')
     end
   end
 
