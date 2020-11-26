@@ -2002,9 +2002,9 @@ The following properties are available in the `dnssec_key` type.
 
 Valid values: `present`, `absent`
 
-Specifies whether the destination file should exist. Setting to
-"absent" tells Puppet to delete the destination file if it exists,
-and negates the effect of any other parameters.
+Specifies whether the destination file should exist. Setting this to
+"absent" tells Puppet to delete the destination file if it exists, and
+negates the effect of any other parameters.
 
 Default value: `present`
 
@@ -2016,7 +2016,7 @@ The following parameters are available in the `dnssec_key` type.
 
 Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
 
-The time when the key will be used for signing.
+The time interval that the key will be used for signing the zone.
 
 ##### `algorithm`
 
@@ -2040,11 +2040,12 @@ HMAC :   1 ..  512
 
 Elliptic curve algorithms don't need this parameter.
 
-##### `inactive`
+##### `delete`
 
 Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
 
-The time when the key is still published after it became inactive.
+The time interval before the key is deleted after it has been
+retired.
 
 ##### `key_directory`
 
@@ -2082,7 +2083,21 @@ discover the appropriate provider for your platform.
 
 Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
 
-The time before activation when the key will be published.
+The time interval before activation when the key will be published.
+
+##### `retire`
+
+Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
+
+The time interval that the key is still published after it became
+inactive.
+
+##### `revoke`
+
+Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
+
+The time interval that the key will have the revoke bit set. This
+parameter may only be used for zone-signing keys.
 
 ##### `rrtype`
 
@@ -2097,9 +2112,9 @@ Default value: `DNSKEY`
 Valid values: ``true``, ``false``
 
 Whether the key should be created as an explicit successor to an
-existing key. In this case the name, algorithm, size and type of the
-key will be take from the existing key. The activation date will match
-the inactivation date of the existing key.
+existing key. In this case the name, algorithm, size and type of the key
+will be take from the existing key. The activation date will match the
+inactivation date of the existing key.
 
 Default value: ``false``
 
@@ -2107,8 +2122,8 @@ Default value: ``false``
 
 Valid values: `%r{^[a-zA-Z][a-zA-Z0-9.-]+\.[a-zA-Z]+$}`
 
-The zone for which the key should be generated. This must be a
-valid domain name. Defaults to the resource title if unset.
+The zone for which the key should be generated. This must be a valid
+domain name. Defaults to the resource title if unset.
 
 ## Functions
 

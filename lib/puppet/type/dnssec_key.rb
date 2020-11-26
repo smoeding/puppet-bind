@@ -66,9 +66,9 @@ Puppet::Type.newtype(:dnssec_key) do
   end
 
   ensurable do
-    desc 'Specifies whether the destination file should exist. Setting to
-      "absent" tells Puppet to delete the destination file if it exists,
-      and negates the effect of any other parameters.'
+    desc 'Specifies whether the destination file should exist. Setting this to
+      "absent" tells Puppet to delete the destination file if it exists, and
+      negates the effect of any other parameters.'
 
     defaultvalues
     defaultto :present
@@ -79,8 +79,8 @@ Puppet::Type.newtype(:dnssec_key) do
   end
 
   newparam(:zone) do
-    desc 'The zone for which the key should be generated. This must be a
-      valid domain name. Defaults to the resource title if unset.'
+    desc 'The zone for which the key should be generated. This must be a valid
+      domain name. Defaults to the resource title if unset.'
 
     newvalues(%r{^[a-zA-Z][a-zA-Z0-9.-]+\.[a-zA-Z]+$})
 
@@ -163,9 +163,9 @@ Puppet::Type.newtype(:dnssec_key) do
 
   newparam(:successor, boolean: true) do
     desc 'Whether the key should be created as an explicit successor to an
-      existing key. In this case the name, algorithm, size and type of the
-      key will be take from the existing key. The activation date will match
-      the inactivation date of the existing key.'
+      existing key. In this case the name, algorithm, size and type of the key
+      will be take from the existing key. The activation date will match the
+      inactivation date of the existing key.'
 
     newvalues(:true, :false)
 
@@ -173,35 +173,38 @@ Puppet::Type.newtype(:dnssec_key) do
   end
 
   newparam(:publish) do
-    desc 'The time before activation when the key will be published.'
+    desc 'The time interval before activation when the key will be published.'
 
     newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
     munge { |value| @resource.munge_duration(value) }
   end
 
   newparam(:active) do
-    desc 'The time when the key will be used for signing.'
+    desc 'The time interval that the key will be used for signing the zone.'
 
     newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
     munge { |value| @resource.munge_duration(value) }
   end
 
   newparam(:revoke) do
-    desc 'The time when the key will have the revoke bit set.'
+    desc 'The time interval that the key will have the revoke bit set. This
+      parameter may only be used for zone-signing keys.'
 
     newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
     munge { |value| @resource.munge_duration(value) }
   end
 
   newparam(:retire) do
-    desc 'The time when the key is still published after it became inactive.'
+    desc 'The time interval that the key is still published after it became
+      inactive.'
 
     newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
     munge { |value| @resource.munge_duration(value) }
   end
 
   newparam(:delete) do
-    desc 'The time when the key will be deleted.'
+    desc 'The time interval before the key is deleted after it has been
+      retired.'
 
     newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
     munge { |value| @resource.munge_duration(value) }
