@@ -5,19 +5,25 @@ Puppet::Type.newtype(:dnssec_key) do
     @summary
       Create, delete and maintain DNSSEC key files on the DNS server.
 
-    Caution: This functionality is in beta and is subject to change. The
+    *Caution*: This functionality is in beta and is subject to change. The
     design and code is less mature than other features.
+
+    All intervals are interpreted as seconds if no unit is given. The
+    following interval units can be used: `y` (year), `mo` (months), `w`
+    (weeks), `d` (days), `h` (hours), `mi` (minutes).
+
+    Examples for valid intervals: `1y`, `12mo`, `1w`, `7d`, `24h`, `720mi`
 
     The following diagram illustrates the lifecycle of the keys:
 
     ```
-    key-1 ------ active ----------><-- retired --><-- deleted --
+    key-1 ---- active ----------><-- retired --><-- deleted --
 
-    key-2       <--- published ---><---------- active ----------><-- retired -->
+    key-2     <--- published ---><---------- active ----------><-- retired -->
 
-                <----------------->
-                   prepublication
-                      interval
+              <----------------->
+                prepublication
+                   interval
     ```
 
     @example Create a Key Signing Key using defaults
