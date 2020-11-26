@@ -215,7 +215,7 @@ Puppet::Type.newtype(:dnssec_key) do
       raise(Puppet::Error, 'key_directory is a required attribute')
     end
 
-    if self[:retire] and not self[:ksk]
+    if self[:retire] && !self[:ksk]
       raise(Puppet::Error, 'retire is only supported if key is a KSK')
     end
   end
