@@ -8,9 +8,18 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
 
   def initialize(value = {})
     super(value)
-    @keys = []
+
     @now = Time.now
+
+    @keys = []
     @refkey = nil
+  end
+
+  def get_key(valid_at)
+    @keys.each do |key|
+      return key if key[:activate] <= valid_at && valid_at < key[:inactive]
+    end
+    nil
   end
 
   def algorithm(num)
@@ -69,15 +78,14 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
   def exists?
     Puppet.debug("dnssec_key: calling exists? for #{resource[:name]}")
 
-    keydir = resource[:key_directory]
-
     valid_now = false
     valid_later = false
+    keydir = resource[:key_directory]
 
     Dir.foreach(keydir) do |file|
       activate = nil
-      inactive = nil
-      now = Time.now
+      inactive = Time.at(2_147_483_648)
+      delete = Time.at(2_147_483_648)
 
       match = file.match(%r{^K(#{resource[:zone]})\.\+(\d+)\+(\d+)\.key$})
       if match
@@ -93,13 +101,6 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
         Puppet.debug("dnssec_key: checking key file #{key}")
 
         File.readlines(key).each do |line|
-          match = line.match(%r{Inactive: (\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)})
-          if match
-            year, mon, day, hour, min, sec = match.captures
-            inactive = Time.utc(year, mon, day, hour, min, sec)
-            next
-          end
-
           match = line.match(%r{Activate: (\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)})
           if match
             year, mon, day, hour, min, sec = match.captures
@@ -107,11 +108,25 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
             next
           end
 
+          match = line.match(%r{Inactive: (\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)})
+          if match
+            year, mon, day, hour, min, sec = match.captures
+            inactive = Time.utc(year, mon, day, hour, min, sec)
+            next
+          end
+
+          match = line.match(%r{Delete: (\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)})
+
+          if match
+            year, mon, day, hour, min, sec = match.captures
+            delete = Time.utc(year, mon, day, hour, min, sec)
+            next
+          end
+
           match = line.match(%r{^#{zone}\.\s+IN\s+DNSKEY\s+(\d+)\s+(\d+)\s+(\d+)\s+})
           next if match.nil?
 
           flags, protocol, algorithm_id = match.captures
-          inactive ||= Time.at(2_147_483_648)
 
           # Test flag bit if this is a key signing key
           ksk = (flags.to_i & 1).odd?
@@ -123,14 +138,29 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
 
           Puppet.info("dnssec_key: found #{typ} key #{key} for zone #{zone}")
           Puppet.info("dnssec_key: key is valid from #{activate} to #{inactive}")
+          if delete < @now
+            Puppet.debug("dnssec_key: removing #{key} for zone #{zone}")
+            FileUtils.rm key, force: true unless key.nil?
+
+            Puppet.debug("dnssec_key: removing #{prv} for zone #{zone}")
+            FileUtils.rm prv, force: true unless prv.nil?
+            next
+          end
 
           # Key is no longer active, so we ignore it
-          next if inactive < now
+          next if inactive < @now
 
           Puppet.info("dnssec_key: candidate #{key} for zone #{zone}")
 
-          valid_now = true if activate <= now && now <= inactive
-          valid_later = true if now + resource[:publish].to_i <= inactive
+          if activate <= @now && @now <= inactive
+            valid_now = true
+            Puppet.info("dnssec_key: candidate #{key} is valid now")
+          end
+
+          if @now + resource[:prepublish].to_i <= inactive
+            valid_later = true
+            Puppet.info("dnssec_key: candidate #{key} is valid later")
+          end
 
           @keys << {
             base: base,
@@ -148,9 +178,29 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
     end
 
     unless @keys.empty?
-      refkey = @keys.sort_by { |key| key[:inactive] }.last
-      @refkey = refkey[:base]
-      Puppet.info("dnssec_key: using reference key #{@refkey} for zone #{zone}")
+      refkey = nil
+      reftime = @now
+
+      loop do
+        key = get_key(reftime)
+
+        # No key valid at reference time?
+        break if key.nil?
+
+        # Remember this key as reference key and continue looking for a key
+        # that is valid when the current key becomes inactive. When the loop
+        # terminates the reference key will be the last key that is usable for
+        # a continuous validity interval.
+        refkey = key
+        reftime = key[:inactive]
+      end
+
+      if refkey
+        @refkey = refkey[:base]
+        Puppet.info("dnssec_key: using reference key #{@refkey} for zone #{zone}")
+      else
+        Puppet.info("dnssec_key: no reference key for zone #{zone}")
+      end
     end
 
     valid_now && valid_later
@@ -160,42 +210,42 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
     Puppet.debug("dnssec_key: calling create for #{resource[:name]}")
     args = ['-q']
 
-    args << '-3' if resource[:nsec3].to_s == 'true'
-    args << '-a' << resource[:algorithm].to_s
     args << '-K' << resource[:key_directory]
-    args << '-b' << resource[:bits] if resource[:bits]
 
-    time = 0
-
-    unless @keys.empty?
-      if resource[:publish]
-        time += resource[:publish]
-        args << '-P' << "+#{time}"
-      end
-      if resource[:activate]
-        time += resource[:activate]
-        args << '-A' << "+#{time}"
-      end
-    end
-
-    if resource[:revoke]
-      time += resource[:revoke]
-      args << '-R' << "+#{time}"
-    end
-
-    if resource[:retire]
-      time += resource[:retire]
-      args << '-I' << "+#{time}"
-    end
-
-    if resource[:delete]
-      time += resource[:delete]
-      args << '-D' << "+#{time}"
+    if resource[:successor].to_s == 'true' && @refkey
+      # Create explicit successor to an existing key
+      args << '-S' << @refkey
+    else
+      # Create a new key
+      args << '-a' << resource[:algorithm].to_s
+      args << '-b' << resource[:bits] if resource[:bits]
+      args << '-3' if resource[:nsec3].to_s == 'true'
+      args << '-n' << 'ZONE'
     end
 
     args << '-f' << 'KSK' if resource[:ksk].to_s == 'true'
-    args << '-n' << 'ZONE'
-    args << resource[:zone]
+
+    if resource[:active]
+      duration = resource[:active]
+
+      if resource[:revoke]
+        args << '-R' << "+#{duration}"
+        duration += resource[:revoke]
+      end
+
+      if resource[:retire]
+        args << '-I' << "+#{duration}"
+        duration += resource[:retire]
+      end
+
+      args << '-D' << "+#{duration}"
+    end
+
+    if @refkey.nil?
+      args << resource[:zone]
+    elsif resource[:prepublish]
+      args << '-i' << resource[:prepublish]
+    end
 
     Puppet.debug("dnssec_key: running dnssec_keygen #{args.join(' ')}")
     base = dnssec_keygen(args)

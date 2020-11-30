@@ -187,7 +187,7 @@ Puppet::Type.newtype(:dnssec_key) do
     defaultto :false
   end
 
-  newparam(:publish) do
+  newparam(:prepublish) do
     desc 'The time interval before activation when the key will be published.'
 
     newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
@@ -203,7 +203,7 @@ Puppet::Type.newtype(:dnssec_key) do
 
   newparam(:revoke) do
     desc 'The time interval that the key will have the revoke bit set. This
-      parameter may only be used for Zone Signing Keys.'
+      parameter may only be used for zone-signing keys.'
 
     newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
     munge { |value| @resource.munge_duration(value) }
@@ -217,21 +217,13 @@ Puppet::Type.newtype(:dnssec_key) do
     munge { |value| @resource.munge_duration(value) }
   end
 
-  newparam(:delete) do
-    desc 'The time interval before the key is deleted after it has been
-      retired.'
-
-    newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
-    munge { |value| @resource.munge_duration(value) }
-  end
-
   validate do
     if self[:key_directory].nil?
       raise(Puppet::Error, 'key_directory is a required attribute')
     end
 
-    if self[:retire] && !self[:ksk]
-      raise(Puppet::Error, 'retire is only supported if key is a KSK')
+    if self[:revoke] && (self[:ksk].to_s != 'true')
+      raise(Puppet::Error, 'revoke is only supported if ksk => true')
     end
   end
 
