@@ -187,6 +187,14 @@ Puppet::Type.newtype(:dnssec_key) do
     defaultto :false
   end
 
+  newparam(:purge, boolean: true) do
+    desc 'Whether old keys should be purged after they are retired.'
+
+    newvalues(:true, :false)
+
+    defaultto :false
+  end
+
   newparam(:prepublish) do
     desc 'The time interval before activation when the key will be published.'
 
