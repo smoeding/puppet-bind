@@ -379,6 +379,22 @@ still uses the old key.
 
 Default value: ``true``
 
+##### `custom_options`
+
+Data type: `Hash[String, String]`
+
+Custom options to be added to /etc/bind/named.conf.options.
+The following format is expected:
+
+```
+custom_options => {
+  'option1' => 'value1',
+  'option2' => 'value2',
+}
+```
+
+Default value: ``{}``
+
 ##### `report_hostname`
 
 Data type: `Optional[String]`

@@ -60,3 +60,7 @@
 
   empty-zones-enable <%= bool2str($empty_zones_enable, 'yes', 'no') -%>;
 <% } -%>
+
+<% $custom_options.each |$option, $value| { -%>
+  <%= $option %> <%= $value %>;
+<% } -%>

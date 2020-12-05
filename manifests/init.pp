@@ -228,9 +228,11 @@ class bind (
   Stdlib::Ensure::Service $service_ensure             = 'running',
   Boolean                 $service_enable             = true,
   Boolean                 $manage_rndc_keyfile        = true,
+  Hash[String, String]    $custom_options             = {},
   Optional[String]        $report_hostname            = undef,
   Optional[String]        $report_version             = undef,
   Optional[Boolean]       $querylog_enable            = undef,
+
 ) {
 
   $header_message = '// This file is managed by Puppet. DO NOT EDIT.'
@@ -417,6 +419,7 @@ class bind (
     'querylog_enable'    => $querylog_enable,
     'dnssec_enable'      => $dnssec_enable,
     'empty_zones_enable' => $empty_zones_enable,
+    'custom_options'     => $custom_options,
   }
 
   concat { 'named.conf.options':
