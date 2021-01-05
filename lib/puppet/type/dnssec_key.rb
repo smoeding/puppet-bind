@@ -195,6 +195,15 @@ Puppet::Type.newtype(:dnssec_key) do
     defaultto :false
   end
 
+  newparam(:precreate) do
+    desc 'The time interval before prepublication in which the key will be
+      created. The interval must be long enough to ensure Puppet will run
+      during this inteval.'
+
+    newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
+    munge { |value| @resource.munge_duration(value) }
+  end
+
   newparam(:prepublish) do
     desc 'The time interval before activation when the key will be published.'
 
@@ -232,6 +241,10 @@ Puppet::Type.newtype(:dnssec_key) do
 
     if self[:revoke] && (self[:ksk].to_s != 'true')
       raise(Puppet::Error, 'revoke is only supported if ksk => true')
+    end
+
+    if self[:precreate] && self[:prepublish] && (self[:precreate] < self[:prepublish])
+      raise(Puppet::Error, 'precreate interval must be longer than the prepublish interval')
     end
   end
 

@@ -152,16 +152,28 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
 
         Puppet.info("dnssec_key: candidate #{key} for zone #{resource[:zone]}")
 
+        # Check if we have a key that is valid now
         if activate <= @now && @now < inactive
           valid_now = true
           Puppet.debug("dnssec_key: candidate #{key} is valid now")
         end
 
-        if @now < inactive - (2 * resource[:prepublish].to_i)
+        # Check if we have a key that is still valid if we look a precreation
+        # interval into the future. The precreation interval is either the
+        # value of the matching type parameter, two times the prepublication
+        # interval or 7 days.
+        precreate = case
+                    when resource[:precreate] then resource[:precreate].to_i
+                    when resource[:prepublish] then 2 * resource[:prepublish].to_i
+                    else (7 * 86400)
+                    end
+
+        if @now + precreate < inactive
           valid_later = true
           Puppet.debug("dnssec_key: candidate #{key} is valid later")
         end
 
+        # Keep all keys in an instance variable
         @keys << {
           base: base,
           prv: prv,
