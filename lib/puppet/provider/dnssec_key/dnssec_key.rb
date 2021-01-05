@@ -162,10 +162,12 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
         # interval into the future. The precreation interval is either the
         # value of the matching type parameter, two times the prepublication
         # interval or 7 days.
-        precreate = case
-                    when resource[:precreate] then resource[:precreate].to_i
-                    when resource[:prepublish] then 2 * resource[:prepublish].to_i
-                    else (7 * 86400)
+        precreate = if resource[:precreate]
+                      resource[:precreate].to_i
+                    elsif resource[:prepublish]
+                      2 * resource[:prepublish].to_i
+                    else
+                      7 * 24 * 60 * 60 # seconds
                     end
 
         if @now + precreate < inactive
