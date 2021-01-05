@@ -32,18 +32,23 @@
 #   rotated.
 #
 # @param versions
-#   The number of logfile to keep if log rotation is used.
+#   The number of logfiles to keep if log rotation is used.
+#
+# @param mode
+#   The file mode of the logfile. No file mode will be enforced if this is
+#   undefined.
 #
 #
 define bind::logging::channel_file (
-  Stdlib::Absolutepath   $logfile,
-  String                 $channel        = $name,
-  Bind::Syslog::Severity $severity       = 'notice',
-  Boolean                $print_category = true,
-  Boolean                $print_severity = true,
-  Boolean                $print_time     = true,
-  Optional[String]       $size           = undef,
-  Optional[Integer]      $versions       = undef,
+  Stdlib::Absolutepath       $logfile,
+  String                     $channel        = $name,
+  Bind::Syslog::Severity     $severity       = 'notice',
+  Boolean                    $print_category = true,
+  Boolean                    $print_severity = true,
+  Boolean                    $print_time     = true,
+  Optional[String]           $size           = undef,
+  Optional[Integer]          $versions       = undef,
+  Optional[Stdlib::Filemode] $mode           = undef,
 ) {
 
   # The base class must be included first
@@ -55,7 +60,7 @@ define bind::logging::channel_file (
     ensure => file,
     owner  => $::bind::bind_user,
     group  => $::bind::bind_group,
-    mode   => '0640',
+    mode   => $mode,
     before => Concat['named.conf.logging'],
   }
 

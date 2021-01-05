@@ -1167,7 +1167,16 @@ Default value: ``undef``
 
 Data type: `Optional[Integer]`
 
-The number of logfile to keep if log rotation is used.
+The number of logfiles to keep if log rotation is used.
+
+Default value: ``undef``
+
+##### `mode`
+
+Data type: `Optional[Stdlib::Filemode]`
+
+The file mode of the logfile. No file mode will be enforced if this is
+undefined.
 
 Default value: ``undef``
 
@@ -1973,13 +1982,13 @@ Examples for valid intervals: `1y`, `12mo`, `1w`, `7d`, `24h`, `720mi`
 The following diagram illustrates the lifecycle of the keys:
 
 ```
-key-1 ------ active ----------><-- retired --><-- deleted --
+key-1 ---- active ----------><-- retired --><-- deleted --
 
-key-2       <--- published ---><---------- active ----------><-- retired -->
+key-2     <--- published ---><---------- active ----------><-- retired -->
 
-            <----------------->
-               prepublication
-                  interval
+          <----------------->
+            prepublication
+               interval
 ```
 
 #### Examples
@@ -2064,13 +2073,6 @@ HMAC :   1 ..  512
 
 Elliptic curve algorithms don't need this parameter.
 
-##### `delete`
-
-Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
-
-The time interval before the key is deleted after it has been
-retired.
-
 ##### `key_directory`
 
 The directory where the key should be created. This parameter is
@@ -2098,16 +2100,24 @@ Whether the key should be NSEC3-capable.
 
 Default value: ``false``
 
+##### `prepublish`
+
+Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
+
+The time interval before activation when the key will be published.
+
 ##### `provider`
 
 The specific backend to use for this `dnssec_key` resource. You will seldom need to specify this --- Puppet will usually
 discover the appropriate provider for your platform.
 
-##### `publish`
+##### `purge`
 
-Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
+Valid values: ``true``, ``false``
 
-The time interval before activation when the key will be published.
+Whether old keys should be purged after they are retired.
+
+Default value: ``false``
 
 ##### `retire`
 
@@ -2121,7 +2131,7 @@ inactive.
 Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
 
 The time interval that the key will have the revoke bit set. This
-parameter may only be used for Zone Signing Keys.
+parameter may only be used for zone-signing keys.
 
 ##### `rrtype`
 
