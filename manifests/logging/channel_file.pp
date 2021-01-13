@@ -27,9 +27,8 @@
 #   Should a timestamp be logged to the file.
 #
 # @param size
-#   The maximum size of the logfile. Logfile rotation takes place if this
-#   size is reached. If the size is undefined then the logfile will not be
-#   rotated.
+#   The maximum size of the logfile. Log rotation takes place if this size is
+#   reached. If the size is undefined then the logfile will not be rotated.
 #
 # @param versions
 #   The number of logfiles to keep if log rotation is used.

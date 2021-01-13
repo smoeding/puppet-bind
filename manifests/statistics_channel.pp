@@ -8,12 +8,12 @@
 #   }
 #
 # @param port
-#   The port number to listen on. If no port is specified , port 80 is used.
+#   The port number to listen on. If no port is specified, port 80 is used.
 #
 # @param allow
 #   An array of IP addresses that are allowed to query the statistics. If
 #   this parameter is not set, all remote addresses are permitted to use the
-#   statitiscs channel.
+#   statistics channel.
 #
 # @param ip
 #   The IP address to listen on. This can be an IPv4 address or an IPv6

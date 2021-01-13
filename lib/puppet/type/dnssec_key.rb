@@ -108,7 +108,7 @@ Puppet::Type.newtype(:dnssec_key) do
   end
 
   newparam(:algorithm) do
-    desc 'The cryptographic alghorithm that the key should use.'
+    desc 'The cryptographic algorithm that the key should use.'
 
     newvalues(:DSA)
     newvalues(:ECCGOST)
@@ -198,7 +198,7 @@ Puppet::Type.newtype(:dnssec_key) do
   newparam(:precreate) do
     desc 'The time interval before prepublication in which the key will be
       created. The interval must be long enough to ensure Puppet will run
-      during this inteval.'
+      during this interval.'
 
     newvalues(%r{^[0-9]+(y|mo|w|d|h|mi)?$})
     munge { |value| @resource.munge_duration(value) }

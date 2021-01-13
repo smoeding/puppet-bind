@@ -43,7 +43,7 @@
 #   The source for the zone file. See the standard Puppet file type.
 #
 # @param content
-#   The content for the zone file. See the standart Puppet file type.
+#   The content for the zone file. See the standard Puppet file type.
 #
 # @param zone_statistics
 #   Collect statistics for this zone.

@@ -313,7 +313,7 @@ Default value: `'no'`
 Data type: `Integer`
 
 The maximum number of bytes to use for the server's cache. If views are
-used then the size applies to every view seperately. If this value is
+used then the size applies to every view separately. If this value is
 zero then no limit is configured.
 
 Default value: `0`
@@ -322,7 +322,7 @@ Default value: `0`
 
 Data type: `Integer`
 
-The maximum number of seconds for which the server will cache positove
+The maximum number of seconds for which the server will cache positive
 answers. If this value is zero then the config parameter will be omitted
 and the Bind default of 1 week will be used.
 
@@ -1157,9 +1157,8 @@ Default value: ``true``
 
 Data type: `Optional[String]`
 
-The maximum size of the logfile. Logfile rotation takes place if this
-size is reached. If the size is undefined then the logfile will not be
-rotated.
+The maximum size of the logfile. Log rotation takes place if this size is
+reached. If the size is undefined then the logfile will not be rotated.
 
 Default value: ``undef``
 
@@ -1277,7 +1276,7 @@ The following parameters are available in the `bind::statistics_channel` defined
 
 Data type: `Optional[Stdlib::Port]`
 
-The port number to listen on. If no port is specified , port 80 is used.
+The port number to listen on. If no port is specified, port 80 is used.
 
 Default value: ``undef``
 
@@ -1287,7 +1286,7 @@ Data type: `Array[String]`
 
 An array of IP addresses that are allowed to query the statistics. If
 this parameter is not set, all remote addresses are permitted to use the
-statitiscs channel.
+statistics channel.
 
 Default value: `[]`
 
@@ -1829,7 +1828,7 @@ Default value: ``undef``
 
 Data type: `Optional[String]`
 
-The content for the zone file. See the standart Puppet file type.
+The content for the zone file. See the standard Puppet file type.
 
 Default value: ``undef``
 
@@ -2055,7 +2054,7 @@ The time interval that the key will be used for signing the zone.
 
 Valid values: `DSA`, `ECCGOST`, `ECDSAP256SHA256`, `ECDSAP384SHA384`, `ED25519`, `ED448`, `NSEC3DSA`, `NSEC3RSASHA1`, `RSAMD5`, `RSASHA1`, `RSASHA256`, `RSASHA512`
 
-The cryptographic alghorithm that the key should use.
+The cryptographic algorithm that the key should use.
 
 Default value: `RSASHA1`
 
@@ -2099,6 +2098,14 @@ Valid values: ``true``, ``false``
 Whether the key should be NSEC3-capable.
 
 Default value: ``false``
+
+##### `precreate`
+
+Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
+
+The time interval before prepublication in which the key will be
+created. The interval must be long enough to ensure Puppet will run
+during this interval.
 
 ##### `prepublish`
 

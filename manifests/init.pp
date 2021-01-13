@@ -137,11 +137,11 @@
 #
 # @param max_cache_size
 #   The maximum number of bytes to use for the server's cache. If views are
-#   used then the size applies to every view seperately. If this value is
+#   used then the size applies to every view separately. If this value is
 #   zero then no limit is configured.
 #
 # @param max_cache_ttl
-#   The maximum number of seconds for which the server will cache positove
+#   The maximum number of seconds for which the server will cache positive
 #   answers. If this value is zero then the config parameter will be omitted
 #   and the Bind default of 1 week will be used.
 #
