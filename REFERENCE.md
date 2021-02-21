@@ -42,6 +42,7 @@
 
 ### Functions
 
+* [`bind::gencfg`](#bindgencfg): Generate configuration snippets for Bind from hashes  Generate a Bind configuration snippet from a hash.  Each key of the hash is used as a c
 * [`bind::zonefile_path`](#bindzonefile_path): zonefile_path.pp --- Generate zonefile name from zone
 
 ### Data types
@@ -2167,6 +2168,55 @@ The zone for which the key should be generated. This must be a valid
 domain name. Defaults to the resource title if unset.
 
 ## Functions
+
+### `bind::gencfg`
+
+Type: Puppet Language
+
+Generate configuration snippets for Bind from hashes
+
+Generate a Bind configuration snippet from a hash.  Each key of the hash is
+used as a config option.  The can be a string, a numeric value, a boolean or
+an array or hash.  the config option is terminated with a ';' char.
+
+String and numeric value are used normally.  A boolean value is returned as
+'yes' or 'no'.  Arrays are enclosed in braces and array values are returned
+as a single line if the number of elements is zero or one.  Otherwise a new
+line is used for each value.  Hashes are also enclosed in braces and the
+keys and values are processed recursively.
+
+#### `bind::gencfg(Hash[String,Data] $config, Integer $indent = 0)`
+
+Generate configuration snippets for Bind from hashes
+
+Generate a Bind configuration snippet from a hash.  Each key of the hash is
+used as a config option.  The can be a string, a numeric value, a boolean or
+an array or hash.  the config option is terminated with a ';' char.
+
+String and numeric value are used normally.  A boolean value is returned as
+'yes' or 'no'.  Arrays are enclosed in braces and array values are returned
+as a single line if the number of elements is zero or one.  Otherwise a new
+line is used for each value.  Hashes are also enclosed in braces and the
+keys and values are processed recursively.
+
+Returns: `String` The config in Bind9 syntax.
+
+##### `config`
+
+Data type: `Hash[String,Data]`
+
+A hash with the configuration items.  For
+each key the name of the key and the value are generated in Bind9 config
+file syntax.  Values may be Booleans, Numbers, Strings, Arrays and other
+Hashes.
+
+##### `indent`
+
+Data type: `Integer`
+
+The number of space characters to use as indentation
+for each line.  The default value is 0; in this case no indentation is
+used.
 
 ### `bind::zonefile_path`
 
