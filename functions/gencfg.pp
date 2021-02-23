@@ -25,12 +25,12 @@
 #
 function bind::gencfg(Hash[String,Data] $config, Integer $indent = 0) >> String {
   # base indentation
-  $space = sprintf("%*s", $indent, "")
+  $space = sprintf('%*s', $indent, '')
 
   # use string length of longest hash key for alignment
   $align = $config.reduce(0) |$memo, $item| { max($memo, $item[0].length) }
 
-  $config.reduce("") |$memo, $item| {
+  $config.reduce('') |$memo, $item| {
     case $item[1] {
       Boolean: {
         # Convert boolean values to 'yes' or 'no'
@@ -43,7 +43,7 @@ function bind::gencfg(Hash[String,Data] $config, Integer $indent = 0) >> String 
         # array element and the array elements are indented by two additional
         # spaces.
         if ($item[1].length <= 1) {
-          $param = $item[1].reduce(" ") |$memo, $elt| {
+          $param = $item[1].reduce(' ') |$memo, $elt| {
             "${memo}${elt}; "
           }
         }
