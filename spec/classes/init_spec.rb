@@ -313,9 +313,9 @@ describe 'bind' do
           { views_enable: true }
         end
 
-        case facts[:os]['name']
-        when 'Debian', 'Ubuntu'
-          it {
+        it {
+          case facts[:os]['name']
+          when 'Debian', 'Ubuntu'
             is_expected.to contain_concat('named.conf.views')
               .with_ensure('present')
               .with_path('/etc/bind/named.conf.views')
@@ -331,8 +331,8 @@ describe 'bind' do
             is_expected.not_to contain_bind__zone__mirror('.')
             is_expected.not_to contain_bind__zone__primary('localhost')
             is_expected.not_to contain_bind__zone__primary('127.in-addr.arpa')
-          }
-        end
+          end
+        }
       end
 
       context 'with ipv4_enable => false' do
@@ -340,26 +340,24 @@ describe 'bind' do
           { ipv4_enable: false }
         end
 
-        case facts[:os]['name']
-        when 'Debian'
-          it {
+        it {
+          case facts[:os]['name']
+          when 'Debian'
             is_expected.to contain_file_line('named-options')
               .with_path('/etc/default/bind9')
               .with_line('OPTIONS="-u bind -6"')
               .with_match('^OPTIONS=')
               .that_requires('Package[bind]')
               .that_notifies('Service[bind]')
-          }
-        when 'Ubuntu'
-          it {
+          when 'Ubuntu'
             is_expected.to contain_file_line('named-options')
               .with_path('/etc/default/named')
               .with_line('OPTIONS="-u bind -6"')
               .with_match('^OPTIONS=')
               .that_requires('Package[bind]')
               .that_notifies('Service[bind]')
-          }
-        end
+          end
+        }
       end
 
       context 'with ipv6_enable => false' do
@@ -367,26 +365,24 @@ describe 'bind' do
           { ipv6_enable: false }
         end
 
-        case facts[:os]['name']
-        when 'Debian'
-          it {
+        it {
+          case facts[:os]['name']
+          when 'Debian'
             is_expected.to contain_file_line('named-options')
               .with_path('/etc/default/bind9')
               .with_line('OPTIONS="-u bind -4"')
               .with_match('^OPTIONS=')
               .that_requires('Package[bind]')
               .that_notifies('Service[bind]')
-          }
-        when 'Ubuntu'
-          it {
+          when 'Ubuntu'
             is_expected.to contain_file_line('named-options')
               .with_path('/etc/default/named')
               .with_line('OPTIONS="-u bind -4"')
               .with_match('^OPTIONS=')
               .that_requires('Package[bind]')
               .that_notifies('Service[bind]')
-          }
-        end
+          end
+        }
       end
 
       context 'with ipv4_enable => false, ipv6_enable => false' do
