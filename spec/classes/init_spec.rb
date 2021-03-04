@@ -584,6 +584,71 @@ describe 'bind' do
             .with_content("\n// Disable controls\ncontrols { };\n")
         }
       end
+
+      context 'with custom_options => { foo => 1 }' do
+        let(:params) do
+          { custom_options: { 'foo' => 1 } }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-custom')
+            .with_target('named.conf.options')
+            .with_order('83')
+            .with_content("  foo 1;\n")
+        }
+      end
+
+      context 'with custom_options => { foo => "bar" }' do
+        let(:params) do
+          { custom_options: { 'foo' => 'bar' } }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-custom')
+            .with_target('named.conf.options')
+            .with_order('83')
+            .with_content("  foo bar;\n")
+        }
+      end
+
+      context 'with custom_options => { foo => ["bar"] }' do
+        let(:params) do
+          { custom_options: { 'foo' => ['bar'] } }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-custom')
+            .with_target('named.conf.options')
+            .with_order('83')
+            .with_content("  foo { bar; };\n")
+        }
+      end
+
+      context 'with custom_options => { foo => ["bar", "baz"] }' do
+        let(:params) do
+          { custom_options: { 'foo' => ['bar', 'baz'] } }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-custom')
+            .with_target('named.conf.options')
+            .with_order('83')
+            .with_content("  foo {\n    bar;\n    baz;\n  };\n")
+        }
+      end
+
+      context 'with custom_options => { foo => { bar => baz } }' do
+        let(:params) do
+          { custom_options: { 'foo' => { 'bar' => 'baz' } } }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-custom')
+            .with_target('named.conf.options')
+            .with_order('83')
+            .with_content("  foo {\n    bar baz;\n  };\n")
+        }
+      end
     end
   end
 end

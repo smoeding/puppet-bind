@@ -10,6 +10,20 @@
 #     allow_recursion   => [ '127.0.0.1', '::1' ],
 #   }
 #
+# @example Use custom options to set uncommon options
+#
+#   class { 'bind':
+#     listen_on      => [ '127.0.0.1' ],
+#     custom_options => {
+#       'tcp-idle-timeout' => 600,
+#       'dnstab'           => [ 'auth', 'resolver', ],
+#       'rrset-order'      => {
+#         'type A name "example.com"'    => 'order random',
+#         'type AAAA name "example.com"' => 'order cyclic',
+#       },
+#     },
+#   }
+#
 # @param confdir
 #   The directory where the main Bind configuration file is located. Example:
 #   `/etc/bind`.
@@ -150,6 +164,14 @@
 #   answers. If this value is zero then the config parameter will be omitted
 #   and the Bind default of 3 hours will be used.
 #
+# @param custom_options
+#   Additional config options that are not implemented as class parameters
+#   can be set by a hash of custom options. Each key of the hash will be
+#   added to the option block of the configuration. For string or numeric
+#   values the value will be added as a normal option value. If the value is
+#   a hash or an array it will be included as an additional block enclosed in
+#   braces.
+#
 # @param package_ensure
 #   The state of the Bind package. Normally this is set to `installed` or a
 #   specific version number.
@@ -224,6 +246,7 @@ class bind (
   Integer                 $min_ncache_ttl             = 0,
   Integer                 $max_ncache_ttl             = 0,
   Integer                 $servfail_ttl               = 0,
+  Hash[String,Data]       $custom_options             = {},
   String                  $package_ensure             = 'installed',
   Stdlib::Ensure::Service $service_ensure             = 'running',
   Boolean                 $service_enable             = true,
@@ -441,6 +464,7 @@ class bind (
   # 40   blackhole
   # 75   main
   # 80   rate-limit { }
+  # 83   *custom options*
   # 85 }
   # 90 controls {
   # 91   unix ...
@@ -457,6 +481,15 @@ class bind (
     target  => 'named.conf.options',
     order   => '75',
     content => epp("${module_name}/options.main.epp", $options),
+  }
+
+  unless empty($custom_options) {
+    $_custom_options = bind::gencfg($custom_options, 2)
+    concat::fragment { 'named.conf.options-custom':
+      target  => 'named.conf.options',
+      order   => '83',
+      content => $_custom_options,
+    }
   }
 
   concat::fragment { 'named.conf.options-tail':

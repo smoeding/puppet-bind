@@ -59,7 +59,7 @@
 
 ## Classes
 
-### `bind`
+### <a name="bind"></a>`bind`
 
 Manage the Bind DNS daemon and configuration
 
@@ -78,11 +78,74 @@ class { 'bind':
 }
 ```
 
+##### Use custom options to set uncommon options
+
+```puppet
+
+class { 'bind':
+  listen_on      => [ '127.0.0.1' ],
+  custom_options => {
+    'tcp-idle-timeout' => 600,
+    'dnstab'           => [ 'auth', 'resolver', ],
+    'rrset-order'      => {
+      'type A name "example.com"'    => 'order random',
+      'type AAAA name "example.com"' => 'order cyclic',
+    },
+  },
+}
+```
+
 #### Parameters
 
-The following parameters are available in the `bind` class.
+The following parameters are available in the `bind` class:
 
-##### `confdir`
+* [`confdir`](#confdir)
+* [`vardir`](#vardir)
+* [`cachedir`](#cachedir)
+* [`rndc_keyfile`](#rndc_keyfile)
+* [`rndc_program`](#rndc_program)
+* [`bind_user`](#bind_user)
+* [`bind_group`](#bind_group)
+* [`package_name`](#package_name)
+* [`service_name`](#service_name)
+* [`listen_on`](#listen_on)
+* [`listen_on_v6`](#listen_on_v6)
+* [`ipv4_enable`](#ipv4_enable)
+* [`ipv6_enable`](#ipv6_enable)
+* [`views_enable`](#views_enable)
+* [`dnssec_enable`](#dnssec_enable)
+* [`empty_zones_enable`](#empty_zones_enable)
+* [`root_mirror_enable`](#root_mirror_enable)
+* [`control_channels_enable`](#control_channels_enable)
+* [`allow_query`](#allow_query)
+* [`allow_recursion`](#allow_recursion)
+* [`blackhole`](#blackhole)
+* [`forwarders`](#forwarders)
+* [`forward`](#forward)
+* [`filter_aaaa_on_v4`](#filter_aaaa_on_v4)
+* [`max_cache_size`](#max_cache_size)
+* [`max_cache_ttl`](#max_cache_ttl)
+* [`max_ncache_ttl`](#max_ncache_ttl)
+* [`custom_options`](#custom_options)
+* [`package_ensure`](#package_ensure)
+* [`service_ensure`](#service_ensure)
+* [`service_enable`](#service_enable)
+* [`manage_rndc_keyfile`](#manage_rndc_keyfile)
+* [`report_hostname`](#report_hostname)
+* [`report_version`](#report_version)
+* [`allow_query_cache`](#allow_query_cache)
+* [`root_hints_enable`](#root_hints_enable)
+* [`root_hints_source`](#root_hints_source)
+* [`localhost_forward_enable`](#localhost_forward_enable)
+* [`localhost_forward_source`](#localhost_forward_source)
+* [`localhost_reverse_enable`](#localhost_reverse_enable)
+* [`localhost_reverse_source`](#localhost_reverse_source)
+* [`min_cache_ttl`](#min_cache_ttl)
+* [`min_ncache_ttl`](#min_ncache_ttl)
+* [`servfail_ttl`](#servfail_ttl)
+* [`querylog_enable`](#querylog_enable)
+
+##### <a name="confdir"></a>`confdir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -91,7 +154,7 @@ The directory where the main Bind configuration file is located. Example:
 
 Default: operating system specific
 
-##### `vardir`
+##### <a name="vardir"></a>`vardir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -100,7 +163,7 @@ Example: `/var/lib/bind`.
 
 Default: operating system specific
 
-##### `cachedir`
+##### <a name="cachedir"></a>`cachedir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -109,7 +172,7 @@ The directory where Bind stores volatile data. Example:
 
 Default: operating system specific
 
-##### `rndc_keyfile`
+##### <a name="rndc_keyfile"></a>`rndc_keyfile`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -117,7 +180,7 @@ The file where the secret key for the rndc program is stored.
 
 Default: operating system specific
 
-##### `rndc_program`
+##### <a name="rndc_program"></a>`rndc_program`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -125,7 +188,7 @@ The full path of the rndc program.
 
 Default: operating system specific
 
-##### `bind_user`
+##### <a name="bind_user"></a>`bind_user`
 
 Data type: `String`
 
@@ -135,7 +198,7 @@ to.
 
 Default: operating system specific
 
-##### `bind_group`
+##### <a name="bind_group"></a>`bind_group`
 
 Data type: `String`
 
@@ -143,7 +206,7 @@ The group ownership for some Bind related directories and files.
 
 Default: operating system specific
 
-##### `package_name`
+##### <a name="package_name"></a>`package_name`
 
 Data type: `String`
 
@@ -151,7 +214,7 @@ The name of the Bind package to install.
 
 Default: operating system specific
 
-##### `service_name`
+##### <a name="service_name"></a>`service_name`
 
 Data type: `String`
 
@@ -159,7 +222,7 @@ The name of the Bind service to manage.
 
 Default: operating system specific
 
-##### `listen_on`
+##### <a name="listen_on"></a>`listen_on`
 
 Data type: `Bind::AddressMatchList`
 
@@ -172,7 +235,7 @@ Use `bind::listen_on` to define more complex configurations.
 
 Default value: `[]`
 
-##### `listen_on_v6`
+##### <a name="listen_on_v6"></a>`listen_on_v6`
 
 Data type: `Bind::AddressMatchList`
 
@@ -185,7 +248,7 @@ Use `bind::listen_on_v6` to define more complex configurations.
 
 Default value: `[]`
 
-##### `ipv4_enable`
+##### <a name="ipv4_enable"></a>`ipv4_enable`
 
 Data type: `Boolean`
 
@@ -194,7 +257,7 @@ must be set to true.
 
 Default value: ``true``
 
-##### `ipv6_enable`
+##### <a name="ipv6_enable"></a>`ipv6_enable`
 
 Data type: `Boolean`
 
@@ -203,7 +266,7 @@ must be set to true.
 
 Default value: ``true``
 
-##### `views_enable`
+##### <a name="views_enable"></a>`views_enable`
 
 Data type: `Boolean`
 
@@ -211,7 +274,7 @@ Should views be enabled.
 
 Default value: ``false``
 
-##### `dnssec_enable`
+##### <a name="dnssec_enable"></a>`dnssec_enable`
 
 Data type: `Boolean`
 
@@ -219,7 +282,7 @@ Should DNSSEC be enabled.
 
 Default value: ``true``
 
-##### `empty_zones_enable`
+##### <a name="empty_zones_enable"></a>`empty_zones_enable`
 
 Data type: `Boolean`
 
@@ -227,7 +290,7 @@ Should automatic empty zones be enabled.
 
 Default value: ``true``
 
-##### `root_mirror_enable`
+##### <a name="root_mirror_enable"></a>`root_mirror_enable`
 
 Data type: `Boolean`
 
@@ -235,7 +298,7 @@ Should a local mirror zone the root zone be configured.
 
 Default value: ``false``
 
-##### `control_channels_enable`
+##### <a name="control_channels_enable"></a>`control_channels_enable`
 
 Data type: `Boolean`
 
@@ -249,7 +312,7 @@ explicit channels are created using the `bind::controls::unix` or
 
 Default value: ``true``
 
-##### `allow_query`
+##### <a name="allow_query"></a>`allow_query`
 
 Data type: `Bind::AddressMatchList`
 
@@ -258,7 +321,7 @@ this Bind server.
 
 Default value: `[]`
 
-##### `allow_recursion`
+##### <a name="allow_recursion"></a>`allow_recursion`
 
 Data type: `Bind::AddressMatchList`
 
@@ -268,7 +331,7 @@ this parameter is not empty.
 
 Default value: `[]`
 
-##### `blackhole`
+##### <a name="blackhole"></a>`blackhole`
 
 Data type: `Bind::AddressMatchList`
 
@@ -277,7 +340,7 @@ from sources matching this list will not be answered.
 
 Default value: `[]`
 
-##### `forwarders`
+##### <a name="forwarders"></a>`forwarders`
 
 Data type: `Bind::AddressMatchList`
 
@@ -286,7 +349,7 @@ queries to.
 
 Default value: `[]`
 
-##### `forward`
+##### <a name="forward"></a>`forward`
 
 Data type: `Bind::Forward`
 
@@ -297,7 +360,7 @@ is set to `only`.
 
 Default value: `'first'`
 
-##### `filter_aaaa_on_v4`
+##### <a name="filter_aaaa_on_v4"></a>`filter_aaaa_on_v4`
 
 Data type: `Bind::Filter_aaaa_on_v4`
 
@@ -309,7 +372,7 @@ DNSSEC related RRs if AAAA records are filtered. Valid options: `no`,
 
 Default value: `'no'`
 
-##### `max_cache_size`
+##### <a name="max_cache_size"></a>`max_cache_size`
 
 Data type: `Integer`
 
@@ -319,7 +382,7 @@ zero then no limit is configured.
 
 Default value: `0`
 
-##### `max_cache_ttl`
+##### <a name="max_cache_ttl"></a>`max_cache_ttl`
 
 Data type: `Integer`
 
@@ -329,7 +392,7 @@ and the Bind default of 1 week will be used.
 
 Default value: `0`
 
-##### `max_ncache_ttl`
+##### <a name="max_ncache_ttl"></a>`max_ncache_ttl`
 
 Data type: `Integer`
 
@@ -339,7 +402,20 @@ and the Bind default of 3 hours will be used.
 
 Default value: `0`
 
-##### `package_ensure`
+##### <a name="custom_options"></a>`custom_options`
+
+Data type: `Hash[String,Data]`
+
+Additional config options that are not implemented as class parameters
+can be set by a hash of custom options. Each key of the hash will be
+added to the option block of the configuration. For string or numeric
+values the value will be added as a normal option value. If the value is
+a hash or an array it will be included as an additional block enclosed in
+braces.
+
+Default value: `{}`
+
+##### <a name="package_ensure"></a>`package_ensure`
 
 Data type: `String`
 
@@ -348,7 +424,7 @@ specific version number.
 
 Default value: `'installed'`
 
-##### `service_ensure`
+##### <a name="service_ensure"></a>`service_ensure`
 
 Data type: `Stdlib::Ensure::Service`
 
@@ -356,7 +432,7 @@ Whether the Bind service should be running.
 
 Default value: `'running'`
 
-##### `service_enable`
+##### <a name="service_enable"></a>`service_enable`
 
 Data type: `Boolean`
 
@@ -364,7 +440,7 @@ Should the Bind service be enabled.
 
 Default value: ``true``
 
-##### `manage_rndc_keyfile`
+##### <a name="manage_rndc_keyfile"></a>`manage_rndc_keyfile`
 
 Data type: `Boolean`
 
@@ -380,7 +456,7 @@ still uses the old key.
 
 Default value: ``true``
 
-##### `report_hostname`
+##### <a name="report_hostname"></a>`report_hostname`
 
 Data type: `Optional[String]`
 
@@ -391,7 +467,7 @@ string to disable hostname reporting completely.
 
 Default value: ``undef``
 
-##### `report_version`
+##### <a name="report_version"></a>`report_version`
 
 Data type: `Optional[String]`
 
@@ -404,7 +480,7 @@ Use the following command to test: dig @127.0.0.1 version.bind chaos txt
 
 Default value: ``undef``
 
-##### `allow_query_cache`
+##### <a name="allow_query_cache"></a>`allow_query_cache`
 
 Data type: `Bind::AddressMatchList`
 
@@ -412,7 +488,7 @@ Data type: `Bind::AddressMatchList`
 
 Default value: `[]`
 
-##### `root_hints_enable`
+##### <a name="root_hints_enable"></a>`root_hints_enable`
 
 Data type: `Boolean`
 
@@ -420,7 +496,7 @@ Data type: `Boolean`
 
 Default value: ``true``
 
-##### `root_hints_source`
+##### <a name="root_hints_source"></a>`root_hints_source`
 
 Data type: `String`
 
@@ -428,7 +504,7 @@ Data type: `String`
 
 Default value: `"puppet:///modules/${module_name}/zones/db.root"`
 
-##### `localhost_forward_enable`
+##### <a name="localhost_forward_enable"></a>`localhost_forward_enable`
 
 Data type: `Boolean`
 
@@ -436,7 +512,7 @@ Data type: `Boolean`
 
 Default value: ``true``
 
-##### `localhost_forward_source`
+##### <a name="localhost_forward_source"></a>`localhost_forward_source`
 
 Data type: `String`
 
@@ -444,7 +520,7 @@ Data type: `String`
 
 Default value: `"puppet:///modules/${module_name}/zones/db.localhost"`
 
-##### `localhost_reverse_enable`
+##### <a name="localhost_reverse_enable"></a>`localhost_reverse_enable`
 
 Data type: `Boolean`
 
@@ -452,7 +528,7 @@ Data type: `Boolean`
 
 Default value: ``true``
 
-##### `localhost_reverse_source`
+##### <a name="localhost_reverse_source"></a>`localhost_reverse_source`
 
 Data type: `String`
 
@@ -460,7 +536,7 @@ Data type: `String`
 
 Default value: `"puppet:///modules/${module_name}/zones/db.127"`
 
-##### `min_cache_ttl`
+##### <a name="min_cache_ttl"></a>`min_cache_ttl`
 
 Data type: `Integer`
 
@@ -468,7 +544,7 @@ Data type: `Integer`
 
 Default value: `0`
 
-##### `min_ncache_ttl`
+##### <a name="min_ncache_ttl"></a>`min_ncache_ttl`
 
 Data type: `Integer`
 
@@ -476,7 +552,7 @@ Data type: `Integer`
 
 Default value: `0`
 
-##### `servfail_ttl`
+##### <a name="servfail_ttl"></a>`servfail_ttl`
 
 Data type: `Integer`
 
@@ -484,7 +560,7 @@ Data type: `Integer`
 
 Default value: `0`
 
-##### `querylog_enable`
+##### <a name="querylog_enable"></a>`querylog_enable`
 
 Data type: `Optional[Boolean]`
 
@@ -492,7 +568,7 @@ Data type: `Optional[Boolean]`
 
 Default value: ``undef``
 
-### `bind::rate_limit`
+### <a name="bindrate_limit"></a>`bind::rate_limit`
 
 Manage rate limiting
 
@@ -509,9 +585,23 @@ class { bind::rate_limit':
 
 #### Parameters
 
-The following parameters are available in the `bind::rate_limit` class.
+The following parameters are available in the `bind::rate_limit` class:
 
-##### `window`
+* [`window`](#window)
+* [`ipv4_prefix_length`](#ipv4_prefix_length)
+* [`ipv6_prefix_length`](#ipv6_prefix_length)
+* [`log_only`](#log_only)
+* [`exempt_clients`](#exempt_clients)
+* [`all_per_second`](#all_per_second)
+* [`errors_per_second`](#errors_per_second)
+* [`responses_per_second`](#responses_per_second)
+* [`referrals_per_second`](#referrals_per_second)
+* [`nodata_per_second`](#nodata_per_second)
+* [`nxdomains_per_second`](#nxdomains_per_second)
+* [`qps_scale`](#qps_scale)
+* [`slip`](#slip)
+
+##### <a name="window"></a>`window`
 
 Data type: `Integer[0,3600]`
 
@@ -520,7 +610,7 @@ limits are calculated.
 
 Default value: `0`
 
-##### `ipv4_prefix_length`
+##### <a name="ipv4_prefix_length"></a>`ipv4_prefix_length`
 
 Data type: `Integer[0,32]`
 
@@ -530,7 +620,7 @@ prefix.
 
 Default value: `0`
 
-##### `ipv6_prefix_length`
+##### <a name="ipv6_prefix_length"></a>`ipv6_prefix_length`
 
 Data type: `Integer[0,128]`
 
@@ -540,7 +630,7 @@ prefix.
 
 Default value: `0`
 
-##### `log_only`
+##### <a name="log_only"></a>`log_only`
 
 Data type: `Boolean`
 
@@ -549,7 +639,7 @@ can be used to test limits before enforcing them.
 
 Default value: ``false``
 
-##### `exempt_clients`
+##### <a name="exempt_clients"></a>`exempt_clients`
 
 Data type: `Array[String]`
 
@@ -557,7 +647,7 @@ An array of IP addresses/networks or ACL names that are never limited.
 
 Default value: `[]`
 
-##### `all_per_second`
+##### <a name="all_per_second"></a>`all_per_second`
 
 Data type: `Optional[Integer[0,1000]]`
 
@@ -566,7 +656,7 @@ given value.
 
 Default value: ``undef``
 
-##### `errors_per_second`
+##### <a name="errors_per_second"></a>`errors_per_second`
 
 Data type: `Optional[Integer[0,1000]]`
 
@@ -575,7 +665,7 @@ the given value.
 
 Default value: ``undef``
 
-##### `responses_per_second`
+##### <a name="responses_per_second"></a>`responses_per_second`
 
 Data type: `Optional[Integer[0,1000]]`
 
@@ -584,7 +674,7 @@ the given value.
 
 Default value: ``undef``
 
-##### `referrals_per_second`
+##### <a name="referrals_per_second"></a>`referrals_per_second`
 
 Data type: `Optional[Integer[0,1000]]`
 
@@ -592,7 +682,7 @@ Limit the number of referrals per second to the given value.
 
 Default value: ``undef``
 
-##### `nodata_per_second`
+##### <a name="nodata_per_second"></a>`nodata_per_second`
 
 Data type: `Optional[Integer[0,1000]]`
 
@@ -600,7 +690,7 @@ Limit the number of NODATA responses per second to the given value.
 
 Default value: ``undef``
 
-##### `nxdomains_per_second`
+##### <a name="nxdomains_per_second"></a>`nxdomains_per_second`
 
 Data type: `Optional[Integer[0,1000]]`
 
@@ -608,7 +698,7 @@ Limit the number of NXDOMAIN responses per second to the given value.
 
 Default value: ``undef``
 
-##### `qps_scale`
+##### <a name="qps_scale"></a>`qps_scale`
 
 Data type: `Optional[Integer[0,1000]]`
 
@@ -616,7 +706,7 @@ Value to define the query per second scaling.
 
 Default value: ``undef``
 
-##### `slip`
+##### <a name="slip"></a>`slip`
 
 Data type: `Optional[Integer[0,10]]`
 
@@ -627,7 +717,7 @@ Default value: ``undef``
 
 ## Defined types
 
-### `bind::acl`
+### <a name="bindacl"></a>`bind::acl`
 
 Manage ACL entries
 
@@ -645,9 +735,14 @@ bind::acl { 'internal':
 
 #### Parameters
 
-The following parameters are available in the `bind::acl` defined type.
+The following parameters are available in the `bind::acl` defined type:
 
-##### `address_match_list`
+* [`address_match_list`](#address_match_list)
+* [`comment`](#comment)
+* [`order`](#order)
+* [`acl`](#acl)
+
+##### <a name="address_match_list"></a>`address_match_list`
 
 Data type: `Array[String,1]`
 
@@ -655,7 +750,7 @@ An array of IP addresses/networks, which can be referenced in other Bind
 configuration clauses to limit access to a component. The array parameter
 must have at least one entry.
 
-##### `comment`
+##### <a name="comment"></a>`comment`
 
 Data type: `Optional[String]`
 
@@ -663,7 +758,7 @@ An optional string that is used as comment in the generated ACL file.
 
 Default value: ``undef``
 
-##### `order`
+##### <a name="order"></a>`order`
 
 Data type: `String`
 
@@ -671,7 +766,7 @@ The sorting order of the ACLs in the configuration file.
 
 Default value: `'10'`
 
-##### `acl`
+##### <a name="acl"></a>`acl`
 
 Data type: `String`
 
@@ -679,7 +774,7 @@ The name of the ACL. Defaults to the name of the resource.
 
 Default value: `$name`
 
-### `bind::controls::inet`
+### <a name="bindcontrolsinet"></a>`bind::controls::inet`
 
 Manage an inet control channel
 
@@ -696,9 +791,15 @@ bind::controls::inet { '*':
 
 #### Parameters
 
-The following parameters are available in the `bind::controls::inet` defined type.
+The following parameters are available in the `bind::controls::inet` defined type:
 
-##### `allow`
+* [`allow`](#allow)
+* [`keys`](#keys)
+* [`read_only`](#read_only)
+* [`address`](#address)
+* [`port`](#port)
+
+##### <a name="allow"></a>`allow`
 
 Data type: `Bind::AddressMatchList`
 
@@ -706,7 +807,7 @@ The client addresses that are allowed to access this control channel.
 
 Default value: `[]`
 
-##### `keys`
+##### <a name="keys"></a>`keys`
 
 Data type: `Array[String]`
 
@@ -715,7 +816,7 @@ control channel.
 
 Default value: `[]`
 
-##### `read_only`
+##### <a name="read_only"></a>`read_only`
 
 Data type: `Boolean`
 
@@ -723,7 +824,7 @@ Should the control channel only allow read-only access.
 
 Default value: ``false``
 
-##### `address`
+##### <a name="address"></a>`address`
 
 Data type: `String`
 
@@ -733,7 +834,7 @@ for all local IPv6 addresses.
 
 Default value: `$name`
 
-##### `port`
+##### <a name="port"></a>`port`
 
 Data type: `Optional[Stdlib::Port]`
 
@@ -742,7 +843,7 @@ will be ised if this is unset.
 
 Default value: ``undef``
 
-### `bind::controls::unix`
+### <a name="bindcontrolsunix"></a>`bind::controls::unix`
 
 Manage a unix control channel
 
@@ -762,29 +863,36 @@ bind::controls::unix { '/run/named.ctl':
 
 #### Parameters
 
-The following parameters are available in the `bind::controls::unix` defined type.
+The following parameters are available in the `bind::controls::unix` defined type:
 
-##### `owner`
+* [`owner`](#owner)
+* [`group`](#group)
+* [`perm`](#perm)
+* [`keys`](#keys)
+* [`read_only`](#read_only)
+* [`path`](#path)
+
+##### <a name="owner"></a>`owner`
 
 Data type: `Integer`
 
 The owner of the unix control channel socket. This must be the integer
 value of the owner's user id.
 
-##### `group`
+##### <a name="group"></a>`group`
 
 Data type: `Integer`
 
 The group of the unix control channel socket. This must be the integer
 value of the owner's group id.
 
-##### `perm`
+##### <a name="perm"></a>`perm`
 
 Data type: `Stdlib::Filemode`
 
 The file permisssions of the unix control channel socket.
 
-##### `keys`
+##### <a name="keys"></a>`keys`
 
 Data type: `Array[String]`
 
@@ -793,7 +901,7 @@ control channel.
 
 Default value: `[]`
 
-##### `read_only`
+##### <a name="read_only"></a>`read_only`
 
 Data type: `Boolean`
 
@@ -801,7 +909,7 @@ Should the control channel only allow read-only access.
 
 Default value: ``false``
 
-##### `path`
+##### <a name="path"></a>`path`
 
 Data type: `Stdlib::AbsolutePath`
 
@@ -809,7 +917,7 @@ The file path of the unix control socket to create.
 
 Default value: `$name`
 
-### `bind::key`
+### <a name="bindkey"></a>`bind::key`
 
 Manage secret keys
 
@@ -827,9 +935,21 @@ bind::key { 'rndc-key':
 
 #### Parameters
 
-The following parameters are available in the `bind::key` defined type.
+The following parameters are available in the `bind::key` defined type:
 
-##### `key`
+* [`key`](#key)
+* [`algorithm`](#algorithm)
+* [`owner`](#owner)
+* [`group`](#group)
+* [`mode`](#mode)
+* [`manage_keyfile`](#manage_keyfile)
+* [`manage_content`](#manage_content)
+* [`keyfile`](#keyfile)
+* [`base64_secret`](#base64_secret)
+* [`secret`](#secret)
+* [`seed`](#seed)
+
+##### <a name="key"></a>`key`
 
 Data type: `String`
 
@@ -837,7 +957,7 @@ The name of the key.
 
 Default value: `$name`
 
-##### `algorithm`
+##### <a name="algorithm"></a>`algorithm`
 
 Data type: `Bind::Key::Algorithm`
 
@@ -847,7 +967,7 @@ The algorithm to use for the encoding of the secret key. Can be one of:
 
 Default value: `'hmac-sha256'`
 
-##### `owner`
+##### <a name="owner"></a>`owner`
 
 Data type: `String`
 
@@ -855,7 +975,7 @@ The file owner for the key file.
 
 Default value: `'root'`
 
-##### `group`
+##### <a name="group"></a>`group`
 
 Data type: `String`
 
@@ -863,7 +983,7 @@ The file group for the key file.
 
 Default value: `$::bind::bind_group`
 
-##### `mode`
+##### <a name="mode"></a>`mode`
 
 Data type: `Stdlib::Filemode`
 
@@ -871,7 +991,7 @@ The file mode for the key file.
 
 Default value: `'0640'`
 
-##### `manage_keyfile`
+##### <a name="manage_keyfile"></a>`manage_keyfile`
 
 Data type: `Boolean`
 
@@ -882,7 +1002,7 @@ this parameter is false.
 
 Default value: ``true``
 
-##### `manage_content`
+##### <a name="manage_content"></a>`manage_content`
 
 Data type: `Boolean`
 
@@ -898,7 +1018,7 @@ configuration is still generated when this parameter is false.
 
 Default value: ``true``
 
-##### `keyfile`
+##### <a name="keyfile"></a>`keyfile`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
@@ -908,7 +1028,7 @@ saved in the named file. Otherwise a a system selected file will be used.
 
 Default value: ``undef``
 
-##### `base64_secret`
+##### <a name="base64_secret"></a>`base64_secret`
 
 Data type: `Optional[String]`
 
@@ -917,7 +1037,7 @@ secret and seed are ignored if this parameter is set.
 
 Default value: ``undef``
 
-##### `secret`
+##### <a name="secret"></a>`secret`
 
 Data type: `Optional[String]`
 
@@ -926,7 +1046,7 @@ this parameter is not set.
 
 Default value: ``undef``
 
-##### `seed`
+##### <a name="seed"></a>`seed`
 
 Data type: `Optional[String]`
 
@@ -934,7 +1054,7 @@ An optional seed to use if the random secret is created internally.
 
 Default value: ``undef``
 
-### `bind::listen_on`
+### <a name="bindlisten_on"></a>`bind::listen_on`
 
 Manage listen-on option clause
 
@@ -967,9 +1087,12 @@ listen_on { '127.0.0.1':
 
 #### Parameters
 
-The following parameters are available in the `bind::listen_on` defined type.
+The following parameters are available in the `bind::listen_on` defined type:
 
-##### `address`
+* [`address`](#address)
+* [`port`](#port)
+
+##### <a name="address"></a>`address`
 
 Data type: `Bind::AddressMatchList`
 
@@ -980,7 +1103,7 @@ string `none` may be used to disable IPv4.
 
 Default value: `$name`
 
-##### `port`
+##### <a name="port"></a>`port`
 
 Data type: `Optional[Stdlib::Port]`
 
@@ -989,7 +1112,7 @@ this is not defined.
 
 Default value: ``undef``
 
-### `bind::listen_on_v6`
+### <a name="bindlisten_on_v6"></a>`bind::listen_on_v6`
 
 Manage listen-on-v6 option clause
 
@@ -1013,9 +1136,12 @@ listen_on_v6 { '::1':
 
 #### Parameters
 
-The following parameters are available in the `bind::listen_on_v6` defined type.
+The following parameters are available in the `bind::listen_on_v6` defined type:
 
-##### `address`
+* [`address`](#address)
+* [`port`](#port)
+
+##### <a name="address"></a>`address`
 
 Data type: `Variant[String,Array[String,1]]`
 
@@ -1026,7 +1152,7 @@ string `none` may be used to disable IPv6.
 
 Default value: `$name`
 
-##### `port`
+##### <a name="port"></a>`port`
 
 Data type: `Optional[Stdlib::Port]`
 
@@ -1035,7 +1161,7 @@ this is not defined.
 
 Default value: ``undef``
 
-### `bind::logging::category`
+### <a name="bindloggingcategory"></a>`bind::logging::category`
 
 Manage logging category
 
@@ -1061,16 +1187,20 @@ bind::logging::category { 'default':
 
 #### Parameters
 
-The following parameters are available in the `bind::logging::category` defined type.
+The following parameters are available in the `bind::logging::category` defined type:
 
-##### `channels`
+* [`channels`](#channels)
+* [`category`](#category)
+* [`order`](#order)
+
+##### <a name="channels"></a>`channels`
 
 Data type: `Variant[String,Array[String]]`
 
 A string or an array of strings to define the channels to use for this
 category.
 
-##### `category`
+##### <a name="category"></a>`category`
 
 Data type: `String`
 
@@ -1078,7 +1208,7 @@ The logging category.
 
 Default value: `$name`
 
-##### `order`
+##### <a name="order"></a>`order`
 
 Data type: `String`
 
@@ -1087,7 +1217,7 @@ file.
 
 Default value: `'50'`
 
-### `bind::logging::channel_file`
+### <a name="bindloggingchannel_file"></a>`bind::logging::channel_file`
 
 Manage logging channel to a logfile
 
@@ -1104,15 +1234,25 @@ bind::logging::channel_file { 'security':
 
 #### Parameters
 
-The following parameters are available in the `bind::logging::channel_file` defined type.
+The following parameters are available in the `bind::logging::channel_file` defined type:
 
-##### `logfile`
+* [`logfile`](#logfile)
+* [`channel`](#channel)
+* [`severity`](#severity)
+* [`print_category`](#print_category)
+* [`print_severity`](#print_severity)
+* [`print_time`](#print_time)
+* [`size`](#size)
+* [`versions`](#versions)
+* [`mode`](#mode)
+
+##### <a name="logfile"></a>`logfile`
 
 Data type: `Stdlib::Absolutepath`
 
 The filename where the logs are written to.
 
-##### `channel`
+##### <a name="channel"></a>`channel`
 
 Data type: `String`
 
@@ -1121,7 +1261,7 @@ route a given category to this channel.
 
 Default value: `$name`
 
-##### `severity`
+##### <a name="severity"></a>`severity`
 
 Data type: `Bind::Syslog::Severity`
 
@@ -1130,7 +1270,7 @@ The severity of log messages that are written to the file. Valid values:
 
 Default value: `'notice'`
 
-##### `print_category`
+##### <a name="print_category"></a>`print_category`
 
 Data type: `Boolean`
 
@@ -1138,7 +1278,7 @@ Should the category of the message be logged to the file.
 
 Default value: ``true``
 
-##### `print_severity`
+##### <a name="print_severity"></a>`print_severity`
 
 Data type: `Boolean`
 
@@ -1146,7 +1286,7 @@ Should the severity of the message be logged to the file.
 
 Default value: ``true``
 
-##### `print_time`
+##### <a name="print_time"></a>`print_time`
 
 Data type: `Boolean`
 
@@ -1154,7 +1294,7 @@ Should a timestamp be logged to the file.
 
 Default value: ``true``
 
-##### `size`
+##### <a name="size"></a>`size`
 
 Data type: `Optional[String]`
 
@@ -1163,7 +1303,7 @@ reached. If the size is undefined then the logfile will not be rotated.
 
 Default value: ``undef``
 
-##### `versions`
+##### <a name="versions"></a>`versions`
 
 Data type: `Optional[Integer]`
 
@@ -1171,7 +1311,7 @@ The number of logfiles to keep if log rotation is used.
 
 Default value: ``undef``
 
-##### `mode`
+##### <a name="mode"></a>`mode`
 
 Data type: `Optional[Stdlib::Filemode]`
 
@@ -1180,7 +1320,7 @@ undefined.
 
 Default value: ``undef``
 
-### `bind::logging::channel_syslog`
+### <a name="bindloggingchannel_syslog"></a>`bind::logging::channel_syslog`
 
 Manage logging channel to syslog
 
@@ -1198,9 +1338,16 @@ bind::logging::channel_syslog { 'syslog':
 
 #### Parameters
 
-The following parameters are available in the `bind::logging::channel_syslog` defined type.
+The following parameters are available in the `bind::logging::channel_syslog` defined type:
 
-##### `channel`
+* [`channel`](#channel)
+* [`facility`](#facility)
+* [`severity`](#severity)
+* [`print_category`](#print_category)
+* [`print_severity`](#print_severity)
+* [`print_time`](#print_time)
+
+##### <a name="channel"></a>`channel`
 
 Data type: `String`
 
@@ -1209,7 +1356,7 @@ category to this channel.
 
 Default value: `$name`
 
-##### `facility`
+##### <a name="facility"></a>`facility`
 
 Data type: `Bind::Syslog::Facility`
 
@@ -1220,7 +1367,7 @@ The syslog facility to use. Valid value: `auth`, `authpriv`, `cron`,
 
 Default value: `'daemon'`
 
-##### `severity`
+##### <a name="severity"></a>`severity`
 
 Data type: `Bind::Syslog::Severity`
 
@@ -1229,7 +1376,7 @@ The severity of log messages that are written to the file. Valid values:
 
 Default value: `'notice'`
 
-##### `print_category`
+##### <a name="print_category"></a>`print_category`
 
 Data type: `Optional[Boolean]`
 
@@ -1237,7 +1384,7 @@ Should the category of the message be logged to the file.
 
 Default value: ``undef``
 
-##### `print_severity`
+##### <a name="print_severity"></a>`print_severity`
 
 Data type: `Optional[Boolean]`
 
@@ -1245,7 +1392,7 @@ Should the severity of the message be logged to the file.
 
 Default value: ``undef``
 
-##### `print_time`
+##### <a name="print_time"></a>`print_time`
 
 Data type: `Optional[Boolean]`
 
@@ -1253,7 +1400,7 @@ Should a timestamp be logged to the file.
 
 Default value: ``undef``
 
-### `bind::statistics_channel`
+### <a name="bindstatistics_channel"></a>`bind::statistics_channel`
 
 Manage statistics channel
 
@@ -1271,9 +1418,13 @@ bind::statistics_channel { '127.0.0.1':
 
 #### Parameters
 
-The following parameters are available in the `bind::statistics_channel` defined type.
+The following parameters are available in the `bind::statistics_channel` defined type:
 
-##### `port`
+* [`port`](#port)
+* [`allow`](#allow)
+* [`ip`](#ip)
+
+##### <a name="port"></a>`port`
 
 Data type: `Optional[Stdlib::Port]`
 
@@ -1281,7 +1432,7 @@ The port number to listen on. If no port is specified, port 80 is used.
 
 Default value: ``undef``
 
-##### `allow`
+##### <a name="allow"></a>`allow`
 
 Data type: `Array[String]`
 
@@ -1291,7 +1442,7 @@ statistics channel.
 
 Default value: `[]`
 
-##### `ip`
+##### <a name="ip"></a>`ip`
 
 Data type: `String`
 
@@ -1301,7 +1452,7 @@ wildcard address.
 
 Default value: `$name`
 
-### `bind::view`
+### <a name="bindview"></a>`bind::view`
 
 Manage a view
 
@@ -1319,9 +1470,27 @@ bind::view { 'guest':
 
 #### Parameters
 
-The following parameters are available in the `bind::view` defined type.
+The following parameters are available in the `bind::view` defined type:
 
-##### `match_clients`
+* [`match_clients`](#match_clients)
+* [`match_destinations`](#match_destinations)
+* [`allow_query`](#allow_query)
+* [`allow_query_on`](#allow_query_on)
+* [`recursion`](#recursion)
+* [`match_recursive_only`](#match_recursive_only)
+* [`allow_recursion`](#allow_recursion)
+* [`allow_recursion_on`](#allow_recursion_on)
+* [`allow_query_cache`](#allow_query_cache)
+* [`allow_query_cache_on`](#allow_query_cache_on)
+* [`allow_transfer`](#allow_transfer)
+* [`root_mirror_enable`](#root_mirror_enable)
+* [`view`](#view)
+* [`order`](#order)
+* [`root_hints_enable`](#root_hints_enable)
+* [`localhost_forward_enable`](#localhost_forward_enable)
+* [`localhost_reverse_enable`](#localhost_reverse_enable)
+
+##### <a name="match_clients"></a>`match_clients`
 
 Data type: `Array[String]`
 
@@ -1329,7 +1498,7 @@ An array of ACL names or networks that this view will be used for.
 
 Default value: `[ 'any', ]`
 
-##### `match_destinations`
+##### <a name="match_destinations"></a>`match_destinations`
 
 Data type: `Array[String]`
 
@@ -1338,7 +1507,7 @@ destination matches this list.
 
 Default value: `[]`
 
-##### `allow_query`
+##### <a name="allow_query"></a>`allow_query`
 
 Data type: `Array[String]`
 
@@ -1346,7 +1515,7 @@ An array of ACL names or networks that are allowed to query the view.
 
 Default value: `[ 'any', ]`
 
-##### `allow_query_on`
+##### <a name="allow_query_on"></a>`allow_query_on`
 
 Data type: `Array[String]`
 
@@ -1354,7 +1523,7 @@ An array of interfaces on the DNS server from which queries are accepted.
 
 Default value: `[]`
 
-##### `recursion`
+##### <a name="recursion"></a>`recursion`
 
 Data type: `Boolean`
 
@@ -1362,7 +1531,7 @@ Should recursion be enabled for this view.
 
 Default value: ``true``
 
-##### `match_recursive_only`
+##### <a name="match_recursive_only"></a>`match_recursive_only`
 
 Data type: `Boolean`
 
@@ -1370,7 +1539,7 @@ Should this view be used for recursive queried only.
 
 Default value: ``false``
 
-##### `allow_recursion`
+##### <a name="allow_recursion"></a>`allow_recursion`
 
 Data type: `Array[String]`
 
@@ -1379,7 +1548,7 @@ allowed.
 
 Default value: `[]`
 
-##### `allow_recursion_on`
+##### <a name="allow_recursion_on"></a>`allow_recursion_on`
 
 Data type: `Array[String]`
 
@@ -1388,7 +1557,7 @@ accepted.
 
 Default value: `[]`
 
-##### `allow_query_cache`
+##### <a name="allow_query_cache"></a>`allow_query_cache`
 
 Data type: `Array[String]`
 
@@ -1397,7 +1566,7 @@ allowed.
 
 Default value: `[]`
 
-##### `allow_query_cache_on`
+##### <a name="allow_query_cache_on"></a>`allow_query_cache_on`
 
 Data type: `Array[String]`
 
@@ -1406,7 +1575,7 @@ is allowed.
 
 Default value: `[]`
 
-##### `allow_transfer`
+##### <a name="allow_transfer"></a>`allow_transfer`
 
 Data type: `Array[String]`
 
@@ -1415,7 +1584,7 @@ information from this server.
 
 Default value: `[]`
 
-##### `root_mirror_enable`
+##### <a name="root_mirror_enable"></a>`root_mirror_enable`
 
 Data type: `Boolean`
 
@@ -1423,7 +1592,7 @@ Enable local root zone mirror for the view.
 
 Default value: ``false``
 
-##### `view`
+##### <a name="view"></a>`view`
 
 Data type: `String`
 
@@ -1431,7 +1600,7 @@ The name of the view.
 
 Default value: `$name`
 
-##### `order`
+##### <a name="order"></a>`order`
 
 Data type: `String`
 
@@ -1442,7 +1611,7 @@ highest order value.
 
 Default value: `'10'`
 
-##### `root_hints_enable`
+##### <a name="root_hints_enable"></a>`root_hints_enable`
 
 Data type: `Optional[Boolean]`
 
@@ -1450,7 +1619,7 @@ Data type: `Optional[Boolean]`
 
 Default value: ``undef``
 
-##### `localhost_forward_enable`
+##### <a name="localhost_forward_enable"></a>`localhost_forward_enable`
 
 Data type: `Optional[Boolean]`
 
@@ -1458,7 +1627,7 @@ Data type: `Optional[Boolean]`
 
 Default value: ``undef``
 
-##### `localhost_reverse_enable`
+##### <a name="localhost_reverse_enable"></a>`localhost_reverse_enable`
 
 Data type: `Optional[Boolean]`
 
@@ -1466,7 +1635,7 @@ Data type: `Optional[Boolean]`
 
 Default value: ``undef``
 
-### `bind::zone::forward`
+### <a name="bindzoneforward"></a>`bind::zone::forward`
 
 Manage a forward zone
 
@@ -1484,9 +1653,17 @@ bind::zone::forward { 'example.com':
 
 #### Parameters
 
-The following parameters are available in the `bind::zone::forward` defined type.
+The following parameters are available in the `bind::zone::forward` defined type:
 
-##### `forwarders`
+* [`forwarders`](#forwarders)
+* [`forward`](#forward)
+* [`view`](#view)
+* [`zone`](#zone)
+* [`comment`](#comment)
+* [`class`](#class)
+* [`order`](#order)
+
+##### <a name="forwarders"></a>`forwarders`
 
 Data type: `Array[String]`
 
@@ -1495,7 +1672,7 @@ All queries for the zone will be forwarded to these servers.
 
 Default value: `[]`
 
-##### `forward`
+##### <a name="forward"></a>`forward`
 
 Data type: `Optional[Bind::Forward]`
 
@@ -1504,7 +1681,7 @@ not answer the query (value `first`).
 
 Default value: ``undef``
 
-##### `view`
+##### <a name="view"></a>`view`
 
 Data type: `Optional[String]`
 
@@ -1513,7 +1690,7 @@ are used.
 
 Default value: ``undef``
 
-##### `zone`
+##### <a name="zone"></a>`zone`
 
 Data type: `String`
 
@@ -1521,7 +1698,7 @@ The name of the zone.
 
 Default value: `$name`
 
-##### `comment`
+##### <a name="comment"></a>`comment`
 
 Data type: `Optional[String]`
 
@@ -1529,7 +1706,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### `class`
+##### <a name="class"></a>`class`
 
 Data type: `Bind::Zone::Class`
 
@@ -1537,7 +1714,7 @@ Data type: `Bind::Zone::Class`
 
 Default value: `'IN'`
 
-##### `order`
+##### <a name="order"></a>`order`
 
 Data type: `String`
 
@@ -1545,7 +1722,7 @@ Data type: `String`
 
 Default value: `'40'`
 
-### `bind::zone::hint`
+### <a name="bindzonehint"></a>`bind::zone::hint`
 
 Manage a hint zone
 
@@ -1562,9 +1739,16 @@ bind::zone::hint { '.':
 
 #### Parameters
 
-The following parameters are available in the `bind::zone::hint` defined type.
+The following parameters are available in the `bind::zone::hint` defined type:
 
-##### `zone`
+* [`zone`](#zone)
+* [`file`](#file)
+* [`view`](#view)
+* [`comment`](#comment)
+* [`class`](#class)
+* [`order`](#order)
+
+##### <a name="zone"></a>`zone`
 
 Data type: `String`
 
@@ -1572,13 +1756,13 @@ The name of the zone.
 
 Default value: `$name`
 
-##### `file`
+##### <a name="file"></a>`file`
 
 Data type: `String`
 
 
 
-##### `view`
+##### <a name="view"></a>`view`
 
 Data type: `Optional[String]`
 
@@ -1586,7 +1770,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### `comment`
+##### <a name="comment"></a>`comment`
 
 Data type: `Optional[String]`
 
@@ -1594,7 +1778,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### `class`
+##### <a name="class"></a>`class`
 
 Data type: `Bind::Zone::Class`
 
@@ -1602,7 +1786,7 @@ Data type: `Bind::Zone::Class`
 
 Default value: `'IN'`
 
-##### `order`
+##### <a name="order"></a>`order`
 
 Data type: `String`
 
@@ -1610,7 +1794,7 @@ Data type: `String`
 
 Default value: `'10'`
 
-### `bind::zone::in_view`
+### <a name="bindzonein_view"></a>`bind::zone::in_view`
 
 Manage a in-view zone reference
 
@@ -1628,21 +1812,28 @@ bind::zone::in_view { 'example.com':
 
 #### Parameters
 
-The following parameters are available in the `bind::zone::in_view` defined type.
+The following parameters are available in the `bind::zone::in_view` defined type:
 
-##### `view`
+* [`view`](#view)
+* [`in_view`](#in_view)
+* [`zone`](#zone)
+* [`comment`](#comment)
+* [`class`](#class)
+* [`order`](#order)
+
+##### <a name="view"></a>`view`
 
 Data type: `String`
 
 The name of the view that should include this zone.
 
-##### `in_view`
+##### <a name="in_view"></a>`in_view`
 
 Data type: `String`
 
 The name of the view where the referenced view is defined.
 
-##### `zone`
+##### <a name="zone"></a>`zone`
 
 Data type: `String`
 
@@ -1650,7 +1841,7 @@ The name of the zone.
 
 Default value: `$name`
 
-##### `comment`
+##### <a name="comment"></a>`comment`
 
 Data type: `Optional[String]`
 
@@ -1658,7 +1849,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### `class`
+##### <a name="class"></a>`class`
 
 Data type: `Bind::Zone::Class`
 
@@ -1666,7 +1857,7 @@ Data type: `Bind::Zone::Class`
 
 Default value: `'IN'`
 
-##### `order`
+##### <a name="order"></a>`order`
 
 Data type: `String`
 
@@ -1674,7 +1865,7 @@ Data type: `String`
 
 Default value: `'60'`
 
-### `bind::zone::mirror`
+### <a name="bindzonemirror"></a>`bind::zone::mirror`
 
 Manage a mirror zone
 
@@ -1690,9 +1881,15 @@ bind::zone::mirror { '.':
 
 #### Parameters
 
-The following parameters are available in the `bind::zone::mirror` defined type.
+The following parameters are available in the `bind::zone::mirror` defined type:
 
-##### `zone`
+* [`zone`](#zone)
+* [`view`](#view)
+* [`comment`](#comment)
+* [`class`](#class)
+* [`order`](#order)
+
+##### <a name="zone"></a>`zone`
 
 Data type: `String`
 
@@ -1700,7 +1897,7 @@ The name of the zone.
 
 Default value: `$name`
 
-##### `view`
+##### <a name="view"></a>`view`
 
 Data type: `Optional[String]`
 
@@ -1708,7 +1905,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### `comment`
+##### <a name="comment"></a>`comment`
 
 Data type: `Optional[String]`
 
@@ -1716,7 +1913,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### `class`
+##### <a name="class"></a>`class`
 
 Data type: `Bind::Zone::Class`
 
@@ -1724,7 +1921,7 @@ Data type: `Bind::Zone::Class`
 
 Default value: `'IN'`
 
-##### `order`
+##### <a name="order"></a>`order`
 
 Data type: `String`
 
@@ -1732,7 +1929,7 @@ Data type: `String`
 
 Default value: `'50'`
 
-### `bind::zone::primary`
+### <a name="bindzoneprimary"></a>`bind::zone::primary`
 
 Manage a primary zone
 
@@ -1760,9 +1957,24 @@ bind::zone::primary { 'example.com':
 
 #### Parameters
 
-The following parameters are available in the `bind::zone::primary` defined type.
+The following parameters are available in the `bind::zone::primary` defined type:
 
-##### `dnssec`
+* [`dnssec`](#dnssec)
+* [`inline_signing`](#inline_signing)
+* [`auto_dnssec`](#auto_dnssec)
+* [`also_notify`](#also_notify)
+* [`notify_secondaries`](#notify_secondaries)
+* [`view`](#view)
+* [`source`](#source)
+* [`content`](#content)
+* [`zone_statistics`](#zone_statistics)
+* [`zone`](#zone)
+* [`file`](#file)
+* [`comment`](#comment)
+* [`class`](#class)
+* [`order`](#order)
+
+##### <a name="dnssec"></a>`dnssec`
 
 Data type: `Boolean`
 
@@ -1770,7 +1982,7 @@ Enable DNSSEC for the zone.
 
 Default value: ``false``
 
-##### `inline_signing`
+##### <a name="inline_signing"></a>`inline_signing`
 
 Data type: `Boolean`
 
@@ -1778,7 +1990,7 @@ Enable inline signing for the zone.
 
 Default value: ``false``
 
-##### `auto_dnssec`
+##### <a name="auto_dnssec"></a>`auto_dnssec`
 
 Data type: `Bind::Auto_dnssec`
 
@@ -1787,7 +1999,7 @@ or `off`.
 
 Default value: `'off'`
 
-##### `also_notify`
+##### <a name="also_notify"></a>`also_notify`
 
 Data type: `Array[String]`
 
@@ -1796,7 +2008,7 @@ nameservers that are listed in the zone file.
 
 Default value: `[]`
 
-##### `notify_secondaries`
+##### <a name="notify_secondaries"></a>`notify_secondaries`
 
 Data type: `Optional[Bind::Notify_secondaries]`
 
@@ -1808,7 +2020,7 @@ IPs listed in any also-notify statement. Can be either `yes`, `no` or
 
 Default value: ``undef``
 
-##### `view`
+##### <a name="view"></a>`view`
 
 Data type: `Optional[String]`
 
@@ -1817,7 +2029,7 @@ are used.
 
 Default value: ``undef``
 
-##### `source`
+##### <a name="source"></a>`source`
 
 Data type: `Optional[String]`
 
@@ -1825,7 +2037,7 @@ The source for the zone file. See the standard Puppet file type.
 
 Default value: ``undef``
 
-##### `content`
+##### <a name="content"></a>`content`
 
 Data type: `Optional[String]`
 
@@ -1833,7 +2045,7 @@ The content for the zone file. See the standard Puppet file type.
 
 Default value: ``undef``
 
-##### `zone_statistics`
+##### <a name="zone_statistics"></a>`zone_statistics`
 
 Data type: `Optional[Boolean]`
 
@@ -1841,7 +2053,7 @@ Collect statistics for this zone.
 
 Default value: ``undef``
 
-##### `zone`
+##### <a name="zone"></a>`zone`
 
 Data type: `String`
 
@@ -1849,7 +2061,7 @@ The name of the zone.
 
 Default value: `$name`
 
-##### `file`
+##### <a name="file"></a>`file`
 
 Data type: `Optional[String]`
 
@@ -1857,7 +2069,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### `comment`
+##### <a name="comment"></a>`comment`
 
 Data type: `Optional[String]`
 
@@ -1865,7 +2077,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### `class`
+##### <a name="class"></a>`class`
 
 Data type: `Bind::Zone::Class`
 
@@ -1873,7 +2085,7 @@ Data type: `Bind::Zone::Class`
 
 Default value: `'IN'`
 
-##### `order`
+##### <a name="order"></a>`order`
 
 Data type: `String`
 
@@ -1881,7 +2093,7 @@ Data type: `String`
 
 Default value: `'20'`
 
-### `bind::zone::secondary`
+### <a name="bindzonesecondary"></a>`bind::zone::secondary`
 
 Manage a secondary zone
 
@@ -1898,16 +2110,25 @@ bind::zone::secondary { 'example.com':
 
 #### Parameters
 
-The following parameters are available in the `bind::zone::secondary` defined type.
+The following parameters are available in the `bind::zone::secondary` defined type:
 
-##### `masters`
+* [`masters`](#masters)
+* [`view`](#view)
+* [`zone_statistics`](#zone_statistics)
+* [`multi_master`](#multi_master)
+* [`zone`](#zone)
+* [`comment`](#comment)
+* [`class`](#class)
+* [`order`](#order)
+
+##### <a name="masters"></a>`masters`
 
 Data type: `Array[String,1]`
 
 An array of strings that define the master servers for this zone.
 There must be at least one master server for a secondary zone.
 
-##### `view`
+##### <a name="view"></a>`view`
 
 Data type: `Optional[String]`
 
@@ -1916,7 +2137,7 @@ are used.
 
 Default value: ``undef``
 
-##### `zone_statistics`
+##### <a name="zone_statistics"></a>`zone_statistics`
 
 Data type: `Optional[Boolean]`
 
@@ -1924,7 +2145,7 @@ Collect statistics for this zone.
 
 Default value: ``undef``
 
-##### `multi_master`
+##### <a name="multi_master"></a>`multi_master`
 
 Data type: `Optional[Boolean]`
 
@@ -1934,7 +2155,7 @@ this to `true` to disable the message in this case.
 
 Default value: ``undef``
 
-##### `zone`
+##### <a name="zone"></a>`zone`
 
 Data type: `String`
 
@@ -1942,7 +2163,7 @@ The name of the zone.
 
 Default value: `$name`
 
-##### `comment`
+##### <a name="comment"></a>`comment`
 
 Data type: `Optional[String]`
 
@@ -1950,7 +2171,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### `class`
+##### <a name="class"></a>`class`
 
 Data type: `Bind::Zone::Class`
 
@@ -1958,7 +2179,7 @@ Data type: `Bind::Zone::Class`
 
 Default value: `'IN'`
 
-##### `order`
+##### <a name="order"></a>`order`
 
 Data type: `String`
 
@@ -1968,7 +2189,7 @@ Default value: `'30'`
 
 ## Resource types
 
-### `dnssec_key`
+### <a name="dnssec_key"></a>`dnssec_key`
 
 *Caution*: This functionality is in beta and is subject to change. The
 design and code is less mature than other features.
@@ -2045,13 +2266,30 @@ Default value: `present`
 
 The following parameters are available in the `dnssec_key` type.
 
-##### `active`
+* [`active`](#active)
+* [`algorithm`](#algorithm)
+* [`bits`](#bits)
+* [`key_directory`](#key_directory)
+* [`ksk`](#ksk)
+* [`name`](#name)
+* [`nsec3`](#nsec3)
+* [`precreate`](#precreate)
+* [`prepublish`](#prepublish)
+* [`provider`](#provider)
+* [`purge`](#purge)
+* [`retire`](#retire)
+* [`revoke`](#revoke)
+* [`rrtype`](#rrtype)
+* [`successor`](#successor)
+* [`zone`](#zone)
+
+##### <a name="active"></a>`active`
 
 Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
 
 The time interval that the key will be used for signing the zone.
 
-##### `algorithm`
+##### <a name="algorithm"></a>`algorithm`
 
 Valid values: `DSA`, `ECCGOST`, `ECDSAP256SHA256`, `ECDSAP384SHA384`, `ED25519`, `ED448`, `NSEC3DSA`, `NSEC3RSASHA1`, `RSAMD5`, `RSASHA1`, `RSASHA256`, `RSASHA512`
 
@@ -2059,7 +2297,7 @@ The cryptographic algorithm that the key should use.
 
 Default value: `RSASHA1`
 
-##### `bits`
+##### <a name="bits"></a>`bits`
 
 Valid values: `%r{^[0-9]+$}`
 
@@ -2073,12 +2311,12 @@ HMAC :   1 ..  512
 
 Elliptic curve algorithms don't need this parameter.
 
-##### `key_directory`
+##### <a name="key_directory"></a>`key_directory`
 
 The directory where the key should be created. This parameter is
 mandatory.
 
-##### `ksk`
+##### <a name="ksk"></a>`ksk`
 
 Valid values: ``true``, ``false``
 
@@ -2086,13 +2324,13 @@ Whether the key should be a Key Signing Key.
 
 Default value: ``false``
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The name of the resource.
 
-##### `nsec3`
+##### <a name="nsec3"></a>`nsec3`
 
 Valid values: ``true``, ``false``
 
@@ -2100,7 +2338,7 @@ Whether the key should be NSEC3-capable.
 
 Default value: ``false``
 
-##### `precreate`
+##### <a name="precreate"></a>`precreate`
 
 Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
 
@@ -2108,18 +2346,18 @@ The time interval before prepublication in which the key will be
 created. The interval must be long enough to ensure Puppet will run
 during this interval.
 
-##### `prepublish`
+##### <a name="prepublish"></a>`prepublish`
 
 Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
 
 The time interval before activation when the key will be published.
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `dnssec_key` resource. You will seldom need to specify this --- Puppet will usually
 discover the appropriate provider for your platform.
 
-##### `purge`
+##### <a name="purge"></a>`purge`
 
 Valid values: ``true``, ``false``
 
@@ -2127,21 +2365,21 @@ Whether old keys should be purged after they are retired.
 
 Default value: ``false``
 
-##### `retire`
+##### <a name="retire"></a>`retire`
 
 Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
 
 The time interval that the key is still published after it became
 inactive.
 
-##### `revoke`
+##### <a name="revoke"></a>`revoke`
 
 Valid values: `%r{^[0-9]+(y|mo|w|d|h|mi)?$}`
 
 The time interval that the key will have the revoke bit set. This
 parameter may only be used for zone-signing keys.
 
-##### `rrtype`
+##### <a name="rrtype"></a>`rrtype`
 
 Valid values: `DNSKEY`, `KEY`
 
@@ -2149,7 +2387,7 @@ The resource record type to use for the key.
 
 Default value: `DNSKEY`
 
-##### `successor`
+##### <a name="successor"></a>`successor`
 
 Valid values: ``true``, ``false``
 
@@ -2160,7 +2398,7 @@ inactivation date of the existing key.
 
 Default value: ``false``
 
-##### `zone`
+##### <a name="zone"></a>`zone`
 
 Valid values: `%r{^[a-zA-Z][a-zA-Z0-9.-]+\.[a-zA-Z]+$}`
 
@@ -2169,7 +2407,7 @@ domain name. Defaults to the resource title if unset.
 
 ## Functions
 
-### `bind::gencfg`
+### <a name="bindgencfg"></a>`bind::gencfg`
 
 Type: Puppet Language
 
@@ -2218,7 +2456,7 @@ The number of space characters to use as indentation
 for each line.  The default value is 0; in this case no indentation is
 used.
 
-### `bind::zonefile_path`
+### <a name="bindzonefile_path"></a>`bind::zonefile_path`
 
 Type: Puppet Language
 
@@ -2240,57 +2478,93 @@ returned.  Example: 'example.com'
 
 ## Data types
 
-### `Bind::AddressMatchList`
+### <a name="bindaddressmatchlist"></a>`Bind::AddressMatchList`
 
 Type to match allowed values for an address match list
 
-Alias of `Variant[String, Array[String]]`
+Alias of
 
-### `Bind::Auto_dnssec`
+```puppet
+Variant[String, Array[String]]
+```
+
+### <a name="bindauto_dnssec"></a>`Bind::Auto_dnssec`
 
 Type to match allowed values for the auto-dnssec option
 
-Alias of `Enum['allow', 'maintain', 'off']`
+Alias of
 
-### `Bind::Filter_aaaa_on_v4`
+```puppet
+Enum['allow', 'maintain', 'off']
+```
+
+### <a name="bindfilter_aaaa_on_v4"></a>`Bind::Filter_aaaa_on_v4`
 
 Type to match allowed values for the filter-aaaa-on-v4 option
 
-Alias of `Enum['no', 'yes', 'break-dnssec']`
+Alias of
 
-### `Bind::Forward`
+```puppet
+Enum['no', 'yes', 'break-dnssec']
+```
+
+### <a name="bindforward"></a>`Bind::Forward`
 
 Type to match allowed values for the forward option
 
-Alias of `Enum['first', 'only']`
+Alias of
 
-### `Bind::Key::Algorithm`
+```puppet
+Enum['first', 'only']
+```
+
+### <a name="bindkeyalgorithm"></a>`Bind::Key::Algorithm`
 
 Type to match allowed values for the key algorithm
 
-Alias of `Enum['hmac-md5', 'hmac-sha1', 'hmac-sha224', 'hmac-sha256', 'hmac-sha384', 'hmac-sha512']`
+Alias of
 
-### `Bind::Notify_secondaries`
+```puppet
+Enum['hmac-md5', 'hmac-sha1', 'hmac-sha224', 'hmac-sha256', 'hmac-sha384', 'hmac-sha512']
+```
+
+### <a name="bindnotify_secondaries"></a>`Bind::Notify_secondaries`
 
 Type to match allowed values for the notify option
 
-Alias of `Enum['yes', 'no', 'explicit']`
+Alias of
 
-### `Bind::Syslog::Facility`
+```puppet
+Enum['yes', 'no', 'explicit']
+```
+
+### <a name="bindsyslogfacility"></a>`Bind::Syslog::Facility`
 
 Type to match allowed values for the syslog facility
 
-Alias of `Enum['auth', 'authpriv', 'cron', 'daemon', 'ftp', 'kern', 'local0', 'local1', 'local2', 'local3', 'local4', 'local5', 'local6', 'local7', 'lpr', 'mail', 'news', 'syslog', 'user', 'uucp']`
+Alias of
 
-### `Bind::Syslog::Severity`
+```puppet
+Enum['auth', 'authpriv', 'cron', 'daemon', 'ftp', 'kern', 'local0', 'local1', 'local2', 'local3', 'local4', 'local5', 'local6', 'local7', 'lpr', 'mail', 'news', 'syslog', 'user', 'uucp']
+```
+
+### <a name="bindsyslogseverity"></a>`Bind::Syslog::Severity`
 
 Type to match allowed values for the syslog severity
 
-Alias of `Enum['critical', 'error', 'warning', 'notice', 'info', 'debug', 'dynamic']`
+Alias of
 
-### `Bind::Zone::Class`
+```puppet
+Enum['critical', 'error', 'warning', 'notice', 'info', 'debug', 'dynamic']
+```
+
+### <a name="bindzoneclass"></a>`Bind::Zone::Class`
 
 Type to match allowed values for the zone class
 
-Alias of `Enum['IN', 'HS', 'CH']`
+Alias of
+
+```puppet
+Enum['IN', 'HS', 'CH']
+```
 
