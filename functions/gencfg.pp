@@ -4,22 +4,71 @@
 # used as a config option.  The can be a string, a numeric value, a boolean or
 # an array or hash.  the config option is terminated with a ';' char.
 #
-# String and numeric value are used normally.  A boolean value is returned as
-# 'yes' or 'no'.  Arrays are enclosed in braces and array values are returned
-# as a single line if the number of elements is zero or one.  Otherwise a new
-# line is used for each value.  Hashes are also enclosed in braces and the
-# keys and values are processed recursively.
+# Strings and numeric values are included normally as parameter value.
+# A boolean value is written as 'yes' or 'no'.  Arrays are enclosed in
+# braces and array values are returned as a single line if the number of
+# elements is zero or one.  Otherwise a new line is used for each value.
+# Hashes are also enclosed in braces and the keys and values are processed
+# recursively.
+#
+# @example String value
+#
+#   bind::gencfg({ 'foo' => 'bar' }, 2)
+#
+#     foo bar;
+#
+# @example Numeric value
+#
+#   bind::gencfg({ 'foo' => 42 }, 2)
+#
+#     foo 42;
+#
+# @example Boolean value
+#
+#   bind::gencfg({ 'foo' => true }, 2)
+#
+#     foo yes;
+#
+# @example Array value with zero elements
+#
+#   bind::gencfg({ 'foo' => [] }, 2)
+#
+#     foo { };
+#
+# @example Array value with one element
+#
+#   bind::gencfg({ 'foo' => ['bar'] }, 2)
+#
+#     foo { bar; };
+#
+# @example Array value with multiple elements
+#
+#   bind::gencfg({ 'foo' => ['bar', 'baz'] }, 2)
+#
+#     foo {
+#       bar;
+#       baz;
+#     };
+#
+# @example Hash value
+#
+#   bind::gencfg({ 'foo' => { 'bar' => 'qux', 'quux' => 'baz' } }, 2)
+#
+#     foo {
+#       bar  qux;
+#       quux baz;
+#     };
 #
 # @private
 #
-# @param config [Hash[String,Data]] A hash with the configuration items.  For
-#   each key the name of the key and the value are generated in Bind9 config
-#   file syntax.  Values may be Booleans, Numbers, Strings, Arrays and other
-#   Hashes.
+# @param config [Hash[String,Data]]
+#   A hash with the configuration items.  For each key the name of the key
+#   and the value are generated in Bind9 config file syntax.  Values may be
+#   Booleans, Numbers, Strings, Arrays and other Hashes.
 #
-# @param indent [Integer] The number of space characters to use as indentation
-#   for each line.  The default value is 0; in this case no indentation is
-#   used.
+# @param indent [Integer]
+#   The number of space characters to use as indentation for each line.  The
+#   default value is 0; in this case no indentation is used.
 #
 # @return [String] The config in Bind9 syntax.
 #

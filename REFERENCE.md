@@ -2415,11 +2415,83 @@ Generate a Bind configuration snippet from a hash.  Each key of the hash is
 used as a config option.  The can be a string, a numeric value, a boolean or
 an array or hash.  the config option is terminated with a ';' char.
 
-String and numeric value are used normally.  A boolean value is returned as
-'yes' or 'no'.  Arrays are enclosed in braces and array values are returned
-as a single line if the number of elements is zero or one.  Otherwise a new
-line is used for each value.  Hashes are also enclosed in braces and the
-keys and values are processed recursively.
+Strings and numeric values are included normally as parameter value.
+A boolean value is written as 'yes' or 'no'.  Arrays are enclosed in
+braces and array values are returned as a single line if the number of
+elements is zero or one.  Otherwise a new line is used for each value.
+Hashes are also enclosed in braces and the keys and values are processed
+recursively.
+
+#### Examples
+
+##### String value
+
+```puppet
+
+bind::gencfg({ 'foo' => 'bar' }, 2)
+
+  foo bar;
+```
+
+##### Numeric value
+
+```puppet
+
+bind::gencfg({ 'foo' => 42 }, 2)
+
+  foo 42;
+```
+
+##### Boolean value
+
+```puppet
+
+bind::gencfg({ 'foo' => true }, 2)
+
+  foo yes;
+```
+
+##### Array value with zero elements
+
+```puppet
+
+bind::gencfg({ 'foo' => [] }, 2)
+
+  foo { };
+```
+
+##### Array value with one element
+
+```puppet
+
+bind::gencfg({ 'foo' => ['bar'] }, 2)
+
+  foo { bar; };
+```
+
+##### Array value with multiple elements
+
+```puppet
+
+bind::gencfg({ 'foo' => ['bar', 'baz'] }, 2)
+
+  foo {
+    bar;
+    baz;
+  };
+```
+
+##### Hash value
+
+```puppet
+
+bind::gencfg({ 'foo' => { 'bar' => 'qux', 'quux' => 'baz' } }, 2)
+
+  foo {
+    bar  qux;
+    quux baz;
+  };
+```
 
 #### `bind::gencfg(Hash[String,Data] $config, Integer $indent = 0)`
 
@@ -2427,30 +2499,100 @@ Generate a Bind configuration snippet from a hash.  Each key of the hash is
 used as a config option.  The can be a string, a numeric value, a boolean or
 an array or hash.  the config option is terminated with a ';' char.
 
-String and numeric value are used normally.  A boolean value is returned as
-'yes' or 'no'.  Arrays are enclosed in braces and array values are returned
-as a single line if the number of elements is zero or one.  Otherwise a new
-line is used for each value.  Hashes are also enclosed in braces and the
-keys and values are processed recursively.
+Strings and numeric values are included normally as parameter value.
+A boolean value is written as 'yes' or 'no'.  Arrays are enclosed in
+braces and array values are returned as a single line if the number of
+elements is zero or one.  Otherwise a new line is used for each value.
+Hashes are also enclosed in braces and the keys and values are processed
+recursively.
 
 Returns: `String` The config in Bind9 syntax.
+
+##### Examples
+
+###### String value
+
+```puppet
+
+bind::gencfg({ 'foo' => 'bar' }, 2)
+
+  foo bar;
+```
+
+###### Numeric value
+
+```puppet
+
+bind::gencfg({ 'foo' => 42 }, 2)
+
+  foo 42;
+```
+
+###### Boolean value
+
+```puppet
+
+bind::gencfg({ 'foo' => true }, 2)
+
+  foo yes;
+```
+
+###### Array value with zero elements
+
+```puppet
+
+bind::gencfg({ 'foo' => [] }, 2)
+
+  foo { };
+```
+
+###### Array value with one element
+
+```puppet
+
+bind::gencfg({ 'foo' => ['bar'] }, 2)
+
+  foo { bar; };
+```
+
+###### Array value with multiple elements
+
+```puppet
+
+bind::gencfg({ 'foo' => ['bar', 'baz'] }, 2)
+
+  foo {
+    bar;
+    baz;
+  };
+```
+
+###### Hash value
+
+```puppet
+
+bind::gencfg({ 'foo' => { 'bar' => 'qux', 'quux' => 'baz' } }, 2)
+
+  foo {
+    bar  qux;
+    quux baz;
+  };
+```
 
 ##### `config`
 
 Data type: `Hash[String,Data]`
 
-A hash with the configuration items.  For
-each key the name of the key and the value are generated in Bind9 config
-file syntax.  Values may be Booleans, Numbers, Strings, Arrays and other
-Hashes.
+A hash with the configuration items.  For each key the name of the key
+and the value are generated in Bind9 config file syntax.  Values may be
+Booleans, Numbers, Strings, Arrays and other Hashes.
 
 ##### `indent`
 
 Data type: `Integer`
 
-The number of space characters to use as indentation
-for each line.  The default value is 0; in this case no indentation is
-used.
+The number of space characters to use as indentation for each line.  The
+default value is 0; in this case no indentation is used.
 
 ### <a name="bindzonefile_path"></a>`bind::zonefile_path`
 
@@ -2462,15 +2604,15 @@ Generate the zonefile name from zone
 
 The bind::zonefile_path function.
 
-Returns: `String` The relative path and filename where the zonefile should be
-stored.  Example: 'com/example/db.example.com'
+Returns: `String` The relative path and filename where the zonefile should be stored.
+Example: 'com/example/db.example.com'
 
 ##### `zone`
 
 Data type: `String`
 
-The name of the zone for which the path should be
-returned.  Example: 'example.com'
+The name of the zone for which the path should be returned.  Example:
+'example.com'
 
 ## Data types
 
