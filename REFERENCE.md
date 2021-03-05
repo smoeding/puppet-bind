@@ -42,8 +42,8 @@
 
 ### Functions
 
-* [`bind::gencfg`](#bindgencfg): Generate configuration snippets for Bind from hashes  Generate a Bind configuration snippet from a hash.  Each key of the hash is used as a c
-* [`bind::zonefile_path`](#bindzonefile_path): zonefile_path.pp --- Generate zonefile name from zone
+* [`bind::gencfg`](#bindgencfg): Generate a configuration snippet from a hash
+* [`bind::zonefile_path`](#bindzonefile_path): Generate the zonefile name from zone
 
 ### Data types
 
@@ -2411,8 +2411,6 @@ domain name. Defaults to the resource title if unset.
 
 Type: Puppet Language
 
-Generate configuration snippets for Bind from hashes
-
 Generate a Bind configuration snippet from a hash.  Each key of the hash is
 used as a config option.  The can be a string, a numeric value, a boolean or
 an array or hash.  the config option is terminated with a ';' char.
@@ -2424,8 +2422,6 @@ line is used for each value.  Hashes are also enclosed in braces and the
 keys and values are processed recursively.
 
 #### `bind::gencfg(Hash[String,Data] $config, Integer $indent = 0)`
-
-Generate configuration snippets for Bind from hashes
 
 Generate a Bind configuration snippet from a hash.  Each key of the hash is
 used as a config option.  The can be a string, a numeric value, a boolean or
@@ -2460,11 +2456,11 @@ used.
 
 Type: Puppet Language
 
-zonefile_path.pp --- Generate zonefile name from zone
+Generate the zonefile name from zone
 
 #### `bind::zonefile_path(String $zone)`
 
-zonefile_path.pp --- Generate zonefile name from zone
+The bind::zonefile_path function.
 
 Returns: `String` The relative path and filename where the zonefile should be
 stored.  Example: 'com/example/db.example.com'

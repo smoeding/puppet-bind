@@ -1,4 +1,4 @@
-# zonefile_path.pp --- Generate zonefile name from zone
+# @summary Generate the zonefile name from zone
 #
 # @private
 #

@@ -1,4 +1,4 @@
-# Generate configuration snippets for Bind from hashes
+# @summary Generate a configuration snippet from a hash
 #
 # Generate a Bind configuration snippet from a hash.  Each key of the hash is
 # used as a config option.  The can be a string, a numeric value, a boolean or
