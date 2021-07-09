@@ -1,6 +1,6 @@
 # bind
 
-[![Build Status](https://travis-ci.com/smoeding/puppet-bind.svg?branch=master)](https://travis-ci.com/smoeding/puppet-bind)
+[![Build Status](https://github.com/smoeding/puppet-bind/actions/workflows/CI.yaml/badge.svg)](https://github.com/smoeding/puppet-bind/actions/workflows/CI.yaml)
 [![Puppet Forge](http://img.shields.io/puppetforge/v/stm/bind.svg)](https://forge.puppetlabs.com/stm/bind)
 [![License](https://img.shields.io/github/license/smoeding/puppet-bind.svg)](https://raw.githubusercontent.com/smoeding/puppet-bind/master/LICENSE)
 
