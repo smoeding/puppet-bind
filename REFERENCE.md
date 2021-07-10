@@ -578,7 +578,7 @@ Manage rate limiting
 
 ```puppet
 
-class { bind::rate_limit':
+class { 'bind::rate_limit':
   all_per_second => 1000,
 }
 ```
