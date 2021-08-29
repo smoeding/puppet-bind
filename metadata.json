@@ -1,6 +1,6 @@
 {
   "name": "stm-bind",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "stm",
   "summary": "Manage the BIND name server.",
   "license": "BSD-2-Clause",
@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 5.1.0 < 8.0.0"
+      "version_requirement": ">= 5.1.0 < 9.0.0"
     },
     {
       "name": "puppetlabs/concat",
@@ -22,7 +22,8 @@
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
         "9",
-        "10"
+        "10",
+        "11"
       ]
     },
     {
