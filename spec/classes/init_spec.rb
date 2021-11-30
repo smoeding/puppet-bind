@@ -446,6 +446,39 @@ describe 'bind' do
         }
       end
 
+      context 'with dnssec_lookaside => false' do
+        let(:params) do
+          { dnssec_lookaside: false }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_content(%r{dnssec-lookaside\s+no;})
+        }
+      end
+
+      context 'with dnssec_validation => yes' do
+        let(:params) do
+          { dnssec_validation: 'yes' }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_content(%r{dnssec-validation\s+yes;})
+        }
+      end
+
+      context 'with dnssec_validation => no' do
+        let(:params) do
+          { dnssec_validation: 'no' }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_content(%r{dnssec-validation\s+no;})
+        }
+      end
+
       context 'with empty_zones_enable => false' do
         let(:params) do
           { empty_zones_enable: false }
@@ -647,6 +680,19 @@ describe 'bind' do
             .with_target('named.conf.options')
             .with_order('83')
             .with_content("  foo {\n    bar baz;\n  };\n")
+        }
+      end
+    end
+
+    context "on #{os} with bind 9.16.0" do
+      let(:facts) { facts.merge(named_version: '9.16.0') }
+
+      context 'with default parameters' do
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_target('named.conf.options')
+            .with_order('75')
+            .with_content("\n  // DNSSEC\n  dnssec-validation auto;\n\n  key-directory \"/etc/bind/keys\";\n\n  auth-nxdomain no;\n")
         }
       end
     end

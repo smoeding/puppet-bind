@@ -102,7 +102,15 @@
 #   Should views be enabled.
 #
 # @param dnssec_enable
-#   Should DNSSEC be enabled.
+#   Should DNSSEC be enabled. This parameter is ignored for Bind 9.16.0 or
+#   later where DNSSEC is always enabled.
+#
+# @param dnssec_lookaside
+#   Should DNSSEC Lookaside Validation be enabled. This parameter is ignored
+#   for Bind 9.16.0 or later where DNSSEC Lookaside Validation is obsolete.
+#
+# @param dnssec_validation
+#   Should DNSSEC Validation be enabled.
 #
 # @param empty_zones_enable
 #   Should automatic empty zones be enabled.
@@ -224,6 +232,8 @@ class bind (
   Boolean                 $ipv6_enable              = true,
   Boolean                 $views_enable             = false,
   Boolean                 $dnssec_enable            = true,
+  Boolean                 $dnssec_lookaside         = false,
+  Bind::DNSSECValidation  $dnssec_validation        = 'auto',
   Boolean                 $empty_zones_enable       = true,
   Boolean                 $root_mirror_enable       = false,
   Boolean                 $control_channels_enable  = true,
@@ -257,6 +267,25 @@ class bind (
 ) {
 
   $header_message = '// This file is managed by Puppet. DO NOT EDIT.'
+
+  #
+  # Version specific options
+  #
+
+  $version = ('named_version' in $facts) ? {
+    true    => $facts['named_version'],
+    default => '4.9.3',
+  }
+
+  $_dnssec_enable = (versioncmp($version, '9.16.0') < 0) ? {
+    true    => $dnssec_enable,
+    default => undef,
+  }
+
+  $_dnssec_lookaside =  (versioncmp($version, '9.16.0') < 0) ? {
+    true => $dnssec_lookaside,
+    default => undef,
+  }
 
   #
   # Package
@@ -438,7 +467,9 @@ class bind (
     'max_cache_size'     => $max_cache_size,
     'filter_aaaa_on_v4'  => $filter_aaaa_on_v4,
     'querylog_enable'    => $querylog_enable,
-    'dnssec_enable'      => $dnssec_enable,
+    'dnssec_enable'      => $_dnssec_enable,
+    'dnssec_lookaside'   => $_dnssec_lookaside,
+    'dnssec_validation'  => $dnssec_validation,
     'empty_zones_enable' => $empty_zones_enable,
   }
 

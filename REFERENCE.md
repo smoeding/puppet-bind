@@ -49,6 +49,7 @@
 
 * [`Bind::AddressMatchList`](#bindaddressmatchlist): Type to match allowed values for an address match list
 * [`Bind::Auto_dnssec`](#bindauto_dnssec): Type to match allowed values for the auto-dnssec option
+* [`Bind::DNSSECValidation`](#binddnssecvalidation): Type to match allowed values for the dnssec-validation option
 * [`Bind::Filter_aaaa_on_v4`](#bindfilter_aaaa_on_v4): Type to match allowed values for the filter-aaaa-on-v4 option
 * [`Bind::Forward`](#bindforward): Type to match allowed values for the forward option
 * [`Bind::Key::Algorithm`](#bindkeyalgorithm): Type to match allowed values for the key algorithm
@@ -114,6 +115,8 @@ The following parameters are available in the `bind` class:
 * [`ipv6_enable`](#ipv6_enable)
 * [`views_enable`](#views_enable)
 * [`dnssec_enable`](#dnssec_enable)
+* [`dnssec_lookaside`](#dnssec_lookaside)
+* [`dnssec_validation`](#dnssec_validation)
 * [`empty_zones_enable`](#empty_zones_enable)
 * [`root_mirror_enable`](#root_mirror_enable)
 * [`control_channels_enable`](#control_channels_enable)
@@ -278,9 +281,27 @@ Default value: ``false``
 
 Data type: `Boolean`
 
-Should DNSSEC be enabled.
+Should DNSSEC be enabled. This parameter is ignored for Bind 9.16.0 or
+later where DNSSEC is always enabled.
 
 Default value: ``true``
+
+##### <a name="dnssec_lookaside"></a>`dnssec_lookaside`
+
+Data type: `Boolean`
+
+Should DNSSEC Lookaside Validation be enabled. This parameter is ignored
+for Bind 9.16.0 or later where DNSSEC Lookaside Validation is obsolete.
+
+Default value: ``false``
+
+##### <a name="dnssec_validation"></a>`dnssec_validation`
+
+Data type: `Bind::DNSSECValidation`
+
+Should DNSSEC Validation be enabled.
+
+Default value: `'auto'`
 
 ##### <a name="empty_zones_enable"></a>`empty_zones_enable`
 
@@ -2634,6 +2655,16 @@ Alias of
 
 ```puppet
 Enum['allow', 'maintain', 'off']
+```
+
+### <a name="binddnssecvalidation"></a>`Bind::DNSSECValidation`
+
+Type to match allowed values for the dnssec-validation option
+
+Alias of
+
+```puppet
+Enum['yes', 'no', 'auto']
 ```
 
 ### <a name="bindfilter_aaaa_on_v4"></a>`Bind::Filter_aaaa_on_v4`

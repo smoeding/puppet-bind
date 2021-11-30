@@ -1,11 +1,13 @@
 <%# empty line %>
   // DNSSEC
-<% if $dnssec_enable { -%>
-  dnssec-enable     yes;
-  dnssec-validation auto;
-  dnssec-lookaside  no;
-<% } else { -%>
-  dnssec-enable     no;
+<% if ($dnssec_enable =~ NotUndef) { -%>
+  dnssec-enable     <%= bool2str($dnssec_enable, 'yes', 'no') %>;
+<% } -%>
+<% if ($dnssec_validation =~ NotUndef) { -%>
+  dnssec-validation <%= $dnssec_validation %>;
+<% } -%>
+<% if ($dnssec_lookaside =~ NotUndef) { -%>
+  dnssec-lookaside  <%= bool2str($dnssec_lookaside, 'yes', 'no') %>;
 <% } -%>
 <% if $report_hostname { -%>
 
