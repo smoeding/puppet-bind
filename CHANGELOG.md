@@ -1,3 +1,11 @@
+## 2021-11-30 - Release 0.4.0
+
+### Feature
+
+- Add explicit class parameter `dnssec_lookaside`.
+- Add explicit class parameter `dnssec_validation`.
+- The parameters `dnssec_enable` and `dnssec_lookaside` are obsolete with Bind 9.16.0 or later. They will be removed from the configuration file when a applicable Bind version is detected.
+
 ## 2021-08-29 - Release 0.3.1
 
 ### Enhancements
