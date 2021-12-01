@@ -20,13 +20,35 @@
 # @param inline_signing
 #   Enable inline signing for the zone.
 #
+# @param also_notify
+#   Secondary servers that should be notified in addition to the
+#   nameservers that are listed in the zone file.
+#
 # @param auto_dnssec
 #   How to sign and resign the DNSSEC zone. Can be one of `allow`, `maintain`
 #   or `off`.
 #
-# @param also_notify
-#   Secondary servers that should be notified in addition to the
-#   nameservers that are listed in the zone file.
+# @param dnssec_policy
+#   The name of the DNSSEC policy to use for this zone.
+#
+# @param dnssec_loadkeys_interval
+#   The time interval after which key are checked if `auto_dnssec` is set to
+#   `maintain`. The value is in minutes.
+#
+# @param dnssec_dnskey_kskonly
+#   Should only key-signing keys be used to to sign the DNSKEY, CDNSKEY and
+#   CDSRRsets.
+#
+# @param dnssec_secure_to_insecure
+#   Should the zone be allowed to got from signed to unsinged.
+#
+# @param dnssec_update_mode
+#   Should RRSIG records be regenerated automatically (mode `maintain`) or
+#   not (mode `no-resign`) for a zone which allows dynamic updates.
+#
+# @param dnskey_sig_validity
+#   The number of days after which the signatures for generated DNSKEY RRsets
+#   expire.
 #
 # @param notify_secondaries
 #   Should NOTIFY messages be sent out to the name servers defined in the NS
@@ -53,20 +75,26 @@
 #
 #
 define bind::zone::primary (
-  Boolean                            $dnssec             = false,
-  Boolean                            $inline_signing     = false,
-  Bind::Auto_dnssec                  $auto_dnssec        = 'off',
-  Array[String]                      $also_notify        = [],
-  Optional[Bind::Notify_secondaries] $notify_secondaries = undef,
-  Optional[String]                   $view               = undef,
-  Optional[String]                   $file               = undef,
-  Optional[String]                   $source             = undef,
-  Optional[String]                   $content            = undef,
-  Optional[Boolean]                  $zone_statistics    = undef,
-  Optional[String]                   $comment            = undef,
-  String                             $zone               = $name,
-  Bind::Zone::Class                  $class              = 'IN',
-  String                             $order              = '20',
+  Boolean                            $dnssec                    = false,
+  Boolean                            $inline_signing            = false,
+  Array[String]                      $also_notify               = [],
+  Bind::Auto_dnssec                  $auto_dnssec               = 'off',
+  Optional[String]                   $dnssec_policy             = undef,
+  Optional[Integer]                  $dnssec_loadkeys_interval  = undef,
+  Optional[Boolean]                  $dnssec_dnskey_kskonly     = undef,
+  Optional[Boolean]                  $dnssec_secure_to_insecure = undef,
+  Optional[Bind::DNSSEC::Updatemode] $dnssec_update_mode        = undef,
+  Optional[Integer]                  $dnskey_sig_validity       = undef,
+  Optional[Bind::Notify_secondaries] $notify_secondaries        = undef,
+  Optional[String]                   $view                      = undef,
+  Optional[String]                   $file                      = undef,
+  Optional[String]                   $source                    = undef,
+  Optional[String]                   $content                   = undef,
+  Optional[Boolean]                  $zone_statistics           = undef,
+  Optional[String]                   $comment                   = undef,
+  String                             $zone                      = $name,
+  Bind::Zone::Class                  $class                     = 'IN',
+  String                             $order                     = '20',
 ) {
   $zonebase = "${::bind::vardir}/primary"
 
@@ -144,19 +172,25 @@ define bind::zone::primary (
   }
 
   $params = {
-    'zone'           => $zone,
-    'file'           => $zonefile,
-    'also_notify'    => $also_notify,
-    'notify'         => $notify_secondaries,
-    'dnssec'         => $dnssec,
-    'auto_dnssec'    => $auto_dnssec,
-    'inline_signing' => $inline_signing,
-    'key_directory'  => "${::bind::confdir}/keys",
-    'statistics'     => $zone_statistics,
-    'class'          => $class,
-    'comment'        => $comment,
-    'indent'         => bool2str($::bind::views_enable, '  ', ''),
-    'zone_in_view'   => ($view =~ NotUndef),
+    'zone'                => $zone,
+    'file'                => $zonefile,
+    'dnssec'              => $dnssec,
+    'inline_signing'      => $inline_signing,
+    'also_notify'         => $also_notify,
+    'auto_dnssec'         => $auto_dnssec,
+    'policy'              => $dnssec_policy,
+    'loadkeys_interval'   => $dnssec_loadkeys_interval,
+    'kskonly'             => $dnssec_dnskey_kskonly,
+    'secure_to_insecure'  => $dnssec_secure_to_insecure,
+    'update_mode'         => $dnssec_update_mode,
+    'dnskey_sig_validity' => $dnskey_sig_validity,
+    'notify'              => $notify_secondaries,
+    'key_directory'       => "${::bind::confdir}/keys",
+    'statistics'          => $zone_statistics,
+    'class'               => $class,
+    'comment'             => $comment,
+    'indent'              => bool2str($::bind::views_enable, '  ', ''),
+    'zone_in_view'        => ($view =~ NotUndef),
   }
 
   if $::bind::views_enable {

@@ -22,6 +22,24 @@
 <% unless $zone_in_view { -%>
 <%= $indent %>  dnssec-enable  <%= bool2str($dnssec, 'yes', 'no') -%>;
 <% } -%>
+<% if $policy { -%>
+<%= $indent %>  dnssec-policy  "<%= $policy -%>";
+<% } -%>
+<% if $loadkeys_interval { -%>
+<%= $indent %>  dnssec-loadkeys-interval  <%= $loadkeys_interval -%>;
+<% } -%>
+<% if $kskonly { -%>
+<%= $indent %>  dnssec-dnskey-kskonly     <%= bool2str($kskonly, 'yes', 'no') -%>;
+<% } -%>
+<% if $secure_to_insecure { -%>
+<%= $indent %>  dnssec-secure-to-insecure <%= bool2str($secure_to_insecure, 'yes', 'no') -%>;
+<% } -%>
+<% if $update_mode { -%>
+<%= $indent %>  dnssec-update-mode        <%= $update_mode -%>;
+<% } -%>
+<% if $dnskey_sig_validity { -%>
+<%= $indent %>  dnskey-sig-validity       <%= $dnskey_sig_validity -%>;
+<% } -%>
 <%= $indent %>  auto-dnssec    <%= $auto_dnssec -%>;
 <%= $indent %>  inline-signing <%= bool2str($inline_signing, 'yes', 'no') -%>;
 <%= $indent %>  key-directory  "<%= $key_directory -%>";

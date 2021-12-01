@@ -167,6 +167,120 @@ describe 'bind::zone::primary' do
         }
       end
 
+      context 'with source => "/file", dnssec => true, dnssec_policy => "foo"' do
+        let(:params) do
+          { source: '/file', dnssec: true, dnssec_policy: 'foo' }
+        end
+
+        it {
+          is_expected.to contain_file('/var/lib/bind/primary/com')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+
+          is_expected.to contain_exec('bind::reload::example.com')
+
+          is_expected.to contain_concat__fragment('named.conf.zones-example.com')
+            .with_target('named.conf.zones')
+            .with_order('20')
+            .with_content(%r{dnssec-policy\s+"foo";})
+        }
+      end
+
+      context 'with source => "/file", dnssec => true, dnssec_loadkeys_interval => 42' do
+        let(:params) do
+          { source: '/file', dnssec: true, dnssec_loadkeys_interval: 42 }
+        end
+
+        it {
+          is_expected.to contain_file('/var/lib/bind/primary/com')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+
+          is_expected.to contain_exec('bind::reload::example.com')
+
+          is_expected.to contain_concat__fragment('named.conf.zones-example.com')
+            .with_target('named.conf.zones')
+            .with_order('20')
+            .with_content(%r{dnssec-loadkeys-interval\s+42;})
+        }
+      end
+
+      context 'with source => "/file", dnssec => true, dnssec_dnskey_kskonly => true' do
+        let(:params) do
+          { source: '/file', dnssec: true, dnssec_dnskey_kskonly: true }
+        end
+
+        it {
+          is_expected.to contain_file('/var/lib/bind/primary/com')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+
+          is_expected.to contain_exec('bind::reload::example.com')
+
+          is_expected.to contain_concat__fragment('named.conf.zones-example.com')
+            .with_target('named.conf.zones')
+            .with_order('20')
+            .with_content(%r{dnssec-dnskey-kskonly\s+yes;})
+        }
+      end
+
+      context 'with source => "/file", dnssec => true, dnssec_secure_to_insecure => true' do
+        let(:params) do
+          { source: '/file', dnssec: true, dnssec_secure_to_insecure: true }
+        end
+
+        it {
+          is_expected.to contain_file('/var/lib/bind/primary/com')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+
+          is_expected.to contain_exec('bind::reload::example.com')
+
+          is_expected.to contain_concat__fragment('named.conf.zones-example.com')
+            .with_target('named.conf.zones')
+            .with_order('20')
+            .with_content(%r{dnssec-secure-to-insecure\s+yes;})
+        }
+      end
+
+      context 'with source => "/file", dnssec => true, dnssec_update_mode => "maintain"' do
+        let(:params) do
+          { source: '/file', dnssec: true, dnssec_update_mode: 'maintain' }
+        end
+
+        it {
+          is_expected.to contain_file('/var/lib/bind/primary/com')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+
+          is_expected.to contain_exec('bind::reload::example.com')
+
+          is_expected.to contain_concat__fragment('named.conf.zones-example.com')
+            .with_target('named.conf.zones')
+            .with_order('20')
+            .with_content(%r{dnssec-update-mode\s+maintain;})
+        }
+      end
+
+      context 'with source => "/file", dnssec => true, dnskey_sig_validity => 42' do
+        let(:params) do
+          { source: '/file', dnssec: true, dnskey_sig_validity: 42 }
+        end
+
+        it {
+          is_expected.to contain_file('/var/lib/bind/primary/com')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+
+          is_expected.to contain_exec('bind::reload::example.com')
+
+          is_expected.to contain_concat__fragment('named.conf.zones-example.com')
+            .with_target('named.conf.zones')
+            .with_order('20')
+            .with_content(%r{dnskey-sig-validity\s+42;})
+        }
+      end
+
       context 'with source => "/file", dnssec => true, inline_signing => true' do
         let(:params) do
           { source: '/file', dnssec: true, inline_signing: true }
