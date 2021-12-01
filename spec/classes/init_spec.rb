@@ -144,6 +144,14 @@ describe 'bind' do
           }
 
           #
+          # DNSSEC policies
+          #
+
+          it {
+            is_expected.not_to contain_concat('named.conf.policies')
+          }
+
+          #
           # Zones
           #
 
@@ -693,6 +701,27 @@ describe 'bind' do
             .with_target('named.conf.options')
             .with_order('75')
             .with_content("\n  // DNSSEC\n  dnssec-validation auto;\n\n  key-directory \"/etc/bind/keys\";\n\n  auth-nxdomain no;\n")
+        }
+
+        #
+        # DNSSEC policies
+        #
+
+        it {
+          is_expected.to contain_bind__config('named.conf')
+            .with_content(%r{named.conf.policies})
+        }
+
+        it {
+          is_expected.to contain_concat('named.conf.policies')
+            .with_path('/etc/bind/named.conf.policies')
+            .with_owner('root')
+            .with_group('bind')
+            .with_mode('0640')
+            .with_ensure_newline(true)
+            .with_warn('// This file is managed by Puppet. DO NOT EDIT.')
+            .that_requires('File[/etc/bind]')
+            .that_notifies('Service[bind]')
         }
       end
     end

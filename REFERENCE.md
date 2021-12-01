@@ -16,6 +16,7 @@
 * [`bind::acl`](#bindacl): Manage ACL entries
 * [`bind::controls::inet`](#bindcontrolsinet): Manage an inet control channel
 * [`bind::controls::unix`](#bindcontrolsunix): Manage a unix control channel
+* [`bind::dnssec_policy`](#binddnssec_policy): Define a key and signing policy for zones
 * [`bind::key`](#bindkey): Manage secret keys
 * [`bind::listen_on`](#bindlisten_on): Manage listen-on option clause
 * [`bind::listen_on_v6`](#bindlisten_on_v6): Manage listen-on-v6 option clause
@@ -50,9 +51,11 @@
 * [`Bind::AddressMatchList`](#bindaddressmatchlist): Type to match allowed values for an address match list
 * [`Bind::Auto_dnssec`](#bindauto_dnssec): Type to match allowed values for the auto-dnssec option
 * [`Bind::DNSSECValidation`](#binddnssecvalidation): Type to match allowed values for the dnssec-validation option
+* [`Bind::Duration`](#bindduration): Type to match ISO8601 durations
 * [`Bind::Filter_aaaa_on_v4`](#bindfilter_aaaa_on_v4): Type to match allowed values for the filter-aaaa-on-v4 option
 * [`Bind::Forward`](#bindforward): Type to match allowed values for the forward option
 * [`Bind::Key::Algorithm`](#bindkeyalgorithm): Type to match allowed values for the key algorithm
+* [`Bind::Key::Lifetime`](#bindkeylifetime): Type to match allowed values for the key lifetime
 * [`Bind::Notify_secondaries`](#bindnotify_secondaries): Type to match allowed values for the notify option
 * [`Bind::Syslog::Facility`](#bindsyslogfacility): Type to match allowed values for the syslog facility
 * [`Bind::Syslog::Severity`](#bindsyslogseverity): Type to match allowed values for the syslog severity
@@ -937,6 +940,257 @@ Data type: `Stdlib::AbsolutePath`
 The file path of the unix control socket to create.
 
 Default value: `$name`
+
+### <a name="binddnssec_policy"></a>`bind::dnssec_policy`
+
+Define a key and signing policy for zones
+
+#### Examples
+
+##### Create a DNSSEC policy
+
+```puppet
+
+bind::dnssec_policy { 'foo':
+  nsec3_enable => true,
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `bind::dnssec_policy` defined type:
+
+* [`policy`](#policy)
+* [`nsec3_enable`](#nsec3_enable)
+* [`nsec3param_iterations`](#nsec3param_iterations)
+* [`nsec3param_optout`](#nsec3param_optout)
+* [`nsec3param_salt_length`](#nsec3param_salt_length)
+* [`dnskey_ttl`](#dnskey_ttl)
+* [`purge_keys`](#purge_keys)
+* [`publish_safety`](#publish_safety)
+* [`retire_safety`](#retire_safety)
+* [`signatures_refresh`](#signatures_refresh)
+* [`signatures_validity`](#signatures_validity)
+* [`signatures_validity_dnskey`](#signatures_validity_dnskey)
+* [`max_zone_ttl`](#max_zone_ttl)
+* [`zone_propagation_delay`](#zone_propagation_delay)
+* [`parent_ds_ttl`](#parent_ds_ttl)
+* [`parent_propagation_delay`](#parent_propagation_delay)
+* [`csk_lifetime`](#csk_lifetime)
+* [`csk_algorithm`](#csk_algorithm)
+* [`csk_keysize`](#csk_keysize)
+* [`ksk_lifetime`](#ksk_lifetime)
+* [`ksk_algorithm`](#ksk_algorithm)
+* [`ksk_keysize`](#ksk_keysize)
+* [`zsk_lifetime`](#zsk_lifetime)
+* [`zsk_algorithm`](#zsk_algorithm)
+* [`zsk_keysize`](#zsk_keysize)
+
+##### <a name="policy"></a>`policy`
+
+Data type: `String`
+
+The name of the policy.
+
+Default value: `$name`
+
+##### <a name="nsec3_enable"></a>`nsec3_enable`
+
+Data type: `Boolean`
+
+Should NSEC3 be used instead of NSEC.
+
+Default value: ``false``
+
+##### <a name="nsec3param_iterations"></a>`nsec3param_iterations`
+
+Data type: `Optional[Integer]`
+
+The number of iterations for NSEC3.
+
+Default value: ``undef``
+
+##### <a name="nsec3param_optout"></a>`nsec3param_optout`
+
+Data type: `Optional[Boolean]`
+
+Set optout for NSEC3.
+
+Default value: ``undef``
+
+##### <a name="nsec3param_salt_length"></a>`nsec3param_salt_length`
+
+Data type: `Optional[Integer]`
+
+The length of the salt for NSEC3. Named creates a salt of the provided
+length.
+
+Default value: ``undef``
+
+##### <a name="dnskey_ttl"></a>`dnskey_ttl`
+
+Data type: `Optional[Bind::Duration]`
+
+The TTL for DNSKEY resource records in ISO8601 format.
+
+Default value: ``undef``
+
+##### <a name="purge_keys"></a>`purge_keys`
+
+Data type: `Optional[Bind::Duration]`
+
+The time in ISO8601 format after which keys will be purged from the
+configuraton after they have been deleted.
+
+Default value: ``undef``
+
+##### <a name="publish_safety"></a>`publish_safety`
+
+Data type: `Optional[Bind::Duration]`
+
+A safety margin in ISO8601 format that is added to the pre-publication
+interval when rollover times are calculated.
+
+Default value: ``undef``
+
+##### <a name="retire_safety"></a>`retire_safety`
+
+Data type: `Optional[Bind::Duration]`
+
+A safety margin in ISO8601 format that is added to the post-publication
+interval when rollover times are calculated.
+
+Default value: ``undef``
+
+##### <a name="signatures_refresh"></a>`signatures_refresh`
+
+Data type: `Optional[Bind::Duration]`
+
+The time in ISO8601 format after which RRSIG records are refreshed.
+
+Default value: ``undef``
+
+##### <a name="signatures_validity"></a>`signatures_validity`
+
+Data type: `Optional[Bind::Duration]`
+
+The time in ISO8601 format that an RRSIG record is valid.
+
+Default value: ``undef``
+
+##### <a name="signatures_validity_dnskey"></a>`signatures_validity_dnskey`
+
+Data type: `Optional[Bind::Duration]`
+
+The time in ISO8601 format that an DNSKEY record is valid.
+
+Default value: ``undef``
+
+##### <a name="max_zone_ttl"></a>`max_zone_ttl`
+
+Data type: `Optional[Bind::Duration]`
+
+The maximum TTL in ISO8601 format allowed for the zone.
+
+Default value: ``undef``
+
+##### <a name="zone_propagation_delay"></a>`zone_propagation_delay`
+
+Data type: `Optional[Bind::Duration]`
+
+The expected propagation delay in ISO8601 format between updating a zone
+and all secondary servers catching up with the change.
+
+Default value: ``undef``
+
+##### <a name="parent_ds_ttl"></a>`parent_ds_ttl`
+
+Data type: `Optional[Bind::Duration]`
+
+The TTL of the DS RRSET of the parent zone in ISO8601 format .
+
+Default value: ``undef``
+
+##### <a name="parent_propagation_delay"></a>`parent_propagation_delay`
+
+Data type: `Optional[Bind::Duration]`
+
+The expected propagation delay in ISO8601 format between a parent zone
+update and all secondary servers catching up with the change.
+
+Default value: ``undef``
+
+##### <a name="csk_lifetime"></a>`csk_lifetime`
+
+Data type: `Optional[Bind::Key::Lifetime]`
+
+The lifetime in ISO8601 format of a CSK key.
+
+Default value: ``undef``
+
+##### <a name="csk_algorithm"></a>`csk_algorithm`
+
+Data type: `Optional[Bind::Key::Algorithm]`
+
+The algorithm used to generate the CSK key.
+
+Default value: ``undef``
+
+##### <a name="csk_keysize"></a>`csk_keysize`
+
+Data type: `Optional[Integer]`
+
+The keysize used to generate the CSK key.
+
+Default value: ``undef``
+
+##### <a name="ksk_lifetime"></a>`ksk_lifetime`
+
+Data type: `Optional[Bind::Key::Lifetime]`
+
+The lifetime in ISO8601 format of a KSK key.
+
+Default value: ``undef``
+
+##### <a name="ksk_algorithm"></a>`ksk_algorithm`
+
+Data type: `Optional[Bind::Key::Algorithm]`
+
+The algorithm used to generate the KSK key.
+
+Default value: ``undef``
+
+##### <a name="ksk_keysize"></a>`ksk_keysize`
+
+Data type: `Optional[Integer]`
+
+The keysize used to generate the KSK key.
+
+Default value: ``undef``
+
+##### <a name="zsk_lifetime"></a>`zsk_lifetime`
+
+Data type: `Optional[Bind::Key::Lifetime]`
+
+The lifetime in ISO8601 format of a ZSK key.
+
+Default value: ``undef``
+
+##### <a name="zsk_algorithm"></a>`zsk_algorithm`
+
+Data type: `Optional[Bind::Key::Algorithm]`
+
+The algorithm used to generate the ZSK key.
+
+Default value: ``undef``
+
+##### <a name="zsk_keysize"></a>`zsk_keysize`
+
+Data type: `Optional[Integer]`
+
+The keysize used to generate the ZSK key.
+
+Default value: ``undef``
 
 ### <a name="bindkey"></a>`bind::key`
 
@@ -2667,6 +2921,16 @@ Alias of
 Enum['yes', 'no', 'auto']
 ```
 
+### <a name="bindduration"></a>`Bind::Duration`
+
+Type to match ISO8601 durations
+
+Alias of
+
+```puppet
+Pattern[/^(-?)P(?=\d|T\d)(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)([DW]))?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?)?$/]
+```
+
 ### <a name="bindfilter_aaaa_on_v4"></a>`Bind::Filter_aaaa_on_v4`
 
 Type to match allowed values for the filter-aaaa-on-v4 option
@@ -2695,6 +2959,16 @@ Alias of
 
 ```puppet
 Enum['hmac-md5', 'hmac-sha1', 'hmac-sha224', 'hmac-sha256', 'hmac-sha384', 'hmac-sha512']
+```
+
+### <a name="bindkeylifetime"></a>`Bind::Key::Lifetime`
+
+Type to match allowed values for the key lifetime
+
+Alias of
+
+```puppet
+Variant[Bind::Duration, Enum['unlimited']]
 ```
 
 ### <a name="bindnotify_secondaries"></a>`Bind::Notify_secondaries`

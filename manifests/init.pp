@@ -287,6 +287,8 @@ class bind (
     default => undef,
   }
 
+  $dnssec_policy_available = (versioncmp($version, '9.16.0') >= 0)
+
   #
   # Package
   #
@@ -432,6 +434,23 @@ class bind (
     warn           => $header_message,
     require        => File[$confdir],
     notify         => Service['bind'],
+  }
+
+  #
+  # DNSSEC policies
+  #
+
+  if $dnssec_policy_available {
+    concat { 'named.conf.policies':
+      path           => "${confdir}/named.conf.policies",
+      owner          => 'root',
+      group          => $bind_group,
+      mode           => '0640',
+      ensure_newline => true,
+      warn           => $header_message,
+      require        => File[$confdir],
+      notify         => Service['bind'],
+    }
   }
 
   #
@@ -639,8 +658,9 @@ class bind (
   #
 
   $config = {
-    'confdir'      => $confdir,
-    'views_enable' => $views_enable,
+    'confdir'                 => $confdir,
+    'views_enable'            => $views_enable,
+    'dnssec_policy_available' => $dnssec_policy_available,
   }
 
   bind::config { 'named.conf':

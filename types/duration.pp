@@ -1,0 +1,2 @@
+# Type to match ISO8601 durations
+type Bind::Duration = Pattern[/^(-?)P(?=\d|T\d)(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)([DW]))?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?)?$/]
