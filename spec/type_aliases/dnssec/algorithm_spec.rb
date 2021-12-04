@@ -3,9 +3,22 @@
 require 'spec_helper'
 
 if Puppet::Util::Package.versioncmp(Puppet.version, '4.5.0') >= 0
-  describe 'Bind::DNSSEC::Validation' do
+  describe 'Bind::DNSSEC::Algorithm' do
     describe 'valid handling' do
-      ['maintain', 'no-resign'].each do |value|
+      [
+        'dsa',
+        'eccgost',
+        'ecdsap256sha256',
+        'ecdsap384sha384',
+        'ed25519',
+        'ed448',
+        'nsec3dsa',
+        'nsec3rsasha1',
+        'rsamd5',
+        'rsasha1',
+        'rsasha256',
+        'rsasha512',
+      ].each do |value|
         describe value.inspect do
           it { is_expected.to allow_value(value) }
         end

@@ -213,37 +213,37 @@ describe 'bind::dnssec_policy' do
 
       context 'with CSK key' do
         let(:params) do
-          { csk_lifetime: 'P1Y', csk_algorithm: 'hmac-sha512', csk_keysize: 1 }
+          { csk_lifetime: 'P1Y', csk_algorithm: 'rsasha512', csk_keysize: 1 }
         end
 
         it {
           is_expected.to contain_concat__fragment('named.conf.policies-foo')
             .with_target('named.conf.policies')
-            .with_content(%r{^    csk lifetime P1Y algorithm hmac-sha512 1;})
+            .with_content(%r{^    csk lifetime P1Y algorithm rsasha512 1;})
         }
       end
 
       context 'with KSK key' do
         let(:params) do
-          { ksk_lifetime: 'P1Y', ksk_algorithm: 'hmac-sha512', ksk_keysize: 1 }
+          { ksk_lifetime: 'P1Y', ksk_algorithm: 'rsasha512', ksk_keysize: 1 }
         end
 
         it {
           is_expected.to contain_concat__fragment('named.conf.policies-foo')
             .with_target('named.conf.policies')
-            .with_content(%r{^    ksk lifetime P1Y algorithm hmac-sha512 1;})
+            .with_content(%r{^    ksk lifetime P1Y algorithm rsasha512 1;})
         }
       end
 
       context 'with ZSK key' do
         let(:params) do
-          { zsk_lifetime: 'P1Y', zsk_algorithm: 'hmac-sha512', zsk_keysize: 1 }
+          { zsk_lifetime: 'P1Y', zsk_algorithm: 'rsasha512', zsk_keysize: 1 }
         end
 
         it {
           is_expected.to contain_concat__fragment('named.conf.policies-foo')
             .with_target('named.conf.policies')
-            .with_content(%r{^    zsk lifetime P1Y algorithm hmac-sha512 1;})
+            .with_content(%r{^    zsk lifetime P1Y algorithm rsasha512 1;})
         }
       end
     end
