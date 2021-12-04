@@ -8,7 +8,7 @@ dnssec-policy "<%= $policy -%>" {
 <% $keys.each |$key| { -%>
     <%= $key %>;
 <% } -%>
-  }
+  };
 <% } -%>
 <% if $max_zone_ttl { -%>
   max-zone-ttl <%= $max_zone_ttl %>;
