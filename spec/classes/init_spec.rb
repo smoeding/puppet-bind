@@ -63,7 +63,7 @@ describe 'bind' do
           it {
             is_expected.to contain_file('/etc/bind/keys')
               .with_ensure('directory')
-              .with_owner('root')
+              .with_owner('bind')
               .with_group('bind')
               .with_mode('0750')
 
