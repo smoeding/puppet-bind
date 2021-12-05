@@ -63,9 +63,9 @@ describe 'bind' do
           it {
             is_expected.to contain_file('/etc/bind/keys')
               .with_ensure('directory')
-              .with_owner('bind')
+              .with_owner('root')
               .with_group('bind')
-              .with_mode('0750')
+              .with_mode('0770')
 
             is_expected.to contain_concat('named.conf.keys')
               .with_path('/etc/bind/named.conf.keys')

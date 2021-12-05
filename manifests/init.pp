@@ -352,9 +352,9 @@ class bind (
 
   file { "${confdir}/keys":
     ensure => directory,
-    owner  => $bind_user,
+    owner  => 'root',
     group  => $bind_group,
-    mode   => '0750',
+    mode   => '0770',
   }
 
   concat { 'named.conf.keys':
