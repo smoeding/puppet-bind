@@ -1,8 +1,5 @@
 <%# empty line %>
 dnssec-policy "<%= $policy -%>" {
-<% if $dnskey_ttl { -%>
-  dnskey-ttl <%= $dnskey_ttl %>;
-<% } -%>
 <% unless empty($keys) { -%>
   keys {
 <% $keys.each |$key| { -%>
@@ -10,27 +7,26 @@ dnssec-policy "<%= $policy -%>" {
 <% } -%>
   };
 <% } -%>
-<% if $max_zone_ttl { -%>
-  max-zone-ttl <%= $max_zone_ttl %>;
-<% } -%>
 <% if $nsec3_enable { -%>
   nsec3param<%= $nsec3param %>;
 <% } -%>
-<% if $parent_ds_ttl { -%>
-  parent-ds-ttl <%= $parent_ds_ttl %>;
-<% } -%>
-<% if $parent_propagation_delay { -%>
-  parent-propagation-delay <%= $parent_propagation_delay %>;
+<% if ($dnskey_ttl or $publish_safety or $retire_safety or $purge_keys) { -%>
+  // Key timings
+<% if $dnskey_ttl { -%>
+  dnskey-ttl <%= $dnskey_ttl %>;
 <% } -%>
 <% if $publish_safety { -%>
   publish-safety <%= $publish_safety %>;
 <% } -%>
-<% if $purge_keys { -%>
-  purge-keys <%= $purge_keys %>;
-<% } -%>
 <% if $retire_safety { -%>
   retire-safety <%= $retire_safety %>;
 <% } -%>
+<% if $purge_keys { -%>
+  purge-keys <%= $purge_keys %>;
+<% } -%>
+<% } -%>
+<% if ($signatures_refresh or $signatures_validity or $signatures_validity_dnskey) { -%>
+  // Signature timings
 <% if $signatures_refresh { -%>
   signatures-refresh <%= $signatures_refresh %>;
 <% } -%>
@@ -40,7 +36,20 @@ dnssec-policy "<%= $policy -%>" {
 <% if $signatures_validity_dnskey { -%>
   signatures-validity-dnskey <%= $signatures_validity_dnskey %>;
 <% } -%>
+<% } -%>
+<% if ($max_zone_ttl or $zone_propagation_delay or $parent_ds_ttl or $parent_propagation_delay) { -%>
+  // Zone parameters
+<% if $max_zone_ttl { -%>
+  max-zone-ttl <%= $max_zone_ttl %>;
+<% } -%>
 <% if $zone_propagation_delay { -%>
   zone-propagation-delay <%= $zone_propagation_delay %>;
+<% } -%>
+<% if $parent_ds_ttl { -%>
+  parent-ds-ttl <%= $parent_ds_ttl %>;
+<% } -%>
+<% if $parent_propagation_delay { -%>
+  parent-propagation-delay <%= $parent_propagation_delay %>;
+<% } -%>
 <% } -%>
 };
