@@ -498,6 +498,17 @@ describe 'bind' do
         }
       end
 
+      context 'with trust_anchor_telemetry => false' do
+        let(:params) do
+          { trust_anchor_telemetry: false }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_content(%r{trust-anchor-telemetry\s+no;})
+        }
+      end
+
       context 'with listen_on => ["any"]' do
         let(:params) do
           { listen_on: ['any'] }

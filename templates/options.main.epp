@@ -9,6 +9,9 @@
 <% if ($dnssec_lookaside =~ NotUndef) { -%>
   dnssec-lookaside  <%= bool2str($dnssec_lookaside, 'yes', 'no') %>;
 <% } -%>
+<% if ($trust_anchor_telemetry =~ NotUndef) { -%>
+  trust-anchor-telemetry <%= bool2str($trust_anchor_telemetry, 'yes', 'no') %>;
+<% } -%>
 <% if $report_hostname { -%>
 
   // hide hostname

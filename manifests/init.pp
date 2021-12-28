@@ -265,6 +265,7 @@ class bind (
   Optional[String]         $report_hostname          = undef,
   Optional[String]         $report_version           = undef,
   Optional[Boolean]        $querylog_enable          = undef,
+  Optional[Boolean]        $trust_anchor_telemetry   = undef,
 ) {
 
   $header_message = '// This file is managed by Puppet. DO NOT EDIT.'
@@ -479,23 +480,24 @@ class bind (
   #
 
   $options = {
-    'vardir'             => $vardir,
-    'confdir'            => $confdir,
-    'cachedir'           => $cachedir,
-    'report_hostname'    => $report_hostname,
-    'report_version'     => $report_version,
-    'servfail_ttl'       => $servfail_ttl,
-    'min_cache_ttl'      => $min_cache_ttl,
-    'max_cache_ttl'      => $max_cache_ttl,
-    'min_ncache_ttl'     => $min_ncache_ttl,
-    'max_ncache_ttl'     => $max_ncache_ttl,
-    'max_cache_size'     => $max_cache_size,
-    'filter_aaaa_on_v4'  => $_filter_aaaa_on_v4,
-    'querylog_enable'    => $querylog_enable,
-    'dnssec_enable'      => $_dnssec_enable,
-    'dnssec_lookaside'   => $_dnssec_lookaside,
-    'dnssec_validation'  => $dnssec_validation,
-    'empty_zones_enable' => $empty_zones_enable,
+    'vardir'                 => $vardir,
+    'confdir'                => $confdir,
+    'cachedir'               => $cachedir,
+    'report_hostname'        => $report_hostname,
+    'report_version'         => $report_version,
+    'servfail_ttl'           => $servfail_ttl,
+    'min_cache_ttl'          => $min_cache_ttl,
+    'max_cache_ttl'          => $max_cache_ttl,
+    'min_ncache_ttl'         => $min_ncache_ttl,
+    'max_ncache_ttl'         => $max_ncache_ttl,
+    'max_cache_size'         => $max_cache_size,
+    'filter_aaaa_on_v4'      => $_filter_aaaa_on_v4,
+    'querylog_enable'        => $querylog_enable,
+    'dnssec_enable'          => $_dnssec_enable,
+    'dnssec_lookaside'       => $_dnssec_lookaside,
+    'dnssec_validation'      => $dnssec_validation,
+    'trust_anchor_telemetry' => $trust_anchor_telemetry,
+    'empty_zones_enable'     => $empty_zones_enable,
   }
 
   concat { 'named.conf.options':
