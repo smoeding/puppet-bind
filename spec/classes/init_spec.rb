@@ -690,6 +690,45 @@ describe 'bind' do
             .with_content("  foo {\n    bar baz;\n  };\n")
         }
       end
+
+      context 'with filter_aaaa_on_v4 => yes' do
+        let(:params) do
+          { filter_aaaa_on_v4: 'yes' }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_target('named.conf.options')
+            .with_order('75')
+            .with_content(%r{filter-aaaa-on-v4 yes;})
+        }
+      end
+
+      context 'with filter_aaaa_on_v4 => no' do
+        let(:params) do
+          { filter_aaaa_on_v4: 'no' }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_target('named.conf.options')
+            .with_order('75')
+            .with_content(%r{filter-aaaa-on-v4 no;})
+        }
+      end
+
+      context 'with filter_aaaa_on_v4 => break-dnssec' do
+        let(:params) do
+          { filter_aaaa_on_v4: 'break-dnssec' }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_target('named.conf.options')
+            .with_order('75')
+            .with_content(%r{filter-aaaa-on-v4 break-dnssec;})
+        }
+      end
     end
 
     context "on #{os} with bind 9.16.0" do
@@ -722,6 +761,45 @@ describe 'bind' do
             .with_warn('// This file is managed by Puppet. DO NOT EDIT.')
             .that_requires('File[/etc/bind]')
             .that_notifies('Service[bind]')
+        }
+      end
+
+      context 'with filter_aaaa_on_v4 => yes' do
+        let(:params) do
+          { filter_aaaa_on_v4: 'yes' }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_target('named.conf.options')
+            .with_order('75')
+            .without_content(%r{filter-aaaa-on-v4})
+        }
+      end
+
+      context 'with filter_aaaa_on_v4 => no' do
+        let(:params) do
+          { filter_aaaa_on_v4: 'no' }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_target('named.conf.options')
+            .with_order('75')
+            .without_content(%r{filter-aaaa-on-v4})
+        }
+      end
+
+      context 'with filter_aaaa_on_v4 => break-dnssec' do
+        let(:params) do
+          { filter_aaaa_on_v4: 'break-dnssec' }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_target('named.conf.options')
+            .with_order('75')
+            .without_content(%r{filter-aaaa-on-v4})
         }
       end
     end

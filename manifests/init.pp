@@ -155,7 +155,8 @@
 #   used. If this is set to `yes` then it does not apply if the queried zone
 #   is DNSSEC-signed. Setting this parameter to `break-dnssec` will also omit
 #   DNSSEC related RRs if AAAA records are filtered. Valid options: `no`,
-#   `yes`, `break-dnssec`.
+#   `yes`, `break-dnssec`. This parameter is ignored for Bind 9.16.0 or
+#   later.
 #
 # @param max_cache_size
 #   The maximum number of bytes to use for the server's cache. If views are
@@ -249,7 +250,6 @@ class bind (
   String                   $localhost_forward_source = "puppet:///modules/${module_name}/zones/db.localhost",
   Boolean                  $localhost_reverse_enable = true,
   String                   $localhost_reverse_source = "puppet:///modules/${module_name}/zones/db.127",
-  Bind::Filter_aaaa_on_v4  $filter_aaaa_on_v4        = 'no',
   Integer                  $max_cache_size           = 0,
   Integer                  $min_cache_ttl            = 0,
   Integer                  $max_cache_ttl            = 0,
@@ -261,6 +261,7 @@ class bind (
   Stdlib::Ensure::Service  $service_ensure           = 'running',
   Boolean                  $service_enable           = true,
   Boolean                  $manage_rndc_keyfile      = true,
+  Bind::Filter_aaaa_on_v4  $filter_aaaa_on_v4        = undef,
   Optional[String]         $report_hostname          = undef,
   Optional[String]         $report_version           = undef,
   Optional[Boolean]        $querylog_enable          = undef,
@@ -275,6 +276,11 @@ class bind (
   $version = ('named_version' in $facts) ? {
     true    => $facts['named_version'],
     default => '4.9.3',
+  }
+
+  $_filter_aaaa_on_v4 = (versioncmp($version, '9.16.0') < 0) ? {
+    true  => $filter_aaaa_on_v4,
+    false => undef,
   }
 
   $_dnssec_enable = (versioncmp($version, '9.16.0') < 0) ? {
@@ -484,7 +490,7 @@ class bind (
     'min_ncache_ttl'     => $min_ncache_ttl,
     'max_ncache_ttl'     => $max_ncache_ttl,
     'max_cache_size'     => $max_cache_size,
-    'filter_aaaa_on_v4'  => $filter_aaaa_on_v4,
+    'filter_aaaa_on_v4'  => $_filter_aaaa_on_v4,
     'querylog_enable'    => $querylog_enable,
     'dnssec_enable'      => $_dnssec_enable,
     'dnssec_lookaside'   => $_dnssec_lookaside,

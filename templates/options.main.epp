@@ -49,9 +49,8 @@
 <% if ($max_cache_size > 0) { -%>
   max-cache-size <%= $max_cache_size -%>;
 <% } -%>
-<% unless ($filter_aaaa_on_v4 == 'no') { -%>
+<% unless ($filter_aaaa_on_v4 =~ Undef) { -%>
 
-  // Remove AAAA records from lookups
   filter-aaaa-on-v4 <%= $filter_aaaa_on_v4 %>;
 <% } -%>
 <%- unless $querylog_enable =~ Undef { -%>
