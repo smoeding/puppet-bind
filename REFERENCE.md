@@ -50,7 +50,9 @@
 
 * [`Bind::AddressMatchList`](#bindaddressmatchlist): Type to match allowed values for an address match list
 * [`Bind::Auto_dnssec`](#bindauto_dnssec): Type to match allowed values for the auto-dnssec option
-* [`Bind::DNSSECValidation`](#binddnssecvalidation): Type to match allowed values for the dnssec-validation option
+* [`Bind::DNSSEC::Algorithm`](#binddnssecalgorithm): Type to match allowed values for DNSSEC key algorithms
+* [`Bind::DNSSEC::Updatemode`](#binddnssecupdatemode): Type to match allowed values for the dnssec-update-mode option
+* [`Bind::DNSSEC::Validation`](#binddnssecvalidation): Type to match allowed values for the dnssec-validation option
 * [`Bind::Duration`](#bindduration): Type to match ISO8601 durations
 * [`Bind::Filter_aaaa_on_v4`](#bindfilter_aaaa_on_v4): Type to match allowed values for the filter-aaaa-on-v4 option
 * [`Bind::Forward`](#bindforward): Type to match allowed values for the forward option
@@ -150,6 +152,7 @@ The following parameters are available in the `bind` class:
 * [`min_ncache_ttl`](#min_ncache_ttl)
 * [`servfail_ttl`](#servfail_ttl)
 * [`querylog_enable`](#querylog_enable)
+* [`trust_anchor_telemetry`](#trust_anchor_telemetry)
 
 ##### <a name="confdir"></a>`confdir`
 
@@ -300,7 +303,7 @@ Default value: ``false``
 
 ##### <a name="dnssec_validation"></a>`dnssec_validation`
 
-Data type: `Bind::DNSSECValidation`
+Data type: `Bind::DNSSEC::Validation`
 
 Should DNSSEC Validation be enabled.
 
@@ -392,9 +395,10 @@ Should AAAA records be omitted from the response if the IPv4 transport is
 used. If this is set to `yes` then it does not apply if the queried zone
 is DNSSEC-signed. Setting this parameter to `break-dnssec` will also omit
 DNSSEC related RRs if AAAA records are filtered. Valid options: `no`,
-`yes`, `break-dnssec`.
+`yes`, `break-dnssec`. This parameter is ignored for Bind 9.16.0 or
+later.
 
-Default value: `'no'`
+Default value: ``undef``
 
 ##### <a name="max_cache_size"></a>`max_cache_size`
 
@@ -585,6 +589,14 @@ Data type: `Integer`
 Default value: `0`
 
 ##### <a name="querylog_enable"></a>`querylog_enable`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: ``undef``
+
+##### <a name="trust_anchor_telemetry"></a>`trust_anchor_telemetry`
 
 Data type: `Optional[Boolean]`
 
@@ -1130,7 +1142,7 @@ Default value: ``undef``
 
 ##### <a name="csk_algorithm"></a>`csk_algorithm`
 
-Data type: `Optional[Bind::Key::Algorithm]`
+Data type: `Optional[Bind::DNSSEC::Algorithm]`
 
 The algorithm used to generate the CSK key.
 
@@ -1154,7 +1166,7 @@ Default value: ``undef``
 
 ##### <a name="ksk_algorithm"></a>`ksk_algorithm`
 
-Data type: `Optional[Bind::Key::Algorithm]`
+Data type: `Optional[Bind::DNSSEC::Algorithm]`
 
 The algorithm used to generate the KSK key.
 
@@ -1178,7 +1190,7 @@ Default value: ``undef``
 
 ##### <a name="zsk_algorithm"></a>`zsk_algorithm`
 
-Data type: `Optional[Bind::Key::Algorithm]`
+Data type: `Optional[Bind::DNSSEC::Algorithm]`
 
 The algorithm used to generate the ZSK key.
 
@@ -1933,8 +1945,8 @@ The following parameters are available in the `bind::zone::forward` defined type
 * [`forwarders`](#forwarders)
 * [`forward`](#forward)
 * [`view`](#view)
-* [`zone`](#zone)
 * [`comment`](#comment)
+* [`zone`](#zone)
 * [`class`](#class)
 * [`order`](#order)
 
@@ -1965,6 +1977,14 @@ are used.
 
 Default value: ``undef``
 
+##### <a name="comment"></a>`comment`
+
+Data type: `Optional[String]`
+
+A comment to add to the zone file.
+
+Default value: ``undef``
+
 ##### <a name="zone"></a>`zone`
 
 Data type: `String`
@@ -1973,19 +1993,11 @@ The name of the zone.
 
 Default value: `$name`
 
-##### <a name="comment"></a>`comment`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
 ##### <a name="class"></a>`class`
 
 Data type: `Bind::Zone::Class`
 
-
+The zone class.
 
 Default value: `'IN'`
 
@@ -1993,7 +2005,7 @@ Default value: `'IN'`
 
 Data type: `String`
 
-
+Zones are ordered by this parameter value in the zone file.
 
 Default value: `'40'`
 
@@ -2016,12 +2028,35 @@ bind::zone::hint { '.':
 
 The following parameters are available in the `bind::zone::hint` defined type:
 
-* [`zone`](#zone)
 * [`file`](#file)
 * [`view`](#view)
 * [`comment`](#comment)
+* [`zone`](#zone)
 * [`class`](#class)
 * [`order`](#order)
+
+##### <a name="file"></a>`file`
+
+Data type: `String`
+
+The filename of the hint file.
+
+##### <a name="view"></a>`view`
+
+Data type: `Optional[String]`
+
+The name of the view that should include this zone. Must be set if views
+are used.
+
+Default value: ``undef``
+
+##### <a name="comment"></a>`comment`
+
+Data type: `Optional[String]`
+
+A comment to add to the zone file.
+
+Default value: ``undef``
 
 ##### <a name="zone"></a>`zone`
 
@@ -2031,33 +2066,11 @@ The name of the zone.
 
 Default value: `$name`
 
-##### <a name="file"></a>`file`
-
-Data type: `String`
-
-
-
-##### <a name="view"></a>`view`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
-##### <a name="comment"></a>`comment`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
 ##### <a name="class"></a>`class`
 
 Data type: `Bind::Zone::Class`
 
-
+The zone class.
 
 Default value: `'IN'`
 
@@ -2065,7 +2078,7 @@ Default value: `'IN'`
 
 Data type: `String`
 
-
+Zones are ordered by this parameter value in the zone file.
 
 Default value: `'10'`
 
@@ -2089,12 +2102,18 @@ bind::zone::in_view { 'example.com':
 
 The following parameters are available in the `bind::zone::in_view` defined type:
 
-* [`view`](#view)
 * [`in_view`](#in_view)
-* [`zone`](#zone)
+* [`view`](#view)
 * [`comment`](#comment)
+* [`zone`](#zone)
 * [`class`](#class)
 * [`order`](#order)
+
+##### <a name="in_view"></a>`in_view`
+
+Data type: `String`
+
+The name of the view where the referenced view is defined.
 
 ##### <a name="view"></a>`view`
 
@@ -2102,11 +2121,13 @@ Data type: `String`
 
 The name of the view that should include this zone.
 
-##### <a name="in_view"></a>`in_view`
+##### <a name="comment"></a>`comment`
 
-Data type: `String`
+Data type: `Optional[String]`
 
-The name of the view where the referenced view is defined.
+A comment to add to the zone file.
+
+Default value: ``undef``
 
 ##### <a name="zone"></a>`zone`
 
@@ -2116,19 +2137,11 @@ The name of the zone.
 
 Default value: `$name`
 
-##### <a name="comment"></a>`comment`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
 ##### <a name="class"></a>`class`
 
 Data type: `Bind::Zone::Class`
 
-
+The zone class.
 
 Default value: `'IN'`
 
@@ -2136,7 +2149,7 @@ Default value: `'IN'`
 
 Data type: `String`
 
-
+Zones are ordered by this parameter value in the zone file.
 
 Default value: `'60'`
 
@@ -2158,11 +2171,28 @@ bind::zone::mirror { '.':
 
 The following parameters are available in the `bind::zone::mirror` defined type:
 
-* [`zone`](#zone)
 * [`view`](#view)
 * [`comment`](#comment)
+* [`zone`](#zone)
 * [`class`](#class)
 * [`order`](#order)
+
+##### <a name="view"></a>`view`
+
+Data type: `Optional[String]`
+
+The name of the view that should include this zone. Must be set if views
+are used.
+
+Default value: ``undef``
+
+##### <a name="comment"></a>`comment`
+
+Data type: `Optional[String]`
+
+A comment to add to the zone file.
+
+Default value: ``undef``
 
 ##### <a name="zone"></a>`zone`
 
@@ -2172,27 +2202,11 @@ The name of the zone.
 
 Default value: `$name`
 
-##### <a name="view"></a>`view`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
-##### <a name="comment"></a>`comment`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
 ##### <a name="class"></a>`class`
 
 Data type: `Bind::Zone::Class`
 
-
+The zone class.
 
 Default value: `'IN'`
 
@@ -2200,7 +2214,7 @@ Default value: `'IN'`
 
 Data type: `String`
 
-
+Zones are ordered by this parameter value in the zone file.
 
 Default value: `'50'`
 
@@ -2236,18 +2250,24 @@ The following parameters are available in the `bind::zone::primary` defined type
 
 * [`dnssec`](#dnssec)
 * [`inline_signing`](#inline_signing)
-* [`auto_dnssec`](#auto_dnssec)
 * [`also_notify`](#also_notify)
+* [`auto_dnssec`](#auto_dnssec)
+* [`dnssec_policy`](#dnssec_policy)
+* [`dnssec_loadkeys_interval`](#dnssec_loadkeys_interval)
+* [`dnssec_dnskey_kskonly`](#dnssec_dnskey_kskonly)
+* [`dnssec_secure_to_insecure`](#dnssec_secure_to_insecure)
+* [`dnssec_update_mode`](#dnssec_update_mode)
+* [`dnskey_sig_validity`](#dnskey_sig_validity)
 * [`notify_secondaries`](#notify_secondaries)
 * [`view`](#view)
 * [`source`](#source)
 * [`content`](#content)
 * [`zone_statistics`](#zone_statistics)
-* [`zone`](#zone)
-* [`file`](#file)
 * [`comment`](#comment)
+* [`zone`](#zone)
 * [`class`](#class)
 * [`order`](#order)
+* [`file`](#file)
 
 ##### <a name="dnssec"></a>`dnssec`
 
@@ -2265,6 +2285,15 @@ Enable inline signing for the zone.
 
 Default value: ``false``
 
+##### <a name="also_notify"></a>`also_notify`
+
+Data type: `Array[String]`
+
+Secondary servers that should be notified in addition to the
+nameservers that are listed in the zone file.
+
+Default value: `[]`
+
 ##### <a name="auto_dnssec"></a>`auto_dnssec`
 
 Data type: `Bind::Auto_dnssec`
@@ -2274,14 +2303,57 @@ or `off`.
 
 Default value: `'off'`
 
-##### <a name="also_notify"></a>`also_notify`
+##### <a name="dnssec_policy"></a>`dnssec_policy`
 
-Data type: `Array[String]`
+Data type: `Optional[String]`
 
-Secondary servers that should be notified in addition to the
-nameservers that are listed in the zone file.
+The name of the DNSSEC policy to use for this zone.
 
-Default value: `[]`
+Default value: ``undef``
+
+##### <a name="dnssec_loadkeys_interval"></a>`dnssec_loadkeys_interval`
+
+Data type: `Optional[Integer]`
+
+The time interval after which key are checked if `auto_dnssec` is set to
+`maintain`. The value is in minutes.
+
+Default value: ``undef``
+
+##### <a name="dnssec_dnskey_kskonly"></a>`dnssec_dnskey_kskonly`
+
+Data type: `Optional[Boolean]`
+
+Should only key-signing keys be used to to sign the DNSKEY, CDNSKEY and
+CDSRRsets.
+
+Default value: ``undef``
+
+##### <a name="dnssec_secure_to_insecure"></a>`dnssec_secure_to_insecure`
+
+Data type: `Optional[Boolean]`
+
+Should the zone be allowed to got from signed to unsinged.
+
+Default value: ``undef``
+
+##### <a name="dnssec_update_mode"></a>`dnssec_update_mode`
+
+Data type: `Optional[Bind::DNSSEC::Updatemode]`
+
+Should RRSIG records be regenerated automatically (mode `maintain`) or
+not (mode `no-resign`) for a zone which allows dynamic updates.
+
+Default value: ``undef``
+
+##### <a name="dnskey_sig_validity"></a>`dnskey_sig_validity`
+
+Data type: `Optional[Integer]`
+
+The number of days after which the signatures for generated DNSKEY RRsets
+expire.
+
+Default value: ``undef``
 
 ##### <a name="notify_secondaries"></a>`notify_secondaries`
 
@@ -2328,6 +2400,14 @@ Collect statistics for this zone.
 
 Default value: ``undef``
 
+##### <a name="comment"></a>`comment`
+
+Data type: `Optional[String]`
+
+A comment to add to the zone file.
+
+Default value: ``undef``
+
 ##### <a name="zone"></a>`zone`
 
 Data type: `String`
@@ -2336,27 +2416,11 @@ The name of the zone.
 
 Default value: `$name`
 
-##### <a name="file"></a>`file`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
-##### <a name="comment"></a>`comment`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
 ##### <a name="class"></a>`class`
 
 Data type: `Bind::Zone::Class`
 
-
+The zone class.
 
 Default value: `'IN'`
 
@@ -2364,9 +2428,17 @@ Default value: `'IN'`
 
 Data type: `String`
 
-
+Zones are ordered by this parameter value in the zone file.
 
 Default value: `'20'`
+
+##### <a name="file"></a>`file`
+
+Data type: `Optional[String]`
+
+
+
+Default value: ``undef``
 
 ### <a name="bindzonesecondary"></a>`bind::zone::secondary`
 
@@ -2391,8 +2463,8 @@ The following parameters are available in the `bind::zone::secondary` defined ty
 * [`view`](#view)
 * [`zone_statistics`](#zone_statistics)
 * [`multi_master`](#multi_master)
-* [`zone`](#zone)
 * [`comment`](#comment)
+* [`zone`](#zone)
 * [`class`](#class)
 * [`order`](#order)
 
@@ -2430,6 +2502,14 @@ this to `true` to disable the message in this case.
 
 Default value: ``undef``
 
+##### <a name="comment"></a>`comment`
+
+Data type: `Optional[String]`
+
+A comment to add to the zone file.
+
+Default value: ``undef``
+
 ##### <a name="zone"></a>`zone`
 
 Data type: `String`
@@ -2438,19 +2518,11 @@ The name of the zone.
 
 Default value: `$name`
 
-##### <a name="comment"></a>`comment`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
 ##### <a name="class"></a>`class`
 
 Data type: `Bind::Zone::Class`
 
-
+The zone class.
 
 Default value: `'IN'`
 
@@ -2458,7 +2530,7 @@ Default value: `'IN'`
 
 Data type: `String`
 
-
+Zones are ordered by this parameter value in the zone file.
 
 Default value: `'30'`
 
@@ -2911,7 +2983,27 @@ Alias of
 Enum['allow', 'maintain', 'off']
 ```
 
-### <a name="binddnssecvalidation"></a>`Bind::DNSSECValidation`
+### <a name="binddnssecalgorithm"></a>`Bind::DNSSEC::Algorithm`
+
+Type to match allowed values for DNSSEC key algorithms
+
+Alias of
+
+```puppet
+Enum['dsa', 'eccgost', 'ecdsap256sha256', 'ecdsap384sha384', 'ed25519', 'ed448', 'nsec3dsa', 'nsec3rsasha1', 'rsamd5', 'rsasha1', 'rsasha256', 'rsasha512']
+```
+
+### <a name="binddnssecupdatemode"></a>`Bind::DNSSEC::Updatemode`
+
+Type to match allowed values for the dnssec-update-mode option
+
+Alias of
+
+```puppet
+Enum['maintain', 'no-resign']
+```
+
+### <a name="binddnssecvalidation"></a>`Bind::DNSSEC::Validation`
 
 Type to match allowed values for the dnssec-validation option
 
@@ -2938,7 +3030,7 @@ Type to match allowed values for the filter-aaaa-on-v4 option
 Alias of
 
 ```puppet
-Enum['no', 'yes', 'break-dnssec']
+Optional[Enum['no','yes','break-dnssec']]
 ```
 
 ### <a name="bindforward"></a>`Bind::Forward`
@@ -2968,7 +3060,7 @@ Type to match allowed values for the key lifetime
 Alias of
 
 ```puppet
-Variant[Bind::Duration, Enum['unlimited']]
+Pattern[/^(-?)P(?=\d|T\d)(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)([DW]))?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?)?$/, /\Aunlimited\Z/]
 ```
 
 ### <a name="bindnotify_secondaries"></a>`Bind::Notify_secondaries`

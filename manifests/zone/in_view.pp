@@ -7,14 +7,23 @@
 #     in_view => 'external',
 #   }
 #
-# @param view
-#   The name of the view that should include this zone.
-#
 # @param in_view
 #   The name of the view where the referenced view is defined.
 #
+# @param view
+#   The name of the view that should include this zone.
+#
+# @param comment
+#   A comment to add to the zone file.
+#
 # @param zone
 #   The name of the zone.
+#
+# @param class
+#   The zone class.
+#
+# @param order
+#   Zones are ordered by this parameter value in the zone file.
 #
 #
 define bind::zone::in_view (

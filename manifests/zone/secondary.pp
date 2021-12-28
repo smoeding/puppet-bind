@@ -22,8 +22,17 @@
 #   different for the masters then named normally logs a message. Set
 #   this to `true` to disable the message in this case.
 #
+# @param comment
+#   A comment to add to the zone file.
+#
 # @param zone
 #   The name of the zone.
+#
+# @param class
+#   The zone class.
+#
+# @param order
+#   Zones are ordered by this parameter value in the zone file.
 #
 #
 define bind::zone::secondary (

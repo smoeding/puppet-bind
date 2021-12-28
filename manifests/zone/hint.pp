@@ -6,8 +6,24 @@
 #     file => '/etc/bind/db.root',
 #   }
 #
+# @param file
+#   The filename of the hint file.
+#
+# @param view
+#   The name of the view that should include this zone. Must be set if views
+#   are used.
+#
+# @param comment
+#   A comment to add to the zone file.
+#
 # @param zone
 #   The name of the zone.
+#
+# @param class
+#   The zone class.
+#
+# @param order
+#   Zones are ordered by this parameter value in the zone file.
 #
 #
 define bind::zone::hint (

@@ -70,8 +70,17 @@
 # @param zone_statistics
 #   Collect statistics for this zone.
 #
+# @param comment
+#   A comment to add to the zone file.
+#
 # @param zone
 #   The name of the zone.
+#
+# @param class
+#   The zone class.
+#
+# @param order
+#   Zones are ordered by this parameter value in the zone file.
 #
 #
 define bind::zone::primary (
