@@ -37,7 +37,7 @@
 #
 #
 define bind::config (
-  Enum['present','absent'] $ensure = 'present',
+  Enum['present','absent'] $ensure  = 'present',
   String                   $file    = $name,
   String                   $owner   = 'root',
   String                   $group   = $::bind::bind_group,
