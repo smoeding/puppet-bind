@@ -1,3 +1,9 @@
+## 2022-09-10 - Release 0.5.0
+
+### Feature
+
+- Add defined type `bind::dnssec_policy`.
+
 ## 2021-11-30 - Release 0.4.0
 
 ### Feature
