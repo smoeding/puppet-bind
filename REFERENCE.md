@@ -16,7 +16,7 @@
 * [`bind::acl`](#bindacl): Manage ACL entries
 * [`bind::controls::inet`](#bindcontrolsinet): Manage an inet control channel
 * [`bind::controls::unix`](#bindcontrolsunix): Manage a unix control channel
-* [`bind::dnssec_policy`](#binddnssec_policy): Define a key and signing policy for zones
+* [`bind::dnssec_policy`](#binddnssec_policy): Define keys and a signing policy for zones
 * [`bind::key`](#bindkey): Manage secret keys
 * [`bind::listen_on`](#bindlisten_on): Manage listen-on option clause
 * [`bind::listen_on_v6`](#bindlisten_on_v6): Manage listen-on-v6 option clause
@@ -955,7 +955,10 @@ Default value: `$name`
 
 ### <a name="binddnssec_policy"></a>`bind::dnssec_policy`
 
-Define a key and signing policy for zones
+The policy should either define a Zone-Signing Key (ZSK) and a Key-Signing
+Key (KSK) or a Combined Signing Key (CSK). A ZSK is used to sign all
+records except for DNSKEY, CDS and CDNSKEY which are signed using the
+KSK. Alternatively a CSK can be used to sign all records.
 
 #### Examples
 
@@ -963,8 +966,9 @@ Define a key and signing policy for zones
 
 ```puppet
 
-bind::dnssec_policy { 'foo':
-  nsec3_enable => true,
+bind::dnssec_policy { 'standard':
+  csk_lifetime  => 'unlimited',
+  csk_algorithm => 'ecdsap256sha256',
 }
 ```
 
@@ -1002,7 +1006,7 @@ The following parameters are available in the `bind::dnssec_policy` defined type
 
 Data type: `String`
 
-The name of the policy.
+The name of the policy. This name will be referenced from the zone file.
 
 Default value: `$name`
 
@@ -1034,8 +1038,9 @@ Default value: ``undef``
 
 Data type: `Optional[Integer]`
 
-The length of the salt for NSEC3. Named creates a salt of the provided
-length.
+The length of the salt for NSEC3. The salt provides little value and each
+DNS zone is always salted using the zone name. Therefore operators are
+encouraged to use a value of zero for the salt length.
 
 Default value: ``undef``
 

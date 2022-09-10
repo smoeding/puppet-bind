@@ -1,13 +1,19 @@
-# @summary Define a key and signing policy for zones
+# @summary Define keys and a signing policy for zones
+#
+# The policy should either define a Zone-Signing Key (ZSK) and a Key-Signing
+# Key (KSK) or a Combined Signing Key (CSK). A ZSK is used to sign all
+# records except for DNSKEY, CDS and CDNSKEY which are signed using the
+# KSK. Alternatively a CSK can be used to sign all records.
 #
 # @example Create a DNSSEC policy
 #
-#   bind::dnssec_policy { 'foo':
-#     nsec3_enable => true,
+#   bind::dnssec_policy { 'standard':
+#     csk_lifetime  => 'unlimited',
+#     csk_algorithm => 'ecdsap256sha256',
 #   }
 #
 # @param policy
-#   The name of the policy.
+#   The name of the policy. This name will be referenced from the zone file.
 #
 # @param nsec3_enable
 #   Should NSEC3 be used instead of NSEC.
@@ -19,8 +25,9 @@
 #   Set optout for NSEC3.
 #
 # @param nsec3param_salt_length
-#   The length of the salt for NSEC3. Named creates a salt of the provided
-#   length.
+#   The length of the salt for NSEC3. The salt provides little value and each
+#   DNS zone is always salted using the zone name. Therefore operators are
+#   encouraged to use a value of zero for the salt length.
 #
 # @param dnskey_ttl
 #   The TTL for DNSKEY resource records in ISO8601 format.
