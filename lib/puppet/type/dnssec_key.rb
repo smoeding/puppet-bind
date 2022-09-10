@@ -8,6 +8,11 @@ Puppet::Type.newtype(:dnssec_key) do
     *Caution*: This functionality is in beta and is subject to change. The
     design and code is less mature than other features.
 
+    *Notice*: Automatic key rollover using this type is deprecated and will
+    be removed . Use `bind::dnssec-policy` to define a DNSSEC policy
+    (available with Bind 9.16) and let Bind handle the work instead of
+    Puppet.
+
     All intervals are interpreted as seconds if no unit is given. The
     following interval units can be used: `y` (year), `mo` (months), `w`
     (weeks), `d` (days), `h` (hours), `mi` (minutes).
