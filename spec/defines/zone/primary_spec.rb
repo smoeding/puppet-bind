@@ -13,7 +13,28 @@ describe 'bind::zone::primary' do
 
       context 'with default parameters' do
         it {
-          is_expected.to compile.and_raise_error(%r{One of the parameters .* must be defined})
+          is_expected.to contain_file('/var/lib/bind/primary/com')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+            .with_ensure('file')
+            .with_owner('bind')
+            .with_group('bind')
+            .with_mode('0640')
+            .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
+            .that_requires('Concat[named.conf.zones]')
+
+          is_expected.to contain_exec('bind::reload::example.com')
+            .with_command('/usr/sbin/rndc reload example.com IN')
+            .with_user('root')
+            .with_cwd('/')
+            .with_refreshonly(true)
+            .that_subscribes_to('File[/var/lib/bind/primary/com/example/db.example.com]')
+            .that_requires('Service[bind]')
+
+          is_expected.to contain_concat__fragment('named.conf.zones-example.com')
+            .with_target('named.conf.zones')
+            .with_order('20')
+            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n};\n")
         }
       end
 

@@ -1,5 +1,10 @@
 # @summary Manage a primary zone
 #
+# The parameters `source` or `content` can be used to have Puppet manage the
+# content of the zone file. No content is managed if both parameters are left
+# undefined. This is useful if the zone has dynamic updates enabled in which
+# case `named` will need to rewrite the zone file.
+#
 # @example Create a primary zone
 #
 #   bind::zone::primary { 'example.com':
@@ -110,10 +115,6 @@ define bind::zone::primary (
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')
-  }
-
-  unless ($file =~ NotUndef) or ($source =~ NotUndef) or ($content =~ NotUndef) {
-    fail('One of the parameters "file", "source" or "content" must be defined')
   }
 
   if $file {
