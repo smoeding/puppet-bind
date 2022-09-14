@@ -171,7 +171,7 @@ define bind::zone::primary (
       ensure       => file,
       owner        => $::bind::bind_user,
       group        => $::bind::bind_group,
-      mode         => '0640',
+      mode         => '0644',
       source       => $source,
       content      => $content,
       validate_cmd => "/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail ${zone} %",
