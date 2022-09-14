@@ -97,7 +97,7 @@ bind::zone::primary { 'example.com':
 }
 ```
 
-The zone file must already exist on the server as `/var/lib/bind/primary/com/example/db.example.com`. It can't be managed by Puppet as `named` will periodically need update the zone file using dynamic updates.
+The zone file must already exist on the server as `/var/lib/bind/primary/com/example/db.example.com`. It can't be managed by Puppet as `named` will periodically need to update the zone file when processing dynamic updates.
 
 Remember that you need to use `rndc freeze example.com` and `rndc thaw example.com` when editing the zone file manually.
 
