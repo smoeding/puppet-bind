@@ -27,7 +27,7 @@ The module manages the `named` process and related service files. It also manage
 
 ### Setup Requirements
 
-The module uses the `stdlib` and `concat` modules. It is tested on Debian and Ubuntu using Puppet 6.
+The module uses the `stdlib` and `concat` modules. It is tested on Debian and Ubuntu using Puppet 7.
 
 ### Beginning with bind
 
@@ -45,6 +45,8 @@ class { 'bind':
 
 ## Usage
 
+### Caching name server
+
 Set up a caching name server that provides recursive name resolution for a local subnet:
 
 ```puppet
@@ -54,6 +56,8 @@ class { 'bind':
   allow_recursion   => [ 'localhost', '10/8', ],
 }
 ```
+
+### Caching name server with forwarders
 
 Set up a caching name server that provides recursive name resolution for a local subnet and uses forwarders:
 
@@ -66,7 +70,9 @@ class { 'bind':
 }
 ```
 
-Add a primary zone for the `example.com` domain:
+### Manage a primary zone
+
+Add a primary zone for the `example.com` domain and manage the zone using Puppet:
 
 ```puppet
 bind::zone::primary { 'example.com':
@@ -75,6 +81,40 @@ bind::zone::primary { 'example.com':
 ```
 
 The zone file will be managed on the server as `/var/lib/bind/primary/com/example/db.example.com`. This tree structure is better than a flat directory structure if many zones will be managed by the server.
+
+### Manage a primary zone with dynamic updates
+
+Add a primary zone for the `example.com` domain and allow dynamic updates using a generated key called `nsupdate`:
+
+```puppet
+bind::key { 'nsupdate':
+  secret  => 'TopSecret',
+  keyfile => '/etc/bind/nsupdate.key',
+}
+
+bind::zone::primary { 'example.com':
+  update_policy  => ['grant nsupdate zonesub any'],
+}
+```
+
+In this case the zone file will also be stored on the server as `/var/lib/bind/primary/com/example/db.example.com`. It can't be managed by Puppet as `named` will periodically update the zone file using the dynamic updates. You need to use `rndc freeze example.com` and `rndc thaw example.com` when editing the zone file manually.
+
+### Define a DNSSEC policy for a zone
+
+Create a new DNSSEC policy named `standard` with a Combined Signing Key (CSK) and use the key to create a DNSSEC signed zone:
+
+```puppet
+bind::dnssec_policy { 'standard':
+  csk_lifetime  => 'unlimited',
+  csk_algorithm => 'ecdsap256sha256',
+}
+
+bind::zone::primary { 'example.net':
+  dnssec         => true,
+  inline_signing => true,
+  dnssec_policy  => 'standard',
+}
+```
 
 ## Reference
 
