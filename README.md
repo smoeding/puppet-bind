@@ -23,7 +23,7 @@ This module manages the BIND Name Server on Debian and Ubuntu. The module suppor
 
 ### What bind affects
 
-The module manages the `named` process and related service files. It also managed the configuration and zone files. On Debian and Ubuntu these files are below the `/etc/bind`, `/var/lib/bind` and `/var/cache/bind` directories. The module uses a multi-level directory tree below `/var/lib/bind` to separate primary and secondary zone files.
+The module manages the `named` process and related service files. It also managed the configuration and zone files. On Debian and Ubuntu these files are below the `/etc/bind`, `/var/lib/bind` and `/var/cache/bind` directories. The module uses a multi-level directory tree below `/var/lib/bind` and `/var/cache/bind` to separate primary and secondary zone files.
 
 ### Setup Requirements
 
@@ -93,15 +93,17 @@ bind::key { 'nsupdate':
 }
 
 bind::zone::primary { 'example.com':
-  update_policy  => ['grant nsupdate zonesub any'],
+  update_policy => ['grant nsupdate zonesub any'],
 }
 ```
 
-In this case the zone file will also be stored on the server as `/var/lib/bind/primary/com/example/db.example.com`. It can't be managed by Puppet as `named` will periodically update the zone file using the dynamic updates. You need to use `rndc freeze example.com` and `rndc thaw example.com` when editing the zone file manually.
+The zone file must already exist on the server as `/var/lib/bind/primary/com/example/db.example.com`. It can't be managed by Puppet as `named` will periodically need update the zone file using dynamic updates.
+
+Remember that you need to use `rndc freeze example.com` and `rndc thaw example.com` when editing the zone file manually.
 
 ### Define a DNSSEC policy for a zone
 
-Create a new DNSSEC policy named `standard` with a Combined Signing Key (CSK) and use the key to create a DNSSEC signed zone:
+Create a new DNSSEC policy named `standard` with a Combined Signing Key (CSK) and use the policy to create a DNSSEC signed zone:
 
 ```puppet
 bind::dnssec_policy { 'standard':
@@ -113,8 +115,11 @@ bind::zone::primary { 'example.net':
   dnssec         => true,
   inline_signing => true,
   dnssec_policy  => 'standard',
+  source         => 'puppet:///modules/profile/dns/example.net.zone',
 }
 ```
+
+DNSSEC policies are available with Bind 9.16 and later.
 
 ## Reference
 
