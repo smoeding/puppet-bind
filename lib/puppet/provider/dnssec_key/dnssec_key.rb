@@ -81,7 +81,6 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
     Dir.foreach(keydir) do |file|
       activate = nil
       inactive = Time.at(2_147_483_648)
-      delete = Time.at(2_147_483_648)
 
       # Does the key filename match the required format including the domain?
       match = file.match(%r{^K#{resource[:zone]}\.\+(\d+)\+(\d+)\.key$})
@@ -114,13 +113,6 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
           next
         end
 
-        match = line.match(%r{Delete: (\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)})
-        if match
-          year, mon, day, hour, min, sec = match.captures
-          delete = Time.utc(year, mon, day, hour, min, sec)
-          next
-        end
-
         match = line.match(%r{^#{resource[:zone]}\.\s+IN\s+DNSKEY\s+(\d+)\s+(\d+)\s+(\d+)\s+})
         next if match.nil?
 
@@ -136,16 +128,6 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
 
         Puppet.info("dnssec_key: found #{typ} key #{key} for zone #{resource[:zone]}")
         Puppet.info("dnssec_key: key is valid from #{activate} to #{inactive}")
-
-        # Can/Should we delete this key?
-        if resource[:purge] && (delete < @now)
-          Puppet.debug("dnssec_key: removing #{key} for zone #{resource[:zone]}")
-          FileUtils.rm key, force: true unless key.nil?
-
-          Puppet.debug("dnssec_key: removing #{prv} for zone #{resource[:zone]}")
-          FileUtils.rm prv, force: true unless prv.nil?
-          next
-        end
 
         # Key is no longer active, so we ignore it
         next if inactive < @now

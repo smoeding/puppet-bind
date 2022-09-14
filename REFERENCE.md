@@ -2652,7 +2652,6 @@ The following parameters are available in the `dnssec_key` type.
 * [`precreate`](#precreate)
 * [`prepublish`](#prepublish)
 * [`provider`](#provider)
-* [`purge`](#purge)
 * [`retire`](#retire)
 * [`revoke`](#revoke)
 * [`rrtype`](#rrtype)
@@ -2732,14 +2731,6 @@ The time interval before activation when the key will be published.
 
 The specific backend to use for this `dnssec_key` resource. You will seldom need to specify this --- Puppet will usually
 discover the appropriate provider for your platform.
-
-##### <a name="purge"></a>`purge`
-
-Valid values: ``true``, ``false``
-
-Whether old keys should be purged after they are retired.
-
-Default value: ``false``
 
 ##### <a name="retire"></a>`retire`
 
