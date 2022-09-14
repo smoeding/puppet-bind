@@ -2,16 +2,11 @@
 
 Puppet::Type.newtype(:dnssec_key) do
   desc <<-EOT
-    @summary
-      Create, delete and maintain DNSSEC key files on the DNS server.
+    @summary Create, delete and maintain DNSSEC key files on the DNS server.
 
-    *Caution*: This functionality is in beta and is subject to change. The
-    design and code is less mature than other features.
-
-    *Notice*: Automatic key rollover using this type is deprecated and will
-    be removed . Use `bind::dnssec-policy` to define a DNSSEC policy
-    (available with Bind 9.16) and let Bind handle the work instead of
-    Puppet.
+    *Notice*: Automatic key rollover using this type is not thoroughly
+    tested. Use `bind::dnssec-policy` to define a DNSSEC policy (available
+    with Bind 9.16) and let Bind handle the heavy lifting instead of Puppet.
 
     All intervals are interpreted as seconds if no unit is given. The
     following interval units can be used: `y` (year), `mo` (months), `w`
@@ -186,6 +181,14 @@ Puppet::Type.newtype(:dnssec_key) do
       existing key. In this case the name, algorithm, size and type of the key
       will be take from the existing key. The activation date will match the
       inactivation date of the existing key.'
+
+    newvalues(:true, :false)
+
+    defaultto :false
+  end
+
+  newparam(:purge, boolean: true) do
+    desc 'Whether old keys should be purged after they are retired.'
 
     newvalues(:true, :false)
 

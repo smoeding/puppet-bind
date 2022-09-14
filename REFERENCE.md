@@ -2562,13 +2562,9 @@ Default value: `'30'`
 
 ### <a name="dnssec_key"></a>`dnssec_key`
 
-*Caution*: This functionality is in beta and is subject to change. The
-design and code is less mature than other features.
-
-*Notice*: Automatic key rollover using this type is deprecated and will
-be removed . Use `bind::dnssec-policy` to define a DNSSEC policy
-(available with Bind 9.16) and let Bind handle the work instead of
-Puppet.
+*Notice*: Automatic key rollover using this type is not thoroughly
+tested. Use `bind::dnssec-policy` to define a DNSSEC policy (available
+with Bind 9.16) and let Bind handle the heavy lifting instead of Puppet.
 
 All intervals are interpreted as seconds if no unit is given. The
 following interval units can be used: `y` (year), `mo` (months), `w`
@@ -2652,6 +2648,7 @@ The following parameters are available in the `dnssec_key` type.
 * [`precreate`](#precreate)
 * [`prepublish`](#prepublish)
 * [`provider`](#provider)
+* [`purge`](#purge)
 * [`retire`](#retire)
 * [`revoke`](#revoke)
 * [`rrtype`](#rrtype)
@@ -2731,6 +2728,14 @@ The time interval before activation when the key will be published.
 
 The specific backend to use for this `dnssec_key` resource. You will seldom need to specify this --- Puppet will usually
 discover the appropriate provider for your platform.
+
+##### <a name="purge"></a>`purge`
+
+Valid values: ``true``, ``false``
+
+Whether old keys should be purged after they are retired.
+
+Default value: ``false``
 
 ##### <a name="retire"></a>`retire`
 
