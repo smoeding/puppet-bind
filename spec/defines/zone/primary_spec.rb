@@ -388,7 +388,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_file('/var/lib/bind/primary/com/example')
           is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
 
-          is_expected.to contain_exec('bind::reload::example.com')
+          is_expected.not_to contain_exec('bind::reload::example.com')
 
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
@@ -407,7 +407,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_file('/var/lib/bind/primary/com/example')
           is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
 
-          is_expected.to contain_exec('bind::reload::example.com')
+          is_expected.not_to contain_exec('bind::reload::example.com')
 
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')

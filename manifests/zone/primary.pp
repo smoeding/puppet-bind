@@ -178,24 +178,27 @@ define bind::zone::primary (
       require      => Concat['named.conf.zones'],
     }
 
-    if $::bind::views_enable {
-      exec { "bind::reload::${view}::${zone}":
-        command     => "${::bind::rndc_program} reload ${zone} ${class} ${view}",
-        user        => 'root',
-        cwd         => '/',
-        refreshonly => true,
-        subscribe   => File[$zonefile],
-        require     => Service['bind'],
+    # Do not trigger a zone reload for a dynamic updatable zone
+    if ($update_policy =~ Array and empty($update_policy)) {
+      if $::bind::views_enable {
+        exec { "bind::reload::${view}::${zone}":
+          command     => "${::bind::rndc_program} reload ${zone} ${class} ${view}",
+          user        => 'root',
+          cwd         => '/',
+          refreshonly => true,
+          subscribe   => File[$zonefile],
+          require     => Service['bind'],
+        }
       }
-    }
-    else {
-      exec { "bind::reload::${zone}":
-        command     => "${::bind::rndc_program} reload ${zone} ${class}",
-        user        => 'root',
-        cwd         => '/',
-        refreshonly => true,
-        subscribe   => File[$zonefile],
-        require     => Service['bind'],
+      else {
+        exec { "bind::reload::${zone}":
+          command     => "${::bind::rndc_program} reload ${zone} ${class}",
+          user        => 'root',
+          cwd         => '/',
+          refreshonly => true,
+          subscribe   => File[$zonefile],
+          require     => Service['bind'],
+        }
       }
     }
   }
