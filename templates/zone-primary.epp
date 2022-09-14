@@ -5,6 +5,18 @@
 <%= $indent %>zone "<%= $zone -%>" <%= $class %> {
 <%= $indent %>  type master;
 <%= $indent %>  file "<%= $file -%>";
+<% if ($update_policy =~ String and $update_policy == 'local') { -%>
+
+<%= $indent %>  update-policy local;
+<% } -%>
+<% elsif ($update_policy =~ Array and !empty($update_policy)) { -%>
+
+<%= $indent %>  update-policy {
+<% $update_policy.each |$item| { -%>
+<%= $indent %>    <%= $item -%>;
+<% } -%>
+<%= $indent %>  };
+<% } -%>
 <% if $notify { -%>
 
 <%= $indent %>  notify <%= $notify -%>;

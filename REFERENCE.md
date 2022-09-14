@@ -2225,7 +2225,10 @@ Default value: `'50'`
 
 ### <a name="bindzoneprimary"></a>`bind::zone::primary`
 
-Manage a primary zone
+The parameters `source` or `content` can be used to have Puppet manage the
+content of the zone file. No content is managed if both parameters are left
+undefined. This is useful if the zone has dynamic updates enabled in which
+case `named` will need to rewrite the zone file.
 
 #### Examples
 
@@ -2255,6 +2258,7 @@ The following parameters are available in the `bind::zone::primary` defined type
 
 * [`dnssec`](#dnssec)
 * [`inline_signing`](#inline_signing)
+* [`update_policy`](#update_policy)
 * [`also_notify`](#also_notify)
 * [`auto_dnssec`](#auto_dnssec)
 * [`dnssec_policy`](#dnssec_policy)
@@ -2289,6 +2293,21 @@ Data type: `Boolean`
 Enable inline signing for the zone.
 
 Default value: ``false``
+
+##### <a name="update_policy"></a>`update_policy`
+
+Data type: `Variant[Enum['local'],Array[String]]`
+
+Enable dynamic updates for the zone and define the update policy. This
+can either be the string `local` or an array of strings. Using the string
+`local` enables an automatically created session key `local-ddns` stored
+on the server. Otherwise the array should contain individual `grant` or
+`deny` rules.
+
+The zone file can not be managed by Puppet (the parameters source or
+content are not allowed) for a dynamic zone.
+
+Default value: `[]`
 
 ##### <a name="also_notify"></a>`also_notify`
 

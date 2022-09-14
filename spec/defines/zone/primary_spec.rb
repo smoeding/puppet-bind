@@ -377,6 +377,64 @@ describe 'bind::zone::primary' do
             .with_content(%r{zone-statistics\s+yes;})
         }
       end
+
+      context 'with update_policy => local' do
+        let(:params) do
+          { update_policy: 'local' }
+        end
+
+        it {
+          is_expected.to contain_file('/var/lib/bind/primary/com')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+
+          is_expected.to contain_exec('bind::reload::example.com')
+
+          is_expected.to contain_concat__fragment('named.conf.zones-example.com')
+            .with_target('named.conf.zones')
+            .with_order('20')
+            .with_content(%r{update-policy\s+local;})
+        }
+      end
+
+      context 'with update_policy => [grant]' do
+        let(:params) do
+          { update_policy: ['grant updatekey zonesub any'] }
+        end
+
+        it {
+          is_expected.to contain_file('/var/lib/bind/primary/com')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+
+          is_expected.to contain_exec('bind::reload::example.com')
+
+          is_expected.to contain_concat__fragment('named.conf.zones-example.com')
+            .with_target('named.conf.zones')
+            .with_order('20')
+            .with_content(%r{grant updatekey zonesub any})
+        }
+      end
+
+      context 'with update_policy and source' do
+        let(:params) do
+          { update_policy: 'local', source: '/foo' }
+        end
+
+        it {
+          is_expected.to compile.and_raise_error(%r{may not be used for a dynamic zone})
+        }
+      end
+
+      context 'with update_policy and content' do
+        let(:params) do
+          { update_policy: 'local', content: 'foo' }
+        end
+
+        it {
+          is_expected.to compile.and_raise_error(%r{may not be used for a dynamic zone})
+        }
+      end
     end
   end
 end

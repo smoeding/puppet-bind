@@ -25,6 +25,16 @@
 # @param inline_signing
 #   Enable inline signing for the zone.
 #
+# @param update_policy
+#   Enable dynamic updates for the zone and define the update policy. This
+#   can either be the string `local` or an array of strings. Using the string
+#   `local` enables an automatically created session key `local-ddns` stored
+#   on the server. Otherwise the array should contain individual `grant` or
+#   `deny` rules.
+#
+#   The zone file can not be managed by Puppet (the parameters source or
+#   content are not allowed) for a dynamic zone.
+#
 # @param also_notify
 #   Secondary servers that should be notified in addition to the
 #   nameservers that are listed in the zone file.
@@ -89,32 +99,41 @@
 #
 #
 define bind::zone::primary (
-  Boolean                            $dnssec                    = false,
-  Boolean                            $inline_signing            = false,
-  Array[String]                      $also_notify               = [],
-  Bind::Auto_dnssec                  $auto_dnssec               = 'off',
-  Optional[String]                   $dnssec_policy             = undef,
-  Optional[Integer]                  $dnssec_loadkeys_interval  = undef,
-  Optional[Boolean]                  $dnssec_dnskey_kskonly     = undef,
-  Optional[Boolean]                  $dnssec_secure_to_insecure = undef,
-  Optional[Bind::DNSSEC::Updatemode] $dnssec_update_mode        = undef,
-  Optional[Integer]                  $dnskey_sig_validity       = undef,
-  Optional[Bind::Notify_secondaries] $notify_secondaries        = undef,
-  Optional[String]                   $view                      = undef,
-  Optional[String]                   $file                      = undef,
-  Optional[String]                   $source                    = undef,
-  Optional[String]                   $content                   = undef,
-  Optional[Boolean]                  $zone_statistics           = undef,
-  Optional[String]                   $comment                   = undef,
-  String                             $zone                      = $name,
-  Bind::Zone::Class                  $class                     = 'IN',
-  String                             $order                     = '20',
+  Boolean                              $dnssec                    = false,
+  Boolean                              $inline_signing            = false,
+  Array[String]                        $also_notify               = [],
+  Variant[Enum['local'],Array[String]] $update_policy             = [],
+  Bind::Auto_dnssec                    $auto_dnssec               = 'off',
+  Optional[String]                     $dnssec_policy             = undef,
+  Optional[Integer]                    $dnssec_loadkeys_interval  = undef,
+  Optional[Boolean]                    $dnssec_dnskey_kskonly     = undef,
+  Optional[Boolean]                    $dnssec_secure_to_insecure = undef,
+  Optional[Bind::DNSSEC::Updatemode]   $dnssec_update_mode        = undef,
+  Optional[Integer]                    $dnskey_sig_validity       = undef,
+  Optional[Bind::Notify_secondaries]   $notify_secondaries        = undef,
+  Optional[String]                     $view                      = undef,
+  Optional[String]                     $file                      = undef,
+  Optional[String]                     $source                    = undef,
+  Optional[String]                     $content                   = undef,
+  Optional[Boolean]                    $zone_statistics           = undef,
+  Optional[String]                     $comment                   = undef,
+  String                               $zone                      = $name,
+  Bind::Zone::Class                    $class                     = 'IN',
+  String                               $order                     = '20',
 ) {
   $zonebase = "${::bind::vardir}/primary"
 
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')
+  }
+
+  if ($source and !empty($update_policy)) {
+    fail('The parameter source may not be used for a dynamic zone (update_policy is set)')
+  }
+
+  if ($content and !empty($update_policy)) {
+    fail('The parameter content may not be used for a dynamic zone (update_policy is set)')
   }
 
   if $file {
@@ -197,6 +216,7 @@ define bind::zone::primary (
     'notify'              => $notify_secondaries,
     'key_directory'       => "${::bind::confdir}/keys",
     'statistics'          => $zone_statistics,
+    'update_policy'       => $update_policy,
     'class'               => $class,
     'comment'             => $comment,
     'indent'              => bool2str($::bind::views_enable, '  ', ''),
