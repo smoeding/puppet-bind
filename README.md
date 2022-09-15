@@ -72,7 +72,7 @@ class { 'bind':
 
 ### Manage a primary zone
 
-Add a primary zone for the `example.com` domain and manage the zone using Puppet:
+Add a primary zone for the `example.com` domain and manage the zone file using Puppet:
 
 ```puppet
 bind::zone::primary { 'example.com':

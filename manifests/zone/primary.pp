@@ -11,11 +11,12 @@
 #     source => 'puppet:///modules/profile/example.com.zone',
 #   }
 #
-# @example Use DNSSEC inline signing for a primary zone
+# @example Use DNSSEC signing for a primary zone using a DNSSEC policy
 #
 #   bind::zone::primary { 'example.com':
+#     dnssec         => true,
 #     inline_signing => true,
-#     auto_dnssec    => 'maintain',
+#     dnssec_policy  => 'standard',
 #     source         => 'puppet:///modules/profile/example.com.zone',
 #   }
 #
@@ -44,7 +45,8 @@
 #   or `off`.
 #
 # @param dnssec_policy
-#   The name of the DNSSEC policy to use for this zone.
+#   The name of the DNSSEC policy to use for this zone. The policy must be
+#   created using the `bind::dnssec_policy` defined type.
 #
 # @param dnssec_loadkeys_interval
 #   The time interval after which key are checked if `auto_dnssec` is set to

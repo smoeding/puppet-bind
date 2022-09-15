@@ -1,4 +1,4 @@
-# @summary Manage the Bind DNS daemon and configuration
+# @summary Manage the Bind9 DNS daemon and it's configuration files
 #
 # @example Install a local caching resolver
 #

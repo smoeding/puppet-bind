@@ -6,7 +6,7 @@
 
 ### Classes
 
-* [`bind`](#bind): Manage the Bind DNS daemon and configuration
+* [`bind`](#bind): Manage the Bind9 DNS daemon and it's configuration files
 
 ### Defined types
 
@@ -66,7 +66,7 @@
 
 ### <a name="bind"></a>`bind`
 
-Manage the Bind DNS daemon and configuration
+Manage the Bind9 DNS daemon and it's configuration files
 
 #### Examples
 
@@ -2220,13 +2220,14 @@ bind::zone::primary { 'example.com':
 }
 ```
 
-##### Use DNSSEC inline signing for a primary zone
+##### Use DNSSEC signing for a primary zone using a DNSSEC policy
 
 ```puppet
 
 bind::zone::primary { 'example.com':
+  dnssec         => true,
   inline_signing => true,
-  auto_dnssec    => 'maintain',
+  dnssec_policy  => 'standard',
   source         => 'puppet:///modules/profile/example.com.zone',
 }
 ```
@@ -2310,7 +2311,8 @@ Default value: `'off'`
 
 Data type: `Optional[String]`
 
-The name of the DNSSEC policy to use for this zone.
+The name of the DNSSEC policy to use for this zone. The policy must be
+created using the `bind::dnssec_policy` defined type.
 
 Default value: ``undef``
 
