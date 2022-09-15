@@ -7,7 +7,6 @@
 ### Classes
 
 * [`bind`](#bind): Manage the Bind DNS daemon and configuration
-* [`bind::rate_limit`](#bindrate_limit): Manage rate limiting
 
 ### Defined types
 
@@ -131,6 +130,19 @@ The following parameters are available in the `bind` class:
 * [`forwarders`](#forwarders)
 * [`forward`](#forward)
 * [`filter_aaaa_on_v4`](#filter_aaaa_on_v4)
+* [`window`](#window)
+* [`ipv4_prefix_length`](#ipv4_prefix_length)
+* [`ipv6_prefix_length`](#ipv6_prefix_length)
+* [`log_only`](#log_only)
+* [`exempt_clients`](#exempt_clients)
+* [`all_per_second`](#all_per_second)
+* [`errors_per_second`](#errors_per_second)
+* [`responses_per_second`](#responses_per_second)
+* [`referrals_per_second`](#referrals_per_second)
+* [`nodata_per_second`](#nodata_per_second)
+* [`nxdomains_per_second`](#nxdomains_per_second)
+* [`qps_scale`](#qps_scale)
+* [`slip`](#slip)
 * [`max_cache_size`](#max_cache_size)
 * [`max_cache_ttl`](#max_cache_ttl)
 * [`max_ncache_ttl`](#max_ncache_ttl)
@@ -400,6 +412,120 @@ later.
 
 Default value: ``undef``
 
+##### <a name="window"></a>`window`
+
+Data type: `Integer[0,3600]`
+
+The size of the rolling window measured in seconds over which the rate
+limits are calculated.
+
+Default value: `0`
+
+##### <a name="ipv4_prefix_length"></a>`ipv4_prefix_length`
+
+Data type: `Integer[0,32]`
+
+Define the number of bits that are used to group IPv4 addresses (like
+a netmask). The rate limits are applied to all requests having the same
+network prefix.
+
+Default value: `0`
+
+##### <a name="ipv6_prefix_length"></a>`ipv6_prefix_length`
+
+Data type: `Integer[0,128]`
+
+Define the number of bits that are used to group IPv6 addresses (like
+a netmask). The rate limits are applied to all requests having the same
+network prefix.
+
+Default value: `0`
+
+##### <a name="log_only"></a>`log_only`
+
+Data type: `Boolean`
+
+Do not really limit the queries but only log that it would happen. This
+can be used to test rate limits before enforcing them.
+
+Default value: ``false``
+
+##### <a name="exempt_clients"></a>`exempt_clients`
+
+Data type: `Array[String]`
+
+An array of IP addresses/networks or ACL names that are never limited.
+
+Default value: `[]`
+
+##### <a name="all_per_second"></a>`all_per_second`
+
+Data type: `Optional[Integer[0,1000]]`
+
+Limit the number of total answers per second for an IP address to the
+given value.
+
+Default value: ``undef``
+
+##### <a name="errors_per_second"></a>`errors_per_second`
+
+Data type: `Optional[Integer[0,1000]]`
+
+Limit the number of total error answers per second for an IP address to
+the given value.
+
+Default value: ``undef``
+
+##### <a name="responses_per_second"></a>`responses_per_second`
+
+Data type: `Optional[Integer[0,1000]]`
+
+Limit the number of identical responses per second for an IP address to
+the given value.
+
+Default value: ``undef``
+
+##### <a name="referrals_per_second"></a>`referrals_per_second`
+
+Data type: `Optional[Integer[0,1000]]`
+
+Limit the number of referrals per second to the given value.
+
+Default value: ``undef``
+
+##### <a name="nodata_per_second"></a>`nodata_per_second`
+
+Data type: `Optional[Integer[0,1000]]`
+
+Limit the number of NODATA responses per second to the given value.
+
+Default value: ``undef``
+
+##### <a name="nxdomains_per_second"></a>`nxdomains_per_second`
+
+Data type: `Optional[Integer[0,1000]]`
+
+Limit the number of NXDOMAIN responses per second to the given value.
+
+Default value: ``undef``
+
+##### <a name="qps_scale"></a>`qps_scale`
+
+Data type: `Optional[Integer[0,1000]]`
+
+Value to define the query per second scaling when using rate limiting.
+
+Default value: ``undef``
+
+##### <a name="slip"></a>`slip`
+
+Data type: `Optional[Integer[0,10]]`
+
+Set the rate at which queries over the defined limit are returned with
+the truncate bit.
+
+Default value: ``undef``
+
 ##### <a name="max_cache_size"></a>`max_cache_size`
 
 Data type: `Integer`
@@ -601,153 +727,6 @@ Default value: ``undef``
 Data type: `Optional[Boolean]`
 
 
-
-Default value: ``undef``
-
-### <a name="bindrate_limit"></a>`bind::rate_limit`
-
-Manage rate limiting
-
-#### Examples
-
-##### Establish a limit
-
-```puppet
-
-class { 'bind::rate_limit':
-  all_per_second => 1000,
-}
-```
-
-#### Parameters
-
-The following parameters are available in the `bind::rate_limit` class:
-
-* [`window`](#window)
-* [`ipv4_prefix_length`](#ipv4_prefix_length)
-* [`ipv6_prefix_length`](#ipv6_prefix_length)
-* [`log_only`](#log_only)
-* [`exempt_clients`](#exempt_clients)
-* [`all_per_second`](#all_per_second)
-* [`errors_per_second`](#errors_per_second)
-* [`responses_per_second`](#responses_per_second)
-* [`referrals_per_second`](#referrals_per_second)
-* [`nodata_per_second`](#nodata_per_second)
-* [`nxdomains_per_second`](#nxdomains_per_second)
-* [`qps_scale`](#qps_scale)
-* [`slip`](#slip)
-
-##### <a name="window"></a>`window`
-
-Data type: `Integer[0,3600]`
-
-The size of the rolling window measured in seconds over which the rate
-limits are calculated.
-
-Default value: `0`
-
-##### <a name="ipv4_prefix_length"></a>`ipv4_prefix_length`
-
-Data type: `Integer[0,32]`
-
-Define the number of bits that are used to group IPv4 addresses (like a
-netmask). The limits are applied to all requests having the same network
-prefix.
-
-Default value: `0`
-
-##### <a name="ipv6_prefix_length"></a>`ipv6_prefix_length`
-
-Data type: `Integer[0,128]`
-
-Define the number of bits that are used to group IPv6 addresses (like a
-netmask). The limits are applied to all requests having the same network
-prefix.
-
-Default value: `0`
-
-##### <a name="log_only"></a>`log_only`
-
-Data type: `Boolean`
-
-Do not really limit the queries but only log that it would happen. This
-can be used to test limits before enforcing them.
-
-Default value: ``false``
-
-##### <a name="exempt_clients"></a>`exempt_clients`
-
-Data type: `Array[String]`
-
-An array of IP addresses/networks or ACL names that are never limited.
-
-Default value: `[]`
-
-##### <a name="all_per_second"></a>`all_per_second`
-
-Data type: `Optional[Integer[0,1000]]`
-
-Limit the number of total answers per second for an IP address to the
-given value.
-
-Default value: ``undef``
-
-##### <a name="errors_per_second"></a>`errors_per_second`
-
-Data type: `Optional[Integer[0,1000]]`
-
-Limit the number of total error answers per second for an IP address to
-the given value.
-
-Default value: ``undef``
-
-##### <a name="responses_per_second"></a>`responses_per_second`
-
-Data type: `Optional[Integer[0,1000]]`
-
-Limit the number of identical responses per second for an IP address to
-the given value.
-
-Default value: ``undef``
-
-##### <a name="referrals_per_second"></a>`referrals_per_second`
-
-Data type: `Optional[Integer[0,1000]]`
-
-Limit the number of referrals per second to the given value.
-
-Default value: ``undef``
-
-##### <a name="nodata_per_second"></a>`nodata_per_second`
-
-Data type: `Optional[Integer[0,1000]]`
-
-Limit the number of NODATA responses per second to the given value.
-
-Default value: ``undef``
-
-##### <a name="nxdomains_per_second"></a>`nxdomains_per_second`
-
-Data type: `Optional[Integer[0,1000]]`
-
-Limit the number of NXDOMAIN responses per second to the given value.
-
-Default value: ``undef``
-
-##### <a name="qps_scale"></a>`qps_scale`
-
-Data type: `Optional[Integer[0,1000]]`
-
-Value to define the query per second scaling.
-
-Default value: ``undef``
-
-##### <a name="slip"></a>`slip`
-
-Data type: `Optional[Integer[0,10]]`
-
-Set the rate at which queries over the defined limit are returned with
-the truncate bit.
 
 Default value: ``undef``
 
@@ -2563,7 +2542,7 @@ Default value: `'30'`
 ### <a name="dnssec_key"></a>`dnssec_key`
 
 *Notice*: Automatic key rollover using this type is not thoroughly
-tested. Use `bind::dnssec-policy` to define a DNSSEC policy (available
+tested. Use `bind::dnssec_policy` to define a DNSSEC policy (available
 with Bind 9.16) and let Bind handle the heavy lifting instead of Puppet.
 
 All intervals are interpreted as seconds if no unit is given. The

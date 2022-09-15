@@ -158,6 +158,55 @@
 #   `yes`, `break-dnssec`. This parameter is ignored for Bind 9.16.0 or
 #   later.
 #
+# @param window
+#   The size of the rolling window measured in seconds over which the rate
+#   limits are calculated.
+#
+# @param ipv4_prefix_length
+#   Define the number of bits that are used to group IPv4 addresses (like
+#   a netmask). The rate limits are applied to all requests having the same
+#   network prefix.
+#
+# @param ipv6_prefix_length
+#   Define the number of bits that are used to group IPv6 addresses (like
+#   a netmask). The rate limits are applied to all requests having the same
+#   network prefix.
+#
+# @param log_only
+#   Do not really limit the queries but only log that it would happen. This
+#   can be used to test rate limits before enforcing them.
+#
+# @param exempt_clients
+#   An array of IP addresses/networks or ACL names that are never limited.
+#
+# @param all_per_second
+#   Limit the number of total answers per second for an IP address to the
+#   given value.
+#
+# @param errors_per_second
+#   Limit the number of total error answers per second for an IP address to
+#   the given value.
+#
+# @param responses_per_second
+#   Limit the number of identical responses per second for an IP address to
+#   the given value.
+#
+# @param referrals_per_second
+#   Limit the number of referrals per second to the given value.
+#
+# @param nodata_per_second
+#   Limit the number of NODATA responses per second to the given value.
+#
+# @param nxdomains_per_second
+#   Limit the number of NXDOMAIN responses per second to the given value.
+#
+# @param qps_scale
+#   Value to define the query per second scaling when using rate limiting.
+#
+# @param slip
+#   Set the rate at which queries over the defined limit are returned with
+#   the truncate bit.
+#
 # @param max_cache_size
 #   The maximum number of bytes to use for the server's cache. If views are
 #   used then the size applies to every view separately. If this value is
@@ -218,54 +267,67 @@
 #
 #
 class bind (
-  Stdlib::Absolutepath     $confdir,
-  Stdlib::Absolutepath     $vardir,
-  Stdlib::Absolutepath     $cachedir,
-  Stdlib::Absolutepath     $rndc_keyfile,
-  Stdlib::Absolutepath     $rndc_program,
-  String                   $bind_user,
-  String                   $bind_group,
-  String                   $package_name,
-  String                   $service_name,
-  Bind::AddressMatchList   $listen_on                = [],
-  Bind::AddressMatchList   $listen_on_v6             = [],
-  Boolean                  $ipv4_enable              = true,
-  Boolean                  $ipv6_enable              = true,
-  Boolean                  $views_enable             = false,
-  Boolean                  $dnssec_enable            = true,
-  Boolean                  $dnssec_lookaside         = false,
-  Bind::DNSSEC::Validation $dnssec_validation        = 'auto',
-  Boolean                  $empty_zones_enable       = true,
-  Boolean                  $root_mirror_enable       = false,
-  Boolean                  $control_channels_enable  = true,
-  Bind::AddressMatchList   $allow_query              = [],
-  Bind::AddressMatchList   $allow_query_cache        = [],
-  Bind::AddressMatchList   $allow_recursion          = [],
-  Bind::AddressMatchList   $blackhole                = [],
-  Bind::AddressMatchList   $forwarders               = [],
-  Bind::Forward            $forward                  = 'first',
-  Boolean                  $root_hints_enable        = true,
-  String                   $root_hints_source        = "puppet:///modules/${module_name}/zones/db.root",
-  Boolean                  $localhost_forward_enable = true,
-  String                   $localhost_forward_source = "puppet:///modules/${module_name}/zones/db.localhost",
-  Boolean                  $localhost_reverse_enable = true,
-  String                   $localhost_reverse_source = "puppet:///modules/${module_name}/zones/db.127",
-  Integer                  $max_cache_size           = 0,
-  Integer                  $min_cache_ttl            = 0,
-  Integer                  $max_cache_ttl            = 0,
-  Integer                  $min_ncache_ttl           = 0,
-  Integer                  $max_ncache_ttl           = 0,
-  Integer                  $servfail_ttl             = 0,
-  Hash[String,Data]        $custom_options           = {},
-  String                   $package_ensure           = 'installed',
-  Stdlib::Ensure::Service  $service_ensure           = 'running',
-  Boolean                  $service_enable           = true,
-  Boolean                  $manage_rndc_keyfile      = true,
-  Bind::Filter_aaaa_on_v4  $filter_aaaa_on_v4        = undef,
-  Optional[String]         $report_hostname          = undef,
-  Optional[String]         $report_version           = undef,
-  Optional[Boolean]        $querylog_enable          = undef,
-  Optional[Boolean]        $trust_anchor_telemetry   = undef,
+  Stdlib::Absolutepath      $confdir,
+  Stdlib::Absolutepath      $vardir,
+  Stdlib::Absolutepath      $cachedir,
+  Stdlib::Absolutepath      $rndc_keyfile,
+  Stdlib::Absolutepath      $rndc_program,
+  String                    $bind_user,
+  String                    $bind_group,
+  String                    $package_name,
+  String                    $service_name,
+  Bind::AddressMatchList    $listen_on                = [],
+  Bind::AddressMatchList    $listen_on_v6             = [],
+  Boolean                   $ipv4_enable              = true,
+  Boolean                   $ipv6_enable              = true,
+  Boolean                   $views_enable             = false,
+  Boolean                   $dnssec_enable            = true,
+  Boolean                   $dnssec_lookaside         = false,
+  Bind::DNSSEC::Validation  $dnssec_validation        = 'auto',
+  Boolean                   $empty_zones_enable       = true,
+  Boolean                   $root_mirror_enable       = false,
+  Boolean                   $control_channels_enable  = true,
+  Bind::AddressMatchList    $allow_query              = [],
+  Bind::AddressMatchList    $allow_query_cache        = [],
+  Bind::AddressMatchList    $allow_recursion          = [],
+  Bind::AddressMatchList    $blackhole                = [],
+  Bind::AddressMatchList    $forwarders               = [],
+  Bind::Forward             $forward                  = 'first',
+  Boolean                   $root_hints_enable        = true,
+  String                    $root_hints_source        = "puppet:///modules/${module_name}/zones/db.root",
+  Boolean                   $localhost_forward_enable = true,
+  String                    $localhost_forward_source = "puppet:///modules/${module_name}/zones/db.localhost",
+  Boolean                   $localhost_reverse_enable = true,
+  String                    $localhost_reverse_source = "puppet:///modules/${module_name}/zones/db.127",
+  Integer                   $max_cache_size           = 0,
+  Integer                   $min_cache_ttl            = 0,
+  Integer                   $max_cache_ttl            = 0,
+  Integer                   $min_ncache_ttl           = 0,
+  Integer                   $max_ncache_ttl           = 0,
+  Integer                   $servfail_ttl             = 0,
+  Hash[String,Data]         $custom_options           = {},
+  String                    $package_ensure           = 'installed',
+  Stdlib::Ensure::Service   $service_ensure           = 'running',
+  Boolean                   $service_enable           = true,
+  Boolean                   $manage_rndc_keyfile      = true,
+  Bind::Filter_aaaa_on_v4   $filter_aaaa_on_v4        = undef,
+  Integer[0,3600]           $window                   = 0,
+  Integer[0,32]             $ipv4_prefix_length       = 0,
+  Integer[0,128]            $ipv6_prefix_length       = 0,
+  Boolean                   $log_only                 = false,
+  Array[String]             $exempt_clients           = [],
+  Optional[Integer[0,1000]] $all_per_second           = undef,
+  Optional[Integer[0,1000]] $errors_per_second        = undef,
+  Optional[Integer[0,1000]] $responses_per_second     = undef,
+  Optional[Integer[0,1000]] $referrals_per_second     = undef,
+  Optional[Integer[0,1000]] $nodata_per_second        = undef,
+  Optional[Integer[0,1000]] $nxdomains_per_second     = undef,
+  Optional[Integer[0,1000]] $qps_scale                = undef,
+  Optional[Integer[0,10]]   $slip                     = undef,
+  Optional[String]          $report_hostname          = undef,
+  Optional[String]          $report_version           = undef,
+  Optional[Boolean]         $querylog_enable          = undef,
+  Optional[Boolean]         $trust_anchor_telemetry   = undef,
 ) {
 
   $header_message = '// This file is managed by Puppet. DO NOT EDIT.'
@@ -539,6 +601,36 @@ class bind (
     target  => 'named.conf.options',
     order   => '75',
     content => epp("${module_name}/options.main.epp", $options),
+  }
+
+  $limits = {
+    'all_per_second'       => $all_per_second,
+    'errors_per_second'    => $errors_per_second,
+    'responses_per_second' => $responses_per_second,
+    'referrals_per_second' => $referrals_per_second,
+    'nodata_per_second'    => $nodata_per_second,
+    'nxdomains_per_second' => $nxdomains_per_second,
+    'qps_scale'            => $qps_scale,
+    'slip'                 => $slip,
+  }
+
+  # Include rate limit config only if at least one parameter has been set
+  $real_limits = $limits.filter |$key, $val| { $val =~ NotUndef }
+
+  unless empty($real_limits) {
+    $params = {
+      'window'             => $window,
+      'ipv4_prefix_length' => $ipv4_prefix_length,
+      'ipv6_prefix_length' => $ipv6_prefix_length,
+      'log_only'           => $log_only,
+      'exempt_clients'     => $exempt_clients,
+    }
+
+    concat::fragment { 'named.conf.rate-limit':
+      target  => 'named.conf.options',
+      order   => '80',
+      content => epp("${module_name}/rate-limit.epp", merge($params, $limits)),
+    }
   }
 
   unless empty($custom_options) {
