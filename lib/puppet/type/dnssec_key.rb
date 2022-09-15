@@ -5,7 +5,7 @@ Puppet::Type.newtype(:dnssec_key) do
     @summary Create, delete and maintain DNSSEC key files on the DNS server.
 
     *Notice*: Automatic key rollover using this type is not thoroughly
-    tested. Use `bind::dnssec-policy` to define a DNSSEC policy (available
+    tested. Use `bind::dnssec_policy` to define a DNSSEC policy (available
     with Bind 9.16) and let Bind handle the heavy lifting instead of Puppet.
 
     All intervals are interpreted as seconds if no unit is given. The
