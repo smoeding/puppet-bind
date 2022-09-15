@@ -40,7 +40,9 @@
   ],
   "tags": [
     "bind",
+    "bind9",
     "dns",
+    "dnssec",
     "named"
   ],
   "pdk-version": "2.4.0",
