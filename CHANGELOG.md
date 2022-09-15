@@ -1,3 +1,13 @@
+## 2022-09-15 - Release 0.6.0
+
+### Features
+
+- Implement `update-policy` for primary zones to manage dynamic zones.
+
+### Breaking changes
+
+- Drop Debian 9 support
+
 ## 2022-09-10 - Release 0.5.0
 
 ### Feature
