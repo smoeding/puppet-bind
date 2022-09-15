@@ -127,7 +127,9 @@ See [REFERENCE.md](https://github.com/smoeding/puppet-bind/blob/master/REFERENCE
 
 ## Limitations
 
-Not all BIND features are currently implemented as I started with the options I needed myself. Some options are not yet available and features like DNSSEC inline signing are not well tested.
+Not all BIND features are currently implemented as I started with the options I needed myself. Some options are not yet available and features like DNSSEC are not well tested.
+
+Creating DNSSEC keys manually using the `dnssec_key` type with automatic rollover is discouraged. The defined type `bind::dnssec_policy` should be used instead.
 
 ## Development
 
