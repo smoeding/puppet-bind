@@ -6,7 +6,7 @@
 
 ### Classes
 
-* [`bind`](#bind): Manage the Bind9 DNS daemon and it's configuration files
+* [`bind`](#bind): Manage the Bind9 DNS daemon and configuration
 
 ### Defined types
 
@@ -66,7 +66,7 @@
 
 ### <a name="bind"></a>`bind`
 
-Manage the Bind9 DNS daemon and it's configuration files
+Manage the Bind9 DNS daemon and configuration
 
 #### Examples
 
@@ -179,7 +179,7 @@ Default: operating system specific
 
 Data type: `Stdlib::Absolutepath`
 
-The directory where Bind stores other config files (zonefiles, ...).
+The directory where Bind stores other files (e.g. primary zone files).
 Example: `/var/lib/bind`.
 
 Default: operating system specific
@@ -188,8 +188,8 @@ Default: operating system specific
 
 Data type: `Stdlib::Absolutepath`
 
-The directory where Bind stores volatile data. Example:
-`/var/cache/bind`.
+The directory where Bind stores volatile data (e.g. secondary zone
+files).  Example: `/var/cache/bind`.
 
 Default: operating system specific
 

@@ -1,4 +1,4 @@
-# @summary Manage the Bind9 DNS daemon and it's configuration files
+# @summary Manage the Bind9 DNS daemon and configuration
 #
 # @example Install a local caching resolver
 #
@@ -31,14 +31,14 @@
 #   Default: operating system specific
 #
 # @param vardir
-#   The directory where Bind stores other config files (zonefiles, ...).
+#   The directory where Bind stores other files (e.g. primary zone files).
 #   Example: `/var/lib/bind`.
 #
 #   Default: operating system specific
 #
 # @param cachedir
-#   The directory where Bind stores volatile data. Example:
-#   `/var/cache/bind`.
+#   The directory where Bind stores volatile data (e.g. secondary zone
+#   files).  Example: `/var/cache/bind`.
 #
 #   Default: operating system specific
 #
