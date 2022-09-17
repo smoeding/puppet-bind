@@ -1,3 +1,9 @@
+## 2022-09-17 - Release 0.7.0
+
+### Breaking changes
+
+- The class `bind::rate_limit` has been removed. All rate limit settings can be configured using the main class `bind`.
+
 ## 2022-09-15 - Release 0.6.0
 
 ### Features
