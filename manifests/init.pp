@@ -855,9 +855,9 @@ class bind (
 
   $default_options = join(concat($user_options, $network_options), ' ')
 
-  $options_file = $facts['os']['name'] ? {
-    'Debian' => '/etc/default/bind9',
-    'Ubuntu' => '/etc/default/named',
+  $options_file = "${facts['os']['name']}-${facts['os']['release']['major']}" ? {
+    'Debian-10' => '/etc/default/bind9',
+    default     => '/etc/default/named',
   }
 
   file_line { 'named-options':

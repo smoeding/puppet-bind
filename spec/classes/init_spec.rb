@@ -291,11 +291,10 @@ describe 'bind' do
         end
 
         #
-        # Service
+        # Options
         #
-
-        case facts[:os]['name']
-        when 'Debian'
+        case "#{facts[:os]['name']}-#{facts[:os]['release']['major']}"
+        when 'Debian-10'
           it {
             is_expected.to contain_file_line('named-options')
               .with_path('/etc/default/bind9')
@@ -304,7 +303,7 @@ describe 'bind' do
               .that_requires('Package[bind]')
               .that_notifies('Service[bind]')
           }
-        when 'Ubuntu'
+        else
           it {
             is_expected.to contain_file_line('named-options')
               .with_path('/etc/default/named')
@@ -314,6 +313,10 @@ describe 'bind' do
               .that_notifies('Service[bind]')
           }
         end
+
+        #
+        # Service
+        #
 
         it {
           is_expected.to contain_service('bind')
@@ -360,14 +363,12 @@ describe 'bind' do
           case facts[:os]['name']
           when 'Debian'
             is_expected.to contain_file_line('named-options')
-              .with_path('/etc/default/bind9')
               .with_line('OPTIONS="-u bind -6"')
               .with_match('^OPTIONS=')
               .that_requires('Package[bind]')
               .that_notifies('Service[bind]')
           when 'Ubuntu'
             is_expected.to contain_file_line('named-options')
-              .with_path('/etc/default/named')
               .with_line('OPTIONS="-u bind -6"')
               .with_match('^OPTIONS=')
               .that_requires('Package[bind]')
@@ -385,14 +386,12 @@ describe 'bind' do
           case facts[:os]['name']
           when 'Debian'
             is_expected.to contain_file_line('named-options')
-              .with_path('/etc/default/bind9')
               .with_line('OPTIONS="-u bind -4"')
               .with_match('^OPTIONS=')
               .that_requires('Package[bind]')
               .that_notifies('Service[bind]')
           when 'Ubuntu'
             is_expected.to contain_file_line('named-options')
-              .with_path('/etc/default/named')
               .with_line('OPTIONS="-u bind -4"')
               .with_match('^OPTIONS=')
               .that_requires('Package[bind]')
