@@ -1,3 +1,9 @@
+## 2022-09-20 - Release 0.8.0
+
+### Bugfix
+
+- Fix path of options file on Debian-11.
+
 ## 2022-09-17 - Release 0.7.0
 
 ### Breaking changes

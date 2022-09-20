@@ -1,6 +1,6 @@
 {
   "name": "stm-bind",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "author": "stm",
   "summary": "Manage the BIND name server.",
   "license": "BSD-2-Clause",
