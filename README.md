@@ -121,6 +121,37 @@ bind::zone::primary { 'example.net':
 
 DNSSEC policies are available with Bind 9.16 and later.
 
+### Create views for internal and external access
+
+The view `internal` allow recursive DNS resolution for all hosts on the local network.
+
+```puppet
+bind::view { 'internal':
+  match_clients   => [ 'localnets', ],
+  allow_query     => [ 'localnets', ],
+  allow_query_on  => [ 'localnets', ],
+  recursion       => true,
+  allow_recursion => [ 'localnets', ],
+  order           => '10',
+}
+```
+
+The view `external` is for all other hosts and should only be used for your primary or secondary zones.
+
+```puppet
+bind::view { 'external':
+  match_clients            => [ 'any', ],
+  allow_query              => [ 'any', ],
+  allow_query_on           => [ 'any', ],
+  recursion                => false,
+  localhost_forward_enable => false,
+  localhost_reverse_enable => false,
+  order                    => '20',
+}
+```
+
+The defined types `bind::zone::primary` and `bind::zone::secondary` can be used to add zones to this view.
+
 ## Reference
 
 See [REFERENCE.md](https://github.com/smoeding/puppet-bind/blob/master/REFERENCE.md)
