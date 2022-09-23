@@ -274,7 +274,7 @@ describe 'bind' do
           }
 
           it {
-            is_expected.to contain_bind__zone__hint('.')
+            is_expected.not_to contain_bind__zone__hint('.')
               .with_file('/etc/bind/db.root')
               .with_comment('Prime server with knowledge of the root servers')
 
@@ -410,23 +410,27 @@ describe 'bind' do
         }
       end
 
-      context 'with root_hints_enable => false' do
+      context 'with root_hints_enable => true' do
         let(:params) do
-          { root_hints_enable: false }
+          { root_hints_enable: true }
         end
 
         it {
-          is_expected.not_to contain_bind__zone__hint('.')
+          is_expected.to contain_bind__zone__hint('.')
+            .with_file('/etc/bind/db.root')
+            .with_comment('Prime server with knowledge of the root servers')
         }
       end
 
-      context 'with root_mirror_enable => false' do
+      context 'with root_mirror_enable => true' do
         let(:params) do
-          { root_mirror_enable: false }
+          { root_mirror_enable: true }
         end
 
         it {
-          is_expected.not_to contain_bind__zone__mirror('.')
+          is_expected.to contain_bind__zone__mirror('.')
+            .with_comment('Local copy of the root zone (see RFC 7706)')
+            .with_order('11')
         }
       end
 

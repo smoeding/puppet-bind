@@ -20,12 +20,7 @@ describe 'bind::view' do
             .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n")
             .with_order('10')
 
-          is_expected.to contain_bind__zone__hint('foo/.')
-            .with_zone('.')
-            .with_view('foo')
-            .with_file('/etc/bind/db.root')
-            .with_comment('Prime server with knowledge of the root servers')
-
+          is_expected.not_to contain_bind__zone__hint('foo/.')
           is_expected.not_to contain_bind__zone__mirror('foo/.')
 
           is_expected.to contain_bind__zone__primary('foo/localhost')

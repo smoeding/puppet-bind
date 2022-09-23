@@ -115,9 +115,6 @@
 # @param empty_zones_enable
 #   Should automatic empty zones be enabled.
 #
-# @param root_mirror_enable
-#   Should a local mirror zone the root zone be configured.
-#
 # @param control_channels_enable
 #   Should control channels be enabled. All `bind::controls::unix` and
 #   `bind::controls::inet` configuration items will be ignored if this is set
@@ -149,6 +146,17 @@
 #   are actually defined. Valid values: 'first', 'only'. Note that
 #   automatic empty zones for RFC 6303 are ignored if this parameter
 #   is set to `only`.
+#
+# @param root_hints_enable
+#   Should a local copy of the list of servers that are authoritative for the
+#   root domain "." be included. This is normally not needed since Bind
+#   contains an internal list of root nameservers and `named` will query the
+#   servers in the list until an authoritative response is received. Normally
+#   this parameter can be left at default.
+#
+# @param root_mirror_enable
+#   Should a mirror for the root domain "." be installed locally. See RFC
+#   7706 for details.
 #
 # @param filter_aaaa_on_v4
 #   Should AAAA records be omitted from the response if the IPv4 transport is
@@ -285,7 +293,6 @@ class bind (
   Boolean                   $dnssec_lookaside         = false,
   Bind::DNSSEC::Validation  $dnssec_validation        = 'auto',
   Boolean                   $empty_zones_enable       = true,
-  Boolean                   $root_mirror_enable       = false,
   Boolean                   $control_channels_enable  = true,
   Bind::AddressMatchList    $allow_query              = [],
   Bind::AddressMatchList    $allow_query_cache        = [],
@@ -293,7 +300,8 @@ class bind (
   Bind::AddressMatchList    $blackhole                = [],
   Bind::AddressMatchList    $forwarders               = [],
   Bind::Forward             $forward                  = 'first',
-  Boolean                   $root_hints_enable        = true,
+  Boolean                   $root_mirror_enable       = false,
+  Boolean                   $root_hints_enable        = false,
   String                    $root_hints_source        = "puppet:///modules/${module_name}/zones/db.root",
   Boolean                   $localhost_forward_enable = true,
   String                    $localhost_forward_source = "puppet:///modules/${module_name}/zones/db.localhost",

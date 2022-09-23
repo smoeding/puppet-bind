@@ -122,13 +122,14 @@ The following parameters are available in the `bind` class:
 * [`dnssec_lookaside`](#dnssec_lookaside)
 * [`dnssec_validation`](#dnssec_validation)
 * [`empty_zones_enable`](#empty_zones_enable)
-* [`root_mirror_enable`](#root_mirror_enable)
 * [`control_channels_enable`](#control_channels_enable)
 * [`allow_query`](#allow_query)
 * [`allow_recursion`](#allow_recursion)
 * [`blackhole`](#blackhole)
 * [`forwarders`](#forwarders)
 * [`forward`](#forward)
+* [`root_hints_enable`](#root_hints_enable)
+* [`root_mirror_enable`](#root_mirror_enable)
 * [`filter_aaaa_on_v4`](#filter_aaaa_on_v4)
 * [`window`](#window)
 * [`ipv4_prefix_length`](#ipv4_prefix_length)
@@ -154,7 +155,6 @@ The following parameters are available in the `bind` class:
 * [`report_hostname`](#report_hostname)
 * [`report_version`](#report_version)
 * [`allow_query_cache`](#allow_query_cache)
-* [`root_hints_enable`](#root_hints_enable)
 * [`root_hints_source`](#root_hints_source)
 * [`localhost_forward_enable`](#localhost_forward_enable)
 * [`localhost_forward_source`](#localhost_forward_source)
@@ -329,14 +329,6 @@ Should automatic empty zones be enabled.
 
 Default value: ``true``
 
-##### <a name="root_mirror_enable"></a>`root_mirror_enable`
-
-Data type: `Boolean`
-
-Should a local mirror zone the root zone be configured.
-
-Default value: ``false``
-
 ##### <a name="control_channels_enable"></a>`control_channels_enable`
 
 Data type: `Boolean`
@@ -398,6 +390,27 @@ automatic empty zones for RFC 6303 are ignored if this parameter
 is set to `only`.
 
 Default value: `'first'`
+
+##### <a name="root_hints_enable"></a>`root_hints_enable`
+
+Data type: `Boolean`
+
+Should a local copy of the list of servers that are authoritative for the
+root domain "." be included. This is normally not needed since Bind
+contains an internal list of root nameservers and `named` will query the
+servers in the list until an authoritative response is received. Normally
+this parameter can be left at default.
+
+Default value: ``false``
+
+##### <a name="root_mirror_enable"></a>`root_mirror_enable`
+
+Data type: `Boolean`
+
+Should a mirror for the root domain "." be installed locally. See RFC
+7706 for details.
+
+Default value: ``false``
 
 ##### <a name="filter_aaaa_on_v4"></a>`filter_aaaa_on_v4`
 
@@ -641,14 +654,6 @@ Data type: `Bind::AddressMatchList`
 
 
 Default value: `[]`
-
-##### <a name="root_hints_enable"></a>`root_hints_enable`
-
-Data type: `Boolean`
-
-
-
-Default value: ``true``
 
 ##### <a name="root_hints_source"></a>`root_hints_source`
 
@@ -1754,10 +1759,10 @@ The following parameters are available in the `bind::view` defined type:
 * [`allow_query_cache`](#allow_query_cache)
 * [`allow_query_cache_on`](#allow_query_cache_on)
 * [`allow_transfer`](#allow_transfer)
+* [`root_hints_enable`](#root_hints_enable)
 * [`root_mirror_enable`](#root_mirror_enable)
 * [`view`](#view)
 * [`order`](#order)
-* [`root_hints_enable`](#root_hints_enable)
 * [`localhost_forward_enable`](#localhost_forward_enable)
 * [`localhost_reverse_enable`](#localhost_reverse_enable)
 
@@ -1855,11 +1860,24 @@ information from this server.
 
 Default value: `[]`
 
+##### <a name="root_hints_enable"></a>`root_hints_enable`
+
+Data type: `Boolean`
+
+Should a local copy of the list of servers that are authoritative for the
+root domain "." be included. This is normally not needed since Bind
+contains an internal list of root nameservers and `named` will query the
+servers in the list until an authoritative response is received. Normally
+this parameter can be left at default.
+
+Default value: ``false``
+
 ##### <a name="root_mirror_enable"></a>`root_mirror_enable`
 
 Data type: `Boolean`
 
-Enable local root zone mirror for the view.
+Should a mirror for the root domain "." be installed locally. See RFC
+7706 for details.
 
 Default value: ``false``
 
@@ -1881,14 +1899,6 @@ match_clients contains `any` then this view should probably have the
 highest order value.
 
 Default value: `'10'`
-
-##### <a name="root_hints_enable"></a>`root_hints_enable`
-
-Data type: `Optional[Boolean]`
-
-
-
-Default value: ``undef``
 
 ##### <a name="localhost_forward_enable"></a>`localhost_forward_enable`
 

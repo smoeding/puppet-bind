@@ -46,8 +46,16 @@
 #   An array of ACL names or networks that are allowed to transfer zone
 #   information from this server.
 #
+# @param root_hints_enable
+#   Should a local copy of the list of servers that are authoritative for the
+#   root domain "." be included. This is normally not needed since Bind
+#   contains an internal list of root nameservers and `named` will query the
+#   servers in the list until an authoritative response is received. Normally
+#   this parameter can be left at default.
+#
 # @param root_mirror_enable
-#   Enable local root zone mirror for the view.
+#   Should a mirror for the root domain "." be installed locally. See RFC
+#   7706 for details.
 #
 # @param view
 #   The name of the view.
@@ -71,10 +79,10 @@ define bind::view (
   Array[String]     $allow_query_cache        = [],
   Array[String]     $allow_query_cache_on     = [],
   Array[String]     $allow_transfer           = [],
+  Boolean           $root_hints_enable        = false,
   Boolean           $root_mirror_enable       = false,
   String            $view                     = $name,
   String            $order                    = '10',
-  Optional[Boolean] $root_hints_enable        = undef,
   Optional[Boolean] $localhost_forward_enable = undef,
   Optional[Boolean] $localhost_reverse_enable = undef,
 ) {
@@ -110,7 +118,7 @@ define bind::view (
     order   => $order,
   }
 
-  if pick($root_hints_enable, $::bind::root_hints_enable) {
+  if $root_hints_enable {
     bind::zone::hint { "${view}/.":
       zone    => '.',
       view    => $view,
