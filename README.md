@@ -51,9 +51,13 @@ Set up a caching name server that provides recursive name resolution for a local
 
 ```puppet
 class { 'bind':
-  allow_query       => [ 'localhost', '10/8', ],
-  allow_query_cache => [ 'localhost', '10/8', ],
-  allow_recursion   => [ 'localhost', '10/8', ],
+  allow_query       => [ 'localhost', 'lan', ],
+  allow_query_cache => [ 'localhost', 'lan', ],
+  allow_recursion   => [ 'localhost', 'lan', ],
+}
+
+bind::acl { 'lan':
+  address_match_list => [ '192.168.10.0/24' ],
 }
 ```
 
@@ -129,9 +133,8 @@ The view `internal` allow recursive DNS resolution for all hosts on the local ne
 bind::view { 'internal':
   match_clients   => [ 'localnets', ],
   allow_query     => [ 'localnets', ],
-  allow_query_on  => [ 'localnets', ],
-  recursion       => true,
   allow_recursion => [ 'localnets', ],
+  recursion       => true,
   order           => '10',
 }
 ```
@@ -142,7 +145,6 @@ The view `external` is for all other hosts and should only be used for your prim
 bind::view { 'external':
   match_clients            => [ 'any', ],
   allow_query              => [ 'any', ],
-  allow_query_on           => [ 'any', ],
   recursion                => false,
   localhost_forward_enable => false,
   localhost_reverse_enable => false,
