@@ -78,6 +78,11 @@
 #   The name of the view that should include this zone. Must be set if views
 #   are used.
 #
+# @param file
+#   The name of the user managed zone file on the DNS server. The file must
+#   exist and have the correct format. Puppet does not manage the content or
+#   the file permissions of this file.
+#
 # @param source
 #   The source for the zone file. See the standard Puppet file type.
 #

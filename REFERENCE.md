@@ -2249,6 +2249,7 @@ The following parameters are available in the `bind::zone::primary` defined type
 * [`dnskey_sig_validity`](#dnskey_sig_validity)
 * [`notify_secondaries`](#notify_secondaries)
 * [`view`](#view)
+* [`file`](#file)
 * [`source`](#source)
 * [`content`](#content)
 * [`zone_statistics`](#zone_statistics)
@@ -2256,7 +2257,6 @@ The following parameters are available in the `bind::zone::primary` defined type
 * [`zone`](#zone)
 * [`class`](#class)
 * [`order`](#order)
-* [`file`](#file)
 
 ##### <a name="dnssec"></a>`dnssec`
 
@@ -2381,6 +2381,16 @@ are used.
 
 Default value: ``undef``
 
+##### <a name="file"></a>`file`
+
+Data type: `Optional[String]`
+
+The name of the user managed zone file on the DNS server. The file must
+exist and have the correct format. Puppet does not manage the content or
+the file permissions of this file.
+
+Default value: ``undef``
+
 ##### <a name="source"></a>`source`
 
 Data type: `Optional[String]`
@@ -2436,14 +2446,6 @@ Data type: `String`
 Zones are ordered by this parameter value in the zone file.
 
 Default value: `'20'`
-
-##### <a name="file"></a>`file`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
 
 ### <a name="bindzonesecondary"></a>`bind::zone::secondary`
 
