@@ -861,7 +861,7 @@ class bind (
     default => [ '-u', $bind_user, ],
   }
 
-  $default_options = join(concat($user_options, $network_options), ' ')
+  $daemon_options = join(concat($user_options, $network_options), ' ')
 
   $options_file = "${facts['os']['name']}-${facts['os']['release']['major']}" ? {
     'Debian-10' => '/etc/default/bind9',
@@ -870,7 +870,7 @@ class bind (
 
   file_line { 'named-options':
     path    => $options_file,
-    line    => "OPTIONS=\"${default_options}\"",
+    line    => "OPTIONS=\"${daemon_options}\"",
     match   => '^OPTIONS=',
     require => Package['bind'],
     notify  => Service['bind'],
