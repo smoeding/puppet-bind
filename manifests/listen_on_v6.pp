@@ -35,7 +35,6 @@ define bind::listen_on_v6 (
     default => '14',
   }
 
-
   bind::aml { $_resource:
     address_match_list => $address,
     target             => 'named.conf.options',

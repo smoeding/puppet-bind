@@ -161,7 +161,7 @@ define bind::dnssec_policy (
     $zsk = undef
   }
 
-  $keys = [ $csk, $ksk, $zsk ].filter |$val| { $val =~ NotUndef }
+  $keys = [$csk, $ksk, $zsk].filter |$val| { $val =~ NotUndef }
 
   #
   # NSEC3

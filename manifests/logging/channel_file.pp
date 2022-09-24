@@ -49,7 +49,6 @@ define bind::logging::channel_file (
   Optional[Integer]          $versions       = undef,
   Optional[Stdlib::Filemode] $mode           = undef,
 ) {
-
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')
@@ -57,8 +56,8 @@ define bind::logging::channel_file (
 
   file { $logfile:
     ensure => file,
-    owner  => $::bind::bind_user,
-    group  => $::bind::bind_group,
+    owner  => $bind::bind_user,
+    group  => $bind::bind_group,
     mode   => $mode,
     before => Concat['named.conf.logging'],
   }

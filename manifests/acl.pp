@@ -28,7 +28,6 @@ define bind::acl (
   String           $order              = '10',
   String           $acl                = $name,
 ) {
-
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')

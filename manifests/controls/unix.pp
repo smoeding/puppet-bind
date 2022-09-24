@@ -39,15 +39,13 @@ define bind::controls::unix (
   Boolean              $read_only = false,
   Stdlib::AbsolutePath $path      = $name,
 ) {
-
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')
   }
 
   # Ignore control channel definition unless control_channels_enable is true
-  if $::bind::control_channels_enable {
-
+  if $bind::control_channels_enable {
     $_keys = empty($keys) ? {
       true    => undef,
       default => $keys.reduce('') |$memo,$k| { "${memo}\"${k}\"; " },
@@ -71,6 +69,6 @@ define bind::controls::unix (
     }
 
     # Include controls fragments from main config
-    Concat::Fragment <| tag == 'named.conf.controls' |> { }
+    Concat::Fragment <| tag == 'named.conf.controls' |> {}
   }
 }

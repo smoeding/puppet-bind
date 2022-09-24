@@ -41,7 +41,6 @@ define bind::zone::forward (
   Bind::Zone::Class       $class      = 'IN',
   String                  $order      = '40',
 ) {
-
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')
@@ -53,10 +52,10 @@ define bind::zone::forward (
     'forward'    => $forward,
     'class'      => $class,
     'comment'    => $comment,
-    'indent'     => bool2str($::bind::views_enable, '  ', ''),
+    'indent'     => bool2str($bind::views_enable, '  ', ''),
   }
 
-  if $::bind::views_enable {
+  if $bind::views_enable {
     assert_type(String, $view) |$expected,$actual| {
       fail('The parameter view must be a String if views are enabled')
     }
@@ -65,7 +64,7 @@ define bind::zone::forward (
       target  => 'named.conf.views',
       content => epp("${module_name}/zone-forward.epp", $params),
       order   => $order,
-      tag     => [ "named.conf.views-${view}", ],
+      tag     => ["named.conf.views-${view}",],
     }
   }
   else {

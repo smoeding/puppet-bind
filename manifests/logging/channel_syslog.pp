@@ -39,7 +39,6 @@ define bind::logging::channel_syslog (
   Optional[Boolean]      $print_severity = undef,
   Optional[Boolean]      $print_time     = undef,
 ) {
-
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')

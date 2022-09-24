@@ -57,6 +57,12 @@
 #   Should a mirror for the root domain "." be installed locally. See RFC
 #   7706 for details.
 #
+# @param localhost_forward_enable
+#   Should the forward zone for localhost be enabled in this view.
+#
+# @param localhost_reverse_enable
+#  Should the reverse zone for localhost be enabled in this view.
+#
 # @param view
 #   The name of the view.
 #
@@ -68,9 +74,9 @@
 #
 #
 define bind::view (
-  Array[String]     $match_clients            = [ 'any', ],
+  Array[String]     $match_clients            = ['any',],
   Array[String]     $match_destinations       = [],
-  Array[String]     $allow_query              = [ 'any', ],
+  Array[String]     $allow_query              = ['any',],
   Array[String]     $allow_query_on           = [],
   Boolean           $recursion                = true,
   Boolean           $match_recursive_only     = false,
@@ -86,19 +92,18 @@ define bind::view (
   Optional[Boolean] $localhost_forward_enable = undef,
   Optional[Boolean] $localhost_reverse_enable = undef,
 ) {
-
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')
   }
 
-  unless $::bind::views_enable {
+  unless $bind::views_enable {
     fail('Views can only be used if views_enable is true in the main bind class')
   }
 
   $params = {
     'view'                 => $view,
-    'confdir'              => $::bind::confdir,
+    'confdir'              => $bind::confdir,
     'match_clients'        => $match_clients,
     'match_destinations'   => $match_destinations,
     'match_recursive_only' => $match_recursive_only,
@@ -122,7 +127,7 @@ define bind::view (
     bind::zone::hint { "${view}/.":
       zone    => '.',
       view    => $view,
-      file    => "${::bind::confdir}/db.root",
+      file    => "${bind::confdir}/db.root",
       comment => 'Prime server with knowledge of the root servers',
     }
   }
@@ -136,20 +141,20 @@ define bind::view (
     }
   }
 
-  if pick($localhost_forward_enable, $::bind::localhost_forward_enable) {
+  if pick($localhost_forward_enable, $bind::localhost_forward_enable) {
     bind::zone::primary { "${view}/localhost":
       zone  => 'localhost',
       view  => $view,
-      file  => "${::bind::confdir}/db.localhost",
+      file  => "${bind::confdir}/db.localhost",
       order => '15',
     }
   }
 
-  if pick($localhost_reverse_enable, $::bind::localhost_reverse_enable) {
+  if pick($localhost_reverse_enable, $bind::localhost_reverse_enable) {
     bind::zone::primary { "${view}/127.in-addr.arpa":
       zone  => '127.in-addr.arpa',
       view  => $view,
-      file  => "${::bind::confdir}/db.127",
+      file  => "${bind::confdir}/db.127",
       order => '15',
     }
   }

@@ -45,7 +45,7 @@ define bind::zone::secondary (
   Bind::Zone::Class $class           = 'IN',
   String            $order           = '30',
 ) {
-  $zonebase = "${::bind::vardir}/secondary"
+  $zonebase = "${bind::vardir}/secondary"
 
   # The base class must be included first
   unless defined(Class['bind']) {
@@ -60,8 +60,8 @@ define bind::zone::secondary (
     unless defined(File[$zonedir1]) {
       file { $zonedir1:
         ensure => directory,
-        owner  => $::bind::bind_user,
-        group  => $::bind::bind_group,
+        owner  => $bind::bind_user,
+        group  => $bind::bind_group,
         mode   => '0750',
         before => Concat['named.conf.zones'],
       }
@@ -72,8 +72,8 @@ define bind::zone::secondary (
   unless defined(File[$zonedir2]) {
     file { $zonedir2:
       ensure => directory,
-      owner  => $::bind::bind_user,
-      group  => $::bind::bind_group,
+      owner  => $bind::bind_user,
+      group  => $bind::bind_group,
       mode   => '0750',
       before => Concat['named.conf.zones'],
     }
@@ -87,10 +87,10 @@ define bind::zone::secondary (
     'statistics'   => $zone_statistics,
     'class'        => $class,
     'comment'      => $comment,
-    'indent'       => bool2str($::bind::views_enable, '  ', ''),
+    'indent'       => bool2str($bind::views_enable, '  ', ''),
   }
 
-  if $::bind::views_enable {
+  if $bind::views_enable {
     assert_type(String, $view) |$expected,$actual| {
       fail('The parameter view must be a String if views are enabled')
     }
@@ -99,12 +99,12 @@ define bind::zone::secondary (
       target  => 'named.conf.views',
       content => epp("${module_name}/zone-secondary.epp", $params),
       order   => $order,
-      tag     => [ "named.conf.views-${view}", ],
+      tag     => ["named.conf.views-${view}",],
       notify  => Exec["bind::reload::${zone}"],
     }
 
     exec { "bind::reload::${zone}":
-      command     => "${::bind::rndc_program} reload ${zone} ${class} ${view}",
+      command     => "${bind::rndc_program} reload ${zone} ${class} ${view}",
       user        => 'root',
       cwd         => '/',
       refreshonly => true,
@@ -120,7 +120,7 @@ define bind::zone::secondary (
     }
 
     exec { "bind::reload::${zone}":
-      command     => "${::bind::rndc_program} reload ${zone} ${class}",
+      command     => "${bind::rndc_program} reload ${zone} ${class}",
       user        => 'root',
       cwd         => '/',
       refreshonly => true,

@@ -34,13 +34,12 @@ define bind::zone::in_view (
   Bind::Zone::Class $class   = 'IN',
   String            $order   = '60',
 ) {
-
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')
   }
 
-  unless $::bind::views_enable {
+  unless $bind::views_enable {
     fail('The parameter views_enable must be true in the main class.')
   }
 
@@ -49,13 +48,13 @@ define bind::zone::in_view (
     'in_view' => $in_view,
     'class'   => $class,
     'comment' => $comment,
-    'indent'  => bool2str($::bind::views_enable, '  ', ''),
+    'indent'  => bool2str($bind::views_enable, '  ', ''),
   }
 
   @concat::fragment { "named.conf.views-${view}-50-${zone}":
     target  => 'named.conf.views',
     content => epp("${module_name}/zone-in_view.epp", $params),
-    tag     => [ "named.conf.views-${view}", ],
+    tag     => ["named.conf.views-${view}",],
     order   => $order,
   }
 }

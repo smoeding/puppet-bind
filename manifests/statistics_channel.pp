@@ -26,7 +26,6 @@ define bind::statistics_channel (
   Array[String]          $allow = [],
   String                 $ip    = $name,
 ) {
-
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')

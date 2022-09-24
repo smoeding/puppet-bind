@@ -128,7 +128,7 @@ define bind::zone::primary (
   Bind::Zone::Class                    $class                     = 'IN',
   String                               $order                     = '20',
 ) {
-  $zonebase = "${::bind::vardir}/primary"
+  $zonebase = "${bind::vardir}/primary"
 
   # The base class must be included first
   unless defined(Class['bind']) {
@@ -155,8 +155,8 @@ define bind::zone::primary (
       unless defined(File[$zonedir1]) {
         file { $zonedir1:
           ensure => directory,
-          owner  => $::bind::bind_user,
-          group  => $::bind::bind_group,
+          owner  => $bind::bind_user,
+          group  => $bind::bind_group,
           mode   => '0750',
           before => Concat['named.conf.zones'],
         }
@@ -167,8 +167,8 @@ define bind::zone::primary (
     unless defined(File[$zonedir2]) {
       file { $zonedir2:
         ensure => directory,
-        owner  => $::bind::bind_user,
-        group  => $::bind::bind_group,
+        owner  => $bind::bind_user,
+        group  => $bind::bind_group,
         mode   => '0750',
         before => Concat['named.conf.zones'],
       }
@@ -176,8 +176,8 @@ define bind::zone::primary (
 
     file { $zonefile:
       ensure       => file,
-      owner        => $::bind::bind_user,
-      group        => $::bind::bind_group,
+      owner        => $bind::bind_user,
+      group        => $bind::bind_group,
       mode         => '0644',
       source       => $source,
       content      => $content,
@@ -187,9 +187,9 @@ define bind::zone::primary (
 
     # Do not trigger a zone reload for a dynamic updatable zone
     if ($update_policy =~ Array and empty($update_policy)) {
-      if $::bind::views_enable {
+      if $bind::views_enable {
         exec { "bind::reload::${view}::${zone}":
-          command     => "${::bind::rndc_program} reload ${zone} ${class} ${view}",
+          command     => "${bind::rndc_program} reload ${zone} ${class} ${view}",
           user        => 'root',
           cwd         => '/',
           refreshonly => true,
@@ -199,7 +199,7 @@ define bind::zone::primary (
       }
       else {
         exec { "bind::reload::${zone}":
-          command     => "${::bind::rndc_program} reload ${zone} ${class}",
+          command     => "${bind::rndc_program} reload ${zone} ${class}",
           user        => 'root',
           cwd         => '/',
           refreshonly => true,
@@ -224,16 +224,16 @@ define bind::zone::primary (
     'update_mode'         => $dnssec_update_mode,
     'dnskey_sig_validity' => $dnskey_sig_validity,
     'notify'              => $notify_secondaries,
-    'key_directory'       => "${::bind::confdir}/keys",
+    'key_directory'       => "${bind::confdir}/keys",
     'statistics'          => $zone_statistics,
     'update_policy'       => $update_policy,
     'class'               => $class,
     'comment'             => $comment,
-    'indent'              => bool2str($::bind::views_enable, '  ', ''),
+    'indent'              => bool2str($bind::views_enable, '  ', ''),
     'zone_in_view'        => ($view =~ NotUndef),
   }
 
-  if $::bind::views_enable {
+  if $bind::views_enable {
     assert_type(String, $view) |$expected,$actual| {
       fail('The parameter view must be a String if views are enabled')
     }
@@ -242,7 +242,7 @@ define bind::zone::primary (
       target  => 'named.conf.views',
       order   => $order,
       content => epp("${module_name}/zone-primary.epp", $params),
-      tag     => [ "named.conf.views-${view}", ],
+      tag     => ["named.conf.views-${view}",],
     }
   }
   else {

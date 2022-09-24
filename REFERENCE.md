@@ -124,12 +124,18 @@ The following parameters are available in the `bind` class:
 * [`empty_zones_enable`](#empty_zones_enable)
 * [`control_channels_enable`](#control_channels_enable)
 * [`allow_query`](#allow_query)
+* [`allow_query_cache`](#allow_query_cache)
 * [`allow_recursion`](#allow_recursion)
 * [`blackhole`](#blackhole)
 * [`forwarders`](#forwarders)
 * [`forward`](#forward)
-* [`root_hints_enable`](#root_hints_enable)
 * [`root_mirror_enable`](#root_mirror_enable)
+* [`root_hints_enable`](#root_hints_enable)
+* [`root_hints_source`](#root_hints_source)
+* [`localhost_forward_enable`](#localhost_forward_enable)
+* [`localhost_forward_source`](#localhost_forward_source)
+* [`localhost_reverse_enable`](#localhost_reverse_enable)
+* [`localhost_reverse_source`](#localhost_reverse_source)
 * [`filter_aaaa_on_v4`](#filter_aaaa_on_v4)
 * [`window`](#window)
 * [`ipv4_prefix_length`](#ipv4_prefix_length)
@@ -145,8 +151,11 @@ The following parameters are available in the `bind` class:
 * [`qps_scale`](#qps_scale)
 * [`slip`](#slip)
 * [`max_cache_size`](#max_cache_size)
+* [`min_cache_ttl`](#min_cache_ttl)
 * [`max_cache_ttl`](#max_cache_ttl)
+* [`min_ncache_ttl`](#min_ncache_ttl)
 * [`max_ncache_ttl`](#max_ncache_ttl)
+* [`servfail_ttl`](#servfail_ttl)
 * [`custom_options`](#custom_options)
 * [`package_ensure`](#package_ensure)
 * [`service_ensure`](#service_ensure)
@@ -154,15 +163,6 @@ The following parameters are available in the `bind` class:
 * [`manage_rndc_keyfile`](#manage_rndc_keyfile)
 * [`report_hostname`](#report_hostname)
 * [`report_version`](#report_version)
-* [`allow_query_cache`](#allow_query_cache)
-* [`root_hints_source`](#root_hints_source)
-* [`localhost_forward_enable`](#localhost_forward_enable)
-* [`localhost_forward_source`](#localhost_forward_source)
-* [`localhost_reverse_enable`](#localhost_reverse_enable)
-* [`localhost_reverse_source`](#localhost_reverse_source)
-* [`min_cache_ttl`](#min_cache_ttl)
-* [`min_ncache_ttl`](#min_ncache_ttl)
-* [`servfail_ttl`](#servfail_ttl)
 * [`querylog_enable`](#querylog_enable)
 * [`trust_anchor_telemetry`](#trust_anchor_telemetry)
 
@@ -352,6 +352,15 @@ this Bind server.
 
 Default value: `[]`
 
+##### <a name="allow_query_cache"></a>`allow_query_cache`
+
+Data type: `Bind::AddressMatchList`
+
+An array of IP addresses/networks or ACL names that are allowed to use
+the query cache on this Bind server.
+
+Default value: `[]`
+
 ##### <a name="allow_recursion"></a>`allow_recursion`
 
 Data type: `Bind::AddressMatchList`
@@ -391,6 +400,15 @@ is set to `only`.
 
 Default value: `'first'`
 
+##### <a name="root_mirror_enable"></a>`root_mirror_enable`
+
+Data type: `Boolean`
+
+Should a mirror for the root domain "." be installed locally. See RFC
+7706 for details.
+
+Default value: ``false``
+
 ##### <a name="root_hints_enable"></a>`root_hints_enable`
 
 Data type: `Boolean`
@@ -403,14 +421,48 @@ this parameter can be left at default.
 
 Default value: ``false``
 
-##### <a name="root_mirror_enable"></a>`root_mirror_enable`
+##### <a name="root_hints_source"></a>`root_hints_source`
+
+Data type: `String`
+
+The source file to use for the root hints. The default is a file provided
+by this module.
+
+Default value: `"puppet:///modules/${module_name}/zones/db.root"`
+
+##### <a name="localhost_forward_enable"></a>`localhost_forward_enable`
 
 Data type: `Boolean`
 
-Should a mirror for the root domain "." be installed locally. See RFC
-7706 for details.
+Should the forward zone for localhost be enabled.
 
-Default value: ``false``
+Default value: ``true``
+
+##### <a name="localhost_forward_source"></a>`localhost_forward_source`
+
+Data type: `String`
+
+The source file to use for the localhost forward zone. The default is
+a file provided by this module.
+
+Default value: `"puppet:///modules/${module_name}/zones/db.localhost"`
+
+##### <a name="localhost_reverse_enable"></a>`localhost_reverse_enable`
+
+Data type: `Boolean`
+
+Should the reverse zone for localhost be enabled.
+
+Default value: ``true``
+
+##### <a name="localhost_reverse_source"></a>`localhost_reverse_source`
+
+Data type: `String`
+
+The source file to use for the localhost reverse zone. The default is
+a file provided by this module.
+
+Default value: `"puppet:///modules/${module_name}/zones/db.127"`
 
 ##### <a name="filter_aaaa_on_v4"></a>`filter_aaaa_on_v4`
 
@@ -549,6 +601,15 @@ zero then no limit is configured.
 
 Default value: `0`
 
+##### <a name="min_cache_ttl"></a>`min_cache_ttl`
+
+Data type: `Integer`
+
+The minimum number of seconds for which the server will cache positive
+answers.
+
+Default value: `0`
+
 ##### <a name="max_cache_ttl"></a>`max_cache_ttl`
 
 Data type: `Integer`
@@ -559,6 +620,15 @@ and the Bind default of 1 week will be used.
 
 Default value: `0`
 
+##### <a name="min_ncache_ttl"></a>`min_ncache_ttl`
+
+Data type: `Integer`
+
+The minimum number of seconds for which the server will cache negative
+answers.
+
+Default value: `0`
+
 ##### <a name="max_ncache_ttl"></a>`max_ncache_ttl`
 
 Data type: `Integer`
@@ -566,6 +636,15 @@ Data type: `Integer`
 The maximum number of seconds for which the server will cache negative
 answers. If this value is zero then the config parameter will be omitted
 and the Bind default of 3 hours will be used.
+
+Default value: `0`
+
+##### <a name="servfail_ttl"></a>`servfail_ttl`
+
+Data type: `Integer`
+
+The number of seconds that SERVFAIL responses caused by DNSSEC validation
+errors are cached. Can be set to 0 to disable caching.
 
 Default value: `0`
 
@@ -647,83 +726,11 @@ Use the following command to test: dig @127.0.0.1 version.bind chaos txt
 
 Default value: ``undef``
 
-##### <a name="allow_query_cache"></a>`allow_query_cache`
-
-Data type: `Bind::AddressMatchList`
-
-
-
-Default value: `[]`
-
-##### <a name="root_hints_source"></a>`root_hints_source`
-
-Data type: `String`
-
-
-
-Default value: `"puppet:///modules/${module_name}/zones/db.root"`
-
-##### <a name="localhost_forward_enable"></a>`localhost_forward_enable`
-
-Data type: `Boolean`
-
-
-
-Default value: ``true``
-
-##### <a name="localhost_forward_source"></a>`localhost_forward_source`
-
-Data type: `String`
-
-
-
-Default value: `"puppet:///modules/${module_name}/zones/db.localhost"`
-
-##### <a name="localhost_reverse_enable"></a>`localhost_reverse_enable`
-
-Data type: `Boolean`
-
-
-
-Default value: ``true``
-
-##### <a name="localhost_reverse_source"></a>`localhost_reverse_source`
-
-Data type: `String`
-
-
-
-Default value: `"puppet:///modules/${module_name}/zones/db.127"`
-
-##### <a name="min_cache_ttl"></a>`min_cache_ttl`
-
-Data type: `Integer`
-
-
-
-Default value: `0`
-
-##### <a name="min_ncache_ttl"></a>`min_ncache_ttl`
-
-Data type: `Integer`
-
-
-
-Default value: `0`
-
-##### <a name="servfail_ttl"></a>`servfail_ttl`
-
-Data type: `Integer`
-
-
-
-Default value: `0`
-
 ##### <a name="querylog_enable"></a>`querylog_enable`
 
 Data type: `Optional[Boolean]`
 
-
+Should the querylog be enabled.
 
 Default value: ``undef``
 
@@ -731,7 +738,9 @@ Default value: ``undef``
 
 Data type: `Optional[Boolean]`
 
-
+Should the trust anchor telemetry transmission be enable. When enabled,
+once a day the DNSSEC trust anchors in use will be transmitted to the zon
+owners. This is enabled by default.
 
 Default value: ``undef``
 
@@ -1257,7 +1266,7 @@ Data type: `String`
 
 The file group for the key file.
 
-Default value: `$::bind::bind_group`
+Default value: `$bind::bind_group`
 
 ##### <a name="mode"></a>`mode`
 
@@ -1761,10 +1770,10 @@ The following parameters are available in the `bind::view` defined type:
 * [`allow_transfer`](#allow_transfer)
 * [`root_hints_enable`](#root_hints_enable)
 * [`root_mirror_enable`](#root_mirror_enable)
-* [`view`](#view)
-* [`order`](#order)
 * [`localhost_forward_enable`](#localhost_forward_enable)
 * [`localhost_reverse_enable`](#localhost_reverse_enable)
+* [`view`](#view)
+* [`order`](#order)
 
 ##### <a name="match_clients"></a>`match_clients`
 
@@ -1772,7 +1781,7 @@ Data type: `Array[String]`
 
 An array of ACL names or networks that this view will be used for.
 
-Default value: `[ 'any', ]`
+Default value: `['any',]`
 
 ##### <a name="match_destinations"></a>`match_destinations`
 
@@ -1789,7 +1798,7 @@ Data type: `Array[String]`
 
 An array of ACL names or networks that are allowed to query the view.
 
-Default value: `[ 'any', ]`
+Default value: `['any',]`
 
 ##### <a name="allow_query_on"></a>`allow_query_on`
 
@@ -1881,6 +1890,22 @@ Should a mirror for the root domain "." be installed locally. See RFC
 
 Default value: ``false``
 
+##### <a name="localhost_forward_enable"></a>`localhost_forward_enable`
+
+Data type: `Optional[Boolean]`
+
+Should the forward zone for localhost be enabled in this view.
+
+Default value: ``undef``
+
+##### <a name="localhost_reverse_enable"></a>`localhost_reverse_enable`
+
+Data type: `Optional[Boolean]`
+
+Should the reverse zone for localhost be enabled in this view.
+
+Default value: ``undef``
+
 ##### <a name="view"></a>`view`
 
 Data type: `String`
@@ -1899,22 +1924,6 @@ match_clients contains `any` then this view should probably have the
 highest order value.
 
 Default value: `'10'`
-
-##### <a name="localhost_forward_enable"></a>`localhost_forward_enable`
-
-Data type: `Optional[Boolean]`
-
-
-
-Default value: ``undef``
-
-##### <a name="localhost_reverse_enable"></a>`localhost_reverse_enable`
-
-Data type: `Optional[Boolean]`
-
-
-
-Default value: ``undef``
 
 ### <a name="bindzoneforward"></a>`bind::zone::forward`
 

@@ -45,11 +45,10 @@ define bind::aml (
   String                 $item               = $name,
   Optional[String]       $comment            = undef,
 ) {
-
   # Convert parameter to an array and strip spaces from items
   $list1 = $address_match_list ? {
     ''      => [],
-    String  => [ strip($address_match_list) ],
+    String  => [strip($address_match_list)],
     default => strip($address_match_list)
   }
 

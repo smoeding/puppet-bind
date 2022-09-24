@@ -62,7 +62,7 @@ define bind::key (
   String                         $key            = $name,
   Bind::Key::Algorithm           $algorithm      = 'hmac-sha256',
   String                         $owner          = 'root',
-  String                         $group          = $::bind::bind_group,
+  String                         $group          = $bind::bind_group,
   Stdlib::Filemode               $mode           = '0640',
   Boolean                        $manage_keyfile = true,
   Boolean                        $manage_content = true,
@@ -71,14 +71,13 @@ define bind::key (
   Optional[String]               $secret         = undef,
   Optional[String]               $seed           = undef,
 ) {
-
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')
   }
 
   # Use default filename if unset
-  $_keyfile = pick($keyfile, "${::bind::confdir}/keys/${key}.key")
+  $_keyfile = pick($keyfile, "${bind::confdir}/keys/${key}.key")
 
   if $manage_keyfile {
     if $manage_content {
@@ -102,7 +101,7 @@ define bind::key (
         $hash = base64('encode', $rand, 'strict')
       }
 
-      $params =  {
+      $params = {
         'key'       => $key,
         'algorithm' => $algorithm,
         'hash'      => $hash,

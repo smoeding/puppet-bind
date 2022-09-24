@@ -128,6 +128,10 @@
 #   An array of IP addresses/networks or ACL names that are allowed to query
 #   this Bind server.
 #
+# @param allow_query_cache
+#   An array of IP addresses/networks or ACL names that are allowed to use
+#   the query cache on this Bind server.
+#
 # @param allow_recursion
 #   An array of IP addresses/networks or ACL names that are allowed to use
 #   this Bind server for recursion. Recursion is automatically turned on if
@@ -147,6 +151,10 @@
 #   automatic empty zones for RFC 6303 are ignored if this parameter
 #   is set to `only`.
 #
+# @param root_mirror_enable
+#   Should a mirror for the root domain "." be installed locally. See RFC
+#   7706 for details.
+#
 # @param root_hints_enable
 #   Should a local copy of the list of servers that are authoritative for the
 #   root domain "." be included. This is normally not needed since Bind
@@ -154,9 +162,23 @@
 #   servers in the list until an authoritative response is received. Normally
 #   this parameter can be left at default.
 #
-# @param root_mirror_enable
-#   Should a mirror for the root domain "." be installed locally. See RFC
-#   7706 for details.
+# @param root_hints_source
+#   The source file to use for the root hints. The default is a file provided
+#   by this module.
+#
+# @param localhost_forward_enable
+#   Should the forward zone for localhost be enabled.
+#
+# @param localhost_forward_source
+#   The source file to use for the localhost forward zone. The default is
+#   a file provided by this module.
+#
+# @param localhost_reverse_enable
+#  Should the reverse zone for localhost be enabled.
+#
+# @param localhost_reverse_source
+#   The source file to use for the localhost reverse zone. The default is
+#   a file provided by this module.
 #
 # @param filter_aaaa_on_v4
 #   Should AAAA records be omitted from the response if the IPv4 transport is
@@ -220,15 +242,27 @@
 #   used then the size applies to every view separately. If this value is
 #   zero then no limit is configured.
 #
+# @param min_cache_ttl
+#   The minimum number of seconds for which the server will cache positive
+#   answers.
+#
 # @param max_cache_ttl
 #   The maximum number of seconds for which the server will cache positive
 #   answers. If this value is zero then the config parameter will be omitted
 #   and the Bind default of 1 week will be used.
 #
+# @param min_ncache_ttl
+#   The minimum number of seconds for which the server will cache negative
+#   answers.
+#
 # @param max_ncache_ttl
 #   The maximum number of seconds for which the server will cache negative
 #   answers. If this value is zero then the config parameter will be omitted
 #   and the Bind default of 3 hours will be used.
+#
+# @param servfail_ttl
+#   The number of seconds that SERVFAIL responses caused by DNSSEC validation
+#   errors are cached. Can be set to 0 to disable caching.
 #
 # @param custom_options
 #   Additional config options that are not implemented as class parameters
@@ -272,6 +306,14 @@
 #   instead. Use the empty string to disable version reporting completely.
 #
 #   Use the following command to test: dig @127.0.0.1 version.bind chaos txt
+#
+# @param querylog_enable
+#   Should the querylog be enabled.
+#
+# @param trust_anchor_telemetry
+#   Should the trust anchor telemetry transmission be enable. When enabled,
+#   once a day the DNSSEC trust anchors in use will be transmitted to the zon
+#   owners. This is enabled by default.
 #
 #
 class bind (
@@ -337,7 +379,6 @@ class bind (
   Optional[Boolean]         $querylog_enable          = undef,
   Optional[Boolean]         $trust_anchor_telemetry   = undef,
 ) {
-
   $header_message = '// This file is managed by Puppet. DO NOT EDIT.'
 
   #
@@ -396,7 +437,7 @@ class bind (
   }
 
   # Some directories must be writable by the user that named runs as.
-  [ 'primary', 'secondary' ].each |$type| {
+  ['primary', 'secondary'].each |$type| {
     file { "${vardir}/${type}":
       ensure => directory,
       owner  => $bind_user,
@@ -711,7 +752,7 @@ class bind (
   concat::fragment { 'named.conf.options-recursion':
     target  => 'named.conf.options',
     order   => '35',
-    content => bool2str(empty($allow_recursion), '  recursion no;', '  recursion yes;')
+    content => bool2str(empty($allow_recursion), '  recursion no;', '  recursion yes;'),
   }
 
   unless empty($allow_recursion) {
@@ -742,14 +783,14 @@ class bind (
     @concat::fragment { 'named.conf.controls-head':
       target  => 'named.conf.options',
       order   => '90',
-      tag     => [ 'named.conf.controls', ],
+      tag     => ['named.conf.controls',],
       content => "\ncontrols {\n",
     }
 
     @concat::fragment { 'named.conf.controls-tail':
       target  => 'named.conf.options',
       order   => '93',
-      tag     => [ 'named.conf.controls', ],
+      tag     => ['named.conf.controls',],
       content => "};\n",
     }
   }
@@ -846,10 +887,10 @@ class bind (
     $network_options = []
   }
   elsif $ipv4_enable {
-    $network_options = [ '-4' ]
+    $network_options = ['-4']
   }
   elsif $ipv6_enable {
-    $network_options = [ '-6' ]
+    $network_options = ['-6']
   }
   else {
     fail('One of ipv4_enable or ipv6_enable must be true')
@@ -858,7 +899,7 @@ class bind (
   # Start daemon as $bind_user if configured
   $user_options = $bind_user ? {
     undef   => [],
-    default => [ '-u', $bind_user, ],
+    default => ['-u', $bind_user,],
   }
 
   $daemon_options = join(concat($user_options, $network_options), ' ')

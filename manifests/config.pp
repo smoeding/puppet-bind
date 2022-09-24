@@ -40,12 +40,11 @@ define bind::config (
   Enum['present','absent'] $ensure  = 'present',
   String                   $file    = $name,
   String                   $owner   = 'root',
-  String                   $group   = $::bind::bind_group,
+  String                   $group   = $bind::bind_group,
   Stdlib::Filemode         $mode    = '0640',
   Optional[String]         $source  = undef,
   Optional[String]         $content = undef,
 ) {
-
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')
@@ -56,7 +55,7 @@ define bind::config (
     default   => 'absent',
   }
 
-  file { "${::bind::confdir}/${file}":
+  file { "${bind::confdir}/${file}":
     ensure  => $_ensure,
     owner   => $owner,
     group   => $group,
