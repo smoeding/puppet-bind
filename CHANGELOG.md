@@ -1,3 +1,9 @@
+## 2022-09-24 - Release 0.9.0
+
+### Breaking changes
+
+- The default for `root_hints_enable` has been changed from `true` to `false`. Normally a root hints file is no longer used since Bind includes an internal list of root name servers.
+
 ## 2022-09-20 - Release 0.8.0
 
 ### Bugfix
