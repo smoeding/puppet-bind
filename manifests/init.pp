@@ -52,6 +52,11 @@
 #
 #   Default: operating system specific
 #
+# @param checkzone_program
+#   The full path of the named-checkzone program.
+#
+#   Default: operating system specific
+#
 # @param bind_user
 #   Run the Bind daemon as this user. This parameter is also used to set the
 #   owner of some directories and files that the Bind daemon needs to write
@@ -322,6 +327,7 @@ class bind (
   Stdlib::Absolutepath      $cachedir,
   Stdlib::Absolutepath      $rndc_keyfile,
   Stdlib::Absolutepath      $rndc_program,
+  Stdlib::Absolutepath      $checkzone_program,
   String                    $bind_user,
   String                    $bind_group,
   String                    $package_name,

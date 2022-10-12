@@ -181,7 +181,7 @@ define bind::zone::primary (
       mode         => '0644',
       source       => $source,
       content      => $content,
-      validate_cmd => "/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail ${zone} %",
+      validate_cmd => "${bind::checkzone_program} -k fail -m fail -M fail -n fail ${zone} %",
       require      => Concat['named.conf.zones'],
     }
 

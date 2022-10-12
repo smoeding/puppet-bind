@@ -109,6 +109,7 @@ The following parameters are available in the `bind` class:
 * [`cachedir`](#cachedir)
 * [`rndc_keyfile`](#rndc_keyfile)
 * [`rndc_program`](#rndc_program)
+* [`checkzone_program`](#checkzone_program)
 * [`bind_user`](#bind_user)
 * [`bind_group`](#bind_group)
 * [`package_name`](#package_name)
@@ -206,6 +207,14 @@ Default: operating system specific
 Data type: `Stdlib::Absolutepath`
 
 The full path of the rndc program.
+
+Default: operating system specific
+
+##### <a name="checkzone_program"></a>`checkzone_program`
+
+Data type: `Stdlib::Absolutepath`
+
+The full path of the named-checkzone program.
 
 Default: operating system specific
 
