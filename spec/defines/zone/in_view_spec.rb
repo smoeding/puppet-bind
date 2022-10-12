@@ -28,7 +28,7 @@ describe 'bind::zone::in_view' do
         it {
           is_expected.to contain_concat__fragment('named.conf.views-bar-50-foo')
             .with_target('named.conf.views')
-            .with_content("\n  zone \"foo\" IN {\n    in_view \"baz\";\n  };\n")
+            .with_content("\n  zone \"foo\" IN {\n    in-view \"baz\";\n  };\n")
             .with_tag(['named.conf.views-bar'])
             .with_order('60')
         }
@@ -42,7 +42,7 @@ describe 'bind::zone::in_view' do
         it {
           is_expected.to contain_concat__fragment('named.conf.views-bar-50-foo')
             .with_target('named.conf.views')
-            .with_content("\n  zone \"foo\" CH {\n    in_view \"baz\";\n  };\n")
+            .with_content("\n  zone \"foo\" CH {\n    in-view \"baz\";\n  };\n")
             .with_tag(['named.conf.views-bar'])
             .with_order('60')
         }
@@ -56,7 +56,7 @@ describe 'bind::zone::in_view' do
         it {
           is_expected.to contain_concat__fragment('named.conf.views-bar-50-foo')
             .with_target('named.conf.views')
-            .with_content("\n  // comment\n  zone \"foo\" IN {\n    in_view \"baz\";\n  };\n")
+            .with_content("\n  // comment\n  zone \"foo\" IN {\n    in-view \"baz\";\n  };\n")
             .with_tag(['named.conf.views-bar'])
             .with_order('60')
         }

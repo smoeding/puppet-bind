@@ -3,5 +3,5 @@
 <%= $indent %>// <%= $comment %>
 <% } -%>
 <%= $indent %>zone "<%= $zone -%>" <%= $class %> {
-<%= $indent %>  in_view "<%= $in_view -%>";
+<%= $indent %>  in-view "<%= $in_view -%>";
 <%= $indent %>};
