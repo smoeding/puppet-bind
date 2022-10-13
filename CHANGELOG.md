@@ -1,3 +1,13 @@
+## 2022-10-13 - Release 0.10.0
+
+### Bugfix
+
+- A syntax error with the in-view option has been fixed.
+
+### Feature
+
+- The path to the `named-checkzone` binary is a class option now.
+
 ## 2022-09-24 - Release 0.9.0
 
 ### Breaking changes
