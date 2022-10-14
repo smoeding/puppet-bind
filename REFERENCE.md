@@ -38,7 +38,7 @@
 
 ### Resource types
 
-* [`dnssec_key`](#dnssec_key): Create, delete and maintain DNSSEC key files on the DNS server.
+* [`dnssec_key`](#dnssec_key): Create, delete and maintain DNSSEC key files on the DNS server
 
 ### Functions
 
@@ -2588,12 +2588,17 @@ The following diagram illustrates the lifecycle of the keys:
 ```
 key-1 ---- active ----------><-- retired --><-- deleted --
 
-key-2     <--- published ---><---------- active ----------><-- retired -->
+key-2     <--- published ---><---------- active ----------><-- retired
 
           <----------------->
             prepublication
                interval
 ```
+
+Key-2 is published with a prepublication interval while key-1 is still
+active. The activation time of key-2 matches the deactivation time of
+key-1. Key-1 changes state to retired when it is deactivated and is
+deleted eventually. The cycle continues with additional keys.
 
 #### Examples
 

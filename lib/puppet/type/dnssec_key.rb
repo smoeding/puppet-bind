@@ -2,7 +2,7 @@
 
 Puppet::Type.newtype(:dnssec_key) do
   desc <<-EOT
-    @summary Create, delete and maintain DNSSEC key files on the DNS server.
+    @summary Create, delete and maintain DNSSEC key files on the DNS server
 
     *Notice*: Automatic key rollover using this type is not thoroughly
     tested. Use `bind::dnssec_policy` to define a DNSSEC policy (available
@@ -19,12 +19,17 @@ Puppet::Type.newtype(:dnssec_key) do
     ```
     key-1 ---- active ----------><-- retired --><-- deleted --
 
-    key-2     <--- published ---><---------- active ----------><-- retired -->
+    key-2     <--- published ---><---------- active ----------><-- retired
 
               <----------------->
                 prepublication
                    interval
     ```
+
+    Key-2 is published with a prepublication interval while key-1 is still
+    active. The activation time of key-2 matches the deactivation time of
+    key-1. Key-1 changes state to retired when it is deactivated and is
+    deleted eventually. The cycle continues with additional keys.
 
     @example Create a Key Signing Key using defaults
       dnssec_key { 'example.com':
