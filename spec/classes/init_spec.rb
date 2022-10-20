@@ -319,11 +319,20 @@ describe 'bind' do
         #
 
         it {
-          is_expected.to contain_service('bind')
-            .with_ensure('running')
-            .with_enable(true)
-            .with_name('bind9')
-            .with_restart('/usr/sbin/rndc reconfig')
+          case "#{facts[:os]['name']}-#{facts[:os]['release']['major']}"
+          when 'Debian-10'
+            is_expected.to contain_service('bind')
+              .with_ensure('running')
+              .with_enable(true)
+              .with_name('bind9')
+              .with_restart('/usr/sbin/rndc reconfig')
+          else
+            is_expected.to contain_service('bind')
+              .with_ensure('running')
+              .with_enable(true)
+              .with_name('named')
+              .with_restart('/usr/sbin/rndc reconfig')
+          end
         }
       end
 
