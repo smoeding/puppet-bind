@@ -116,9 +116,9 @@ bind::dnssec_policy { 'standard':
 }
 
 bind::zone::primary { 'example.net':
-  dnssec         => true,
-  inline_signing => true,
+  dnssec_enable  => true,
   dnssec_policy  => 'standard',
+  inline_signing => true,
   source         => 'puppet:///modules/profile/dns/example.net.zone',
 }
 ```

@@ -29,10 +29,10 @@
 <% } -%>
 <%= $indent %>  };
 <% } -%>
-<% if $dnssec { -%>
+<% if $dnssec_enable { -%>
 
 <% unless $zone_in_view { -%>
-<%= $indent %>  dnssec-enable  <%= bool2str($dnssec, 'yes', 'no') -%>;
+<%= $indent %>  dnssec-enable  <%= bool2str($dnssec_enable, 'yes', 'no') -%>;
 <% } -%>
 <% if $policy { -%>
 <%= $indent %>  dnssec-policy  "<%= $policy -%>";

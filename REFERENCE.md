@@ -2253,9 +2253,9 @@ bind::zone::primary { 'example.com':
 ```puppet
 
 bind::zone::primary { 'example.com':
-  dnssec         => true,
-  inline_signing => true,
+  dnssec_enable  => true,
   dnssec_policy  => 'standard',
+  inline_signing => true,
   source         => 'puppet:///modules/profile/example.com.zone',
 }
 ```
@@ -2264,7 +2264,7 @@ bind::zone::primary { 'example.com':
 
 The following parameters are available in the `bind::zone::primary` defined type:
 
-* [`dnssec`](#dnssec)
+* [`dnssec_enable`](#dnssec_enable)
 * [`inline_signing`](#inline_signing)
 * [`also_notify`](#also_notify)
 * [`update_policy`](#update_policy)
@@ -2286,7 +2286,7 @@ The following parameters are available in the `bind::zone::primary` defined type
 * [`class`](#class)
 * [`order`](#order)
 
-##### <a name="dnssec"></a>`dnssec`
+##### <a name="dnssec_enable"></a>`dnssec_enable`
 
 Data type: `Boolean`
 

@@ -150,9 +150,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec => true' do
+      context 'with source => "/file", dnssec_enable => true' do
         let(:params) do
-          { source: '/file', dnssec: true }
+          { source: '/file', dnssec_enable: true }
         end
 
         it {
@@ -169,9 +169,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec => true, auto_dnssec => "maintain"' do
+      context 'with source => "/file", dnssec_enable => true, auto_dnssec => "maintain"' do
         let(:params) do
-          { source: '/file', dnssec: true, auto_dnssec: 'maintain' }
+          { source: '/file', dnssec_enable: true, auto_dnssec: 'maintain' }
         end
 
         it {
@@ -188,9 +188,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec => true, dnssec_policy => "foo"' do
+      context 'with source => "/file", dnssec_enable => true, dnssec_policy => "foo"' do
         let(:params) do
-          { source: '/file', dnssec: true, dnssec_policy: 'foo' }
+          { source: '/file', dnssec_enable: true, dnssec_policy: 'foo' }
         end
 
         it {
@@ -207,9 +207,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec => true, dnssec_loadkeys_interval => 42' do
+      context 'with source => "/file", dnssec_enable => true, dnssec_loadkeys_interval => 42' do
         let(:params) do
-          { source: '/file', dnssec: true, dnssec_loadkeys_interval: 42 }
+          { source: '/file', dnssec_enable: true, dnssec_loadkeys_interval: 42 }
         end
 
         it {
@@ -226,9 +226,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec => true, dnssec_dnskey_kskonly => true' do
+      context 'with source => "/file", dnssec_enable => true, dnssec_dnskey_kskonly => true' do
         let(:params) do
-          { source: '/file', dnssec: true, dnssec_dnskey_kskonly: true }
+          { source: '/file', dnssec_enable: true, dnssec_dnskey_kskonly: true }
         end
 
         it {
@@ -245,9 +245,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec => true, dnssec_secure_to_insecure => true' do
+      context 'with source => "/file", dnssec_enable => true, dnssec_secure_to_insecure => true' do
         let(:params) do
-          { source: '/file', dnssec: true, dnssec_secure_to_insecure: true }
+          { source: '/file', dnssec_enable: true, dnssec_secure_to_insecure: true }
         end
 
         it {
@@ -264,9 +264,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec => true, dnssec_update_mode => "maintain"' do
+      context 'with source => "/file", dnssec_enable => true, dnssec_update_mode => "maintain"' do
         let(:params) do
-          { source: '/file', dnssec: true, dnssec_update_mode: 'maintain' }
+          { source: '/file', dnssec_enable: true, dnssec_update_mode: 'maintain' }
         end
 
         it {
@@ -283,9 +283,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec => true, dnskey_sig_validity => 42' do
+      context 'with source => "/file", dnssec_enable => true, dnskey_sig_validity => 42' do
         let(:params) do
-          { source: '/file', dnssec: true, dnskey_sig_validity: 42 }
+          { source: '/file', dnssec_enable: true, dnskey_sig_validity: 42 }
         end
 
         it {
@@ -302,9 +302,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec => true, inline_signing => true' do
+      context 'with source => "/file", dnssec_enable => true, inline_signing => true' do
         let(:params) do
-          { source: '/file', dnssec: true, inline_signing: true }
+          { source: '/file', dnssec_enable: true, inline_signing: true }
         end
 
         it {
@@ -321,9 +321,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec => true, notify_secondaries => "explicit"' do
+      context 'with source => "/file", dnssec_enable => true, notify_secondaries => "explicit"' do
         let(:params) do
-          { source: '/file', dnssec: true, notify_secondaries: 'explicit' }
+          { source: '/file', dnssec_enable: true, notify_secondaries: 'explicit' }
         end
 
         it {
@@ -340,9 +340,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec => true, also_notify => ["192.0.2.42"]' do
+      context 'with source => "/file", dnssec_enable => true, also_notify => ["192.0.2.42"]' do
         let(:params) do
-          { source: '/file', dnssec: true, also_notify: ['192.0.2.42'] }
+          { source: '/file', dnssec_enable: true, also_notify: ['192.0.2.42'] }
         end
 
         it {
@@ -359,9 +359,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec => true, zone_statistics => true' do
+      context 'with source => "/file", dnssec_enable => true, zone_statistics => true' do
         let(:params) do
-          { source: '/file', dnssec: true, zone_statistics: true }
+          { source: '/file', dnssec_enable: true, zone_statistics: true }
         end
 
         it {

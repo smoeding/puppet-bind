@@ -14,13 +14,13 @@
 # @example Use DNSSEC signing for a primary zone using a DNSSEC policy
 #
 #   bind::zone::primary { 'example.com':
-#     dnssec         => true,
-#     inline_signing => true,
+#     dnssec_enable  => true,
 #     dnssec_policy  => 'standard',
+#     inline_signing => true,
 #     source         => 'puppet:///modules/profile/example.com.zone',
 #   }
 #
-# @param dnssec
+# @param dnssec_enable
 #   Enable DNSSEC for the zone.
 #
 # @param inline_signing
@@ -106,7 +106,7 @@
 #
 #
 define bind::zone::primary (
-  Boolean                              $dnssec                    = false,
+  Boolean                              $dnssec_enable             = false,
   Boolean                              $inline_signing            = false,
   Array[String]                        $also_notify               = [],
   Variant[Enum['local'],Array[String]] $update_policy             = [],
@@ -213,7 +213,7 @@ define bind::zone::primary (
   $params = {
     'zone'                => $zone,
     'file'                => $zonefile,
-    'dnssec'              => $dnssec,
+    'dnssec_enable'       => $dnssec_enable,
     'inline_signing'      => $inline_signing,
     'also_notify'         => $also_notify,
     'auto_dnssec'         => $auto_dnssec,
