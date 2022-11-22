@@ -45,13 +45,12 @@ define bind::zone::secondary (
   Bind::Zone::Class $class           = 'IN',
   String            $order           = '30',
 ) {
-  $zonebase = "${bind::vardir}/secondary"
-
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')
   }
 
+  $zonebase = "${bind::vardir}/secondary"
   $zonepath = bind::zonefile_path($zone)
   $zonefile = "${zonebase}/${zonepath}"
 

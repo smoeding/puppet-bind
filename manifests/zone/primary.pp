@@ -128,12 +128,12 @@ define bind::zone::primary (
   Bind::Zone::Class                    $class                     = 'IN',
   String                               $order                     = '20',
 ) {
-  $zonebase = "${bind::vardir}/primary"
-
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')
   }
+
+  $zonebase = "${bind::vardir}/primary"
 
   if ($source and !empty($update_policy)) {
     fail('The parameter source may not be used for a dynamic zone (update_policy is set)')
