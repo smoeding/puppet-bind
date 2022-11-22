@@ -2266,15 +2266,15 @@ The following parameters are available in the `bind::zone::primary` defined type
 
 * [`dnssec`](#dnssec)
 * [`inline_signing`](#inline_signing)
-* [`update_policy`](#update_policy)
 * [`also_notify`](#also_notify)
+* [`update_policy`](#update_policy)
 * [`auto_dnssec`](#auto_dnssec)
-* [`dnssec_policy`](#dnssec_policy)
-* [`dnssec_loadkeys_interval`](#dnssec_loadkeys_interval)
 * [`dnssec_dnskey_kskonly`](#dnssec_dnskey_kskonly)
 * [`dnssec_secure_to_insecure`](#dnssec_secure_to_insecure)
+* [`dnssec_policy`](#dnssec_policy)
 * [`dnssec_update_mode`](#dnssec_update_mode)
 * [`dnskey_sig_validity`](#dnskey_sig_validity)
+* [`dnssec_loadkeys_interval`](#dnssec_loadkeys_interval)
 * [`notify_secondaries`](#notify_secondaries)
 * [`view`](#view)
 * [`file`](#file)
@@ -2302,6 +2302,15 @@ Enable inline signing for the zone.
 
 Default value: ``false``
 
+##### <a name="also_notify"></a>`also_notify`
+
+Data type: `Array[String]`
+
+Secondary servers that should be notified in addition to the
+nameservers that are listed in the zone file.
+
+Default value: `[]`
+
 ##### <a name="update_policy"></a>`update_policy`
 
 Data type: `Variant[Enum['local'],Array[String]]`
@@ -2317,15 +2326,6 @@ content are not allowed) for a dynamic zone.
 
 Default value: `[]`
 
-##### <a name="also_notify"></a>`also_notify`
-
-Data type: `Array[String]`
-
-Secondary servers that should be notified in addition to the
-nameservers that are listed in the zone file.
-
-Default value: `[]`
-
 ##### <a name="auto_dnssec"></a>`auto_dnssec`
 
 Data type: `Bind::Auto_dnssec`
@@ -2334,24 +2334,6 @@ How to sign and resign the DNSSEC zone. Can be one of `allow`, `maintain`
 or `off`.
 
 Default value: `'off'`
-
-##### <a name="dnssec_policy"></a>`dnssec_policy`
-
-Data type: `Optional[String]`
-
-The name of the DNSSEC policy to use for this zone. The policy must be
-created using the `bind::dnssec_policy` defined type.
-
-Default value: ``undef``
-
-##### <a name="dnssec_loadkeys_interval"></a>`dnssec_loadkeys_interval`
-
-Data type: `Optional[Integer]`
-
-The time interval after which key are checked if `auto_dnssec` is set to
-`maintain`. The value is in minutes.
-
-Default value: ``undef``
 
 ##### <a name="dnssec_dnskey_kskonly"></a>`dnssec_dnskey_kskonly`
 
@@ -2370,6 +2352,15 @@ Should the zone be allowed to got from signed to unsinged.
 
 Default value: ``undef``
 
+##### <a name="dnssec_policy"></a>`dnssec_policy`
+
+Data type: `Optional[String]`
+
+The name of the DNSSEC policy to use for this zone. The policy must be
+created using the `bind::dnssec_policy` defined type.
+
+Default value: ``undef``
+
 ##### <a name="dnssec_update_mode"></a>`dnssec_update_mode`
 
 Data type: `Optional[Bind::DNSSEC::Updatemode]`
@@ -2385,6 +2376,15 @@ Data type: `Optional[Integer]`
 
 The number of days after which the signatures for generated DNSKEY RRsets
 expire.
+
+Default value: ``undef``
+
+##### <a name="dnssec_loadkeys_interval"></a>`dnssec_loadkeys_interval`
+
+Data type: `Optional[Integer]`
+
+The time interval after which key are checked if `auto_dnssec` is set to
+`maintain`. The value is in minutes.
 
 Default value: ``undef``
 

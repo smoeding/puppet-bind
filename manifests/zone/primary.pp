@@ -26,6 +26,10 @@
 # @param inline_signing
 #   Enable inline signing for the zone.
 #
+# @param also_notify
+#   Secondary servers that should be notified in addition to the
+#   nameservers that are listed in the zone file.
+#
 # @param update_policy
 #   Enable dynamic updates for the zone and define the update policy. This
 #   can either be the string `local` or an array of strings. Using the string
@@ -36,21 +40,9 @@
 #   The zone file can not be managed by Puppet (the parameters source or
 #   content are not allowed) for a dynamic zone.
 #
-# @param also_notify
-#   Secondary servers that should be notified in addition to the
-#   nameservers that are listed in the zone file.
-#
 # @param auto_dnssec
 #   How to sign and resign the DNSSEC zone. Can be one of `allow`, `maintain`
 #   or `off`.
-#
-# @param dnssec_policy
-#   The name of the DNSSEC policy to use for this zone. The policy must be
-#   created using the `bind::dnssec_policy` defined type.
-#
-# @param dnssec_loadkeys_interval
-#   The time interval after which key are checked if `auto_dnssec` is set to
-#   `maintain`. The value is in minutes.
 #
 # @param dnssec_dnskey_kskonly
 #   Should only key-signing keys be used to to sign the DNSKEY, CDNSKEY and
@@ -59,6 +51,10 @@
 # @param dnssec_secure_to_insecure
 #   Should the zone be allowed to got from signed to unsinged.
 #
+# @param dnssec_policy
+#   The name of the DNSSEC policy to use for this zone. The policy must be
+#   created using the `bind::dnssec_policy` defined type.
+#
 # @param dnssec_update_mode
 #   Should RRSIG records be regenerated automatically (mode `maintain`) or
 #   not (mode `no-resign`) for a zone which allows dynamic updates.
@@ -66,6 +62,10 @@
 # @param dnskey_sig_validity
 #   The number of days after which the signatures for generated DNSKEY RRsets
 #   expire.
+#
+# @param dnssec_loadkeys_interval
+#   The time interval after which key are checked if `auto_dnssec` is set to
+#   `maintain`. The value is in minutes.
 #
 # @param notify_secondaries
 #   Should NOTIFY messages be sent out to the name servers defined in the NS
@@ -111,12 +111,12 @@ define bind::zone::primary (
   Array[String]                        $also_notify               = [],
   Variant[Enum['local'],Array[String]] $update_policy             = [],
   Bind::Auto_dnssec                    $auto_dnssec               = 'off',
-  Optional[String]                     $dnssec_policy             = undef,
-  Optional[Integer]                    $dnssec_loadkeys_interval  = undef,
   Optional[Boolean]                    $dnssec_dnskey_kskonly     = undef,
   Optional[Boolean]                    $dnssec_secure_to_insecure = undef,
+  Optional[String]                     $dnssec_policy             = undef,
   Optional[Bind::DNSSEC::Updatemode]   $dnssec_update_mode        = undef,
   Optional[Integer]                    $dnskey_sig_validity       = undef,
+  Optional[Integer]                    $dnssec_loadkeys_interval  = undef,
   Optional[Bind::Notify_secondaries]   $notify_secondaries        = undef,
   Optional[String]                     $view                      = undef,
   Optional[String]                     $file                      = undef,
