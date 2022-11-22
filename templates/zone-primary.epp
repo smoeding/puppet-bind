@@ -40,10 +40,10 @@
 <% if $loadkeys_interval { -%>
 <%= $indent %>  dnssec-loadkeys-interval  <%= $loadkeys_interval -%>;
 <% } -%>
-<% if $kskonly { -%>
+<% if $kskonly =~ NotUndef { -%>
 <%= $indent %>  dnssec-dnskey-kskonly     <%= bool2str($kskonly, 'yes', 'no') -%>;
 <% } -%>
-<% if $secure_to_insecure { -%>
+<% if $secure_to_insecure =~ NotUndef { -%>
 <%= $indent %>  dnssec-secure-to-insecure <%= bool2str($secure_to_insecure, 'yes', 'no') -%>;
 <% } -%>
 <% if $update_mode { -%>
@@ -52,9 +52,15 @@
 <% if $dnskey_sig_validity { -%>
 <%= $indent %>  dnskey-sig-validity       <%= $dnskey_sig_validity -%>;
 <% } -%>
+<% if $auto_dnssec { -%>
 <%= $indent %>  auto-dnssec    <%= $auto_dnssec -%>;
+<% } -%>
+<% if $inline_signing =~ NotUndef { -%>
 <%= $indent %>  inline-signing <%= bool2str($inline_signing, 'yes', 'no') -%>;
+<% } -%>
+<% if $key_directory { -%>
 <%= $indent %>  key-directory  "<%= $key_directory -%>";
+<% } -%>
 <% } -%>
 <% if $statistics { -%>
 
