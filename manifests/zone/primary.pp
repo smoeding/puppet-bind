@@ -226,12 +226,9 @@ define bind::zone::primary (
     default => undef,
   }
 
-  $params = {
-    'zone'                => $zone,
-    'file'                => $zonefile,
+  $params_dnssec = {
     'dnssec_enable'       => $_dnssec_enable,
     'inline_signing'      => $inline_signing,
-    'also_notify'         => $also_notify,
     'auto_dnssec'         => $auto_dnssec,
     'policy'              => $dnssec_policy,
     'loadkeys_interval'   => $dnssec_loadkeys_interval,
@@ -239,14 +236,21 @@ define bind::zone::primary (
     'secure_to_insecure'  => $dnssec_secure_to_insecure,
     'update_mode'         => $dnssec_update_mode,
     'dnskey_sig_validity' => $dnskey_sig_validity,
-    'notify'              => $notify_secondaries,
     'key_directory'       => $_keydir,
-    'statistics'          => $zone_statistics,
-    'update_policy'       => $update_policy,
-    'class'               => $class,
-    'comment'             => $comment,
-    'indent'              => bool2str($bind::views_enable, '  ', ''),
-    'zone_in_view'        => ($view =~ NotUndef),
+  }
+
+  $params = {
+    'zone'          => $zone,
+    'file'          => $zonefile,
+    'also_notify'   => $also_notify,
+    'notify'        => $notify_secondaries,
+    'statistics'    => $zone_statistics,
+    'update_policy' => $update_policy,
+    'class'         => $class,
+    'comment'       => $comment,
+    'indent'        => bool2str($bind::views_enable, '  ', ''),
+    'zone_in_view'  => ($view =~ NotUndef),
+    'dnssec_params' => !empty(delete_undef_values($params_dnssec)),
   }
 
   if $bind::views_enable {
@@ -257,7 +261,7 @@ define bind::zone::primary (
     @concat::fragment { "named.conf.views-${view}-50-${zone}":
       target  => 'named.conf.views',
       order   => $order,
-      content => epp("${module_name}/zone-primary.epp", $params),
+      content => epp("${module_name}/zone-primary.epp", merge($params, $params_dnssec)),
       tag     => ["named.conf.views-${view}",],
     }
   }
@@ -265,7 +269,7 @@ define bind::zone::primary (
     concat::fragment { "named.conf.zones-${zone}":
       target  => 'named.conf.zones',
       order   => $order,
-      content => epp("${module_name}/zone-primary.epp", $params),
+      content => epp("${module_name}/zone-primary.epp", merge($params, $params_dnssec)),
     }
   }
 }

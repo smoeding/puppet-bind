@@ -34,7 +34,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n};\n")
+            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n};\n")
         }
       end
 
@@ -50,7 +50,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/file\";\n\n};\n")
+            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/file\";\n};\n")
         }
       end
 
@@ -82,7 +82,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n};\n")
+            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n};\n")
         }
       end
 
@@ -114,7 +114,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n};\n")
+            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n};\n")
         }
       end
 
@@ -146,7 +146,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" HS {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n};\n")
+            .with_content("\nzone \"example.com\" HS {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n};\n")
         }
       end
 

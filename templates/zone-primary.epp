@@ -29,6 +29,7 @@
 <% } -%>
 <%= $indent %>  };
 <% } -%>
+<% if $dnssec_params { -%>
 
 <% if $dnssec_enable =~ NotUndef { -%>
 <%= $indent %>  dnssec-enable  <%= bool2str($dnssec_enable, 'yes', 'no') -%>;
@@ -59,6 +60,7 @@
 <% } -%>
 <% if $key_directory { -%>
 <%= $indent %>  key-directory  "<%= $key_directory -%>";
+<% } -%>
 <% } -%>
 <% if $statistics { -%>
 
