@@ -34,7 +34,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n  key-directory  \"/etc/bind/keys\";\n};\n")
+            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n};\n")
         }
       end
 
@@ -50,7 +50,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/file\";\n\n  key-directory  \"/etc/bind/keys\";\n};\n")
+            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/file\";\n\n};\n")
         }
       end
 
@@ -82,7 +82,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n  key-directory  \"/etc/bind/keys\";\n};\n")
+            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n};\n")
         }
       end
 
@@ -114,7 +114,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n  key-directory  \"/etc/bind/keys\";\n};\n")
+            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n};\n")
         }
       end
 
@@ -146,7 +146,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" HS {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n  key-directory  \"/etc/bind/keys\";\n};\n")
+            .with_content("\nzone \"example.com\" HS {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n};\n")
         }
       end
 
@@ -165,7 +165,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content(%r{dnssec-enable\s+yes;\n\s+key-directory\s+"/etc/bind/keys";})
+            .with_content(%r{dnssec-enable\s+yes;})
         }
       end
 
@@ -204,6 +204,7 @@ describe 'bind::zone::primary' do
             .with_target('named.conf.zones')
             .with_order('20')
             .with_content(%r{dnssec-policy\s+"foo";})
+            .with_content(%r{dnssec-policy\s+"foo";\n\s+key-directory\s+"/etc/bind/keys";})
         }
       end
 
@@ -317,7 +318,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content(%r{inline-signing\s+yes;})
+            .with_content(%r{inline-signing\s+yes;\n\s+key-directory\s+"/etc/bind/keys";})
         }
       end
 

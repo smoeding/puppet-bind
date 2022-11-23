@@ -210,6 +210,12 @@ define bind::zone::primary (
     }
   }
 
+  $_keydir = (($inline_signing == true) or
+              ($dnssec_policy =~ NotUndef)) ? {
+    true    => "${bind::confdir}/keys",
+    default => undef,
+  }
+
   $params = {
     'zone'                => $zone,
     'file'                => $zonefile,
@@ -224,7 +230,7 @@ define bind::zone::primary (
     'update_mode'         => $dnssec_update_mode,
     'dnskey_sig_validity' => $dnskey_sig_validity,
     'notify'              => $notify_secondaries,
-    'key_directory'       => "${bind::confdir}/keys",
+    'key_directory'       => $_keydir,
     'statistics'          => $zone_statistics,
     'update_policy'       => $update_policy,
     'class'               => $class,
