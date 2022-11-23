@@ -1,3 +1,9 @@
+## 2022-xx-yy - Release 0.11.0
+
+### Breaking changes
+
+- All DNSSEC related zone parameters have been made optional. The config parameter `dnssec-enable` has been made obsolete with Bind 9.16 so that is no longer a prerequisite to activate other config options in the template. Make sure your Puppet code defines all parameters for your DNSSEC enabled primary zones.
+
 ## 2022-10-13 - Release 0.10.0
 
 ### Bugfix
