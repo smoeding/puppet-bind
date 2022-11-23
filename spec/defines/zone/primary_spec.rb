@@ -34,7 +34,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n};\n")
+            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n  key-directory  \"/etc/bind/keys\";\n};\n")
         }
       end
 
@@ -50,7 +50,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/file\";\n};\n")
+            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/file\";\n\n  key-directory  \"/etc/bind/keys\";\n};\n")
         }
       end
 
@@ -82,7 +82,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n};\n")
+            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n  key-directory  \"/etc/bind/keys\";\n};\n")
         }
       end
 
@@ -114,7 +114,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n};\n")
+            .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n  key-directory  \"/etc/bind/keys\";\n};\n")
         }
       end
 
@@ -146,7 +146,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content("\nzone \"example.com\" HS {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n};\n")
+            .with_content("\nzone \"example.com\" HS {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n\n  key-directory  \"/etc/bind/keys\";\n};\n")
         }
       end
 
@@ -165,13 +165,13 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content(%r{dnssec-enable\s+yes;\n\s+auto-dnssec\s+off;\n\s+inline-signing\s+no;\n\s+key-directory\s+"/etc/bind/keys";})
+            .with_content(%r{dnssec-enable\s+yes;\n\s+key-directory\s+"/etc/bind/keys";})
         }
       end
 
-      context 'with source => "/file", dnssec_enable => true, auto_dnssec => "maintain"' do
+      context 'with source => "/file", auto_dnssec => "maintain"' do
         let(:params) do
-          { source: '/file', dnssec_enable: true, auto_dnssec: 'maintain' }
+          { source: '/file', auto_dnssec: 'maintain' }
         end
 
         it {
@@ -188,9 +188,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec_enable => true, dnssec_policy => "foo"' do
+      context 'with source => "/file", dnssec_policy => "foo"' do
         let(:params) do
-          { source: '/file', dnssec_enable: true, dnssec_policy: 'foo' }
+          { source: '/file', dnssec_policy: 'foo' }
         end
 
         it {
@@ -207,9 +207,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec_enable => true, dnssec_loadkeys_interval => 42' do
+      context 'with source => "/file", dnssec_loadkeys_interval => 42' do
         let(:params) do
-          { source: '/file', dnssec_enable: true, dnssec_loadkeys_interval: 42 }
+          { source: '/file', dnssec_loadkeys_interval: 42 }
         end
 
         it {
@@ -226,9 +226,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec_enable => true, dnssec_dnskey_kskonly => true' do
+      context 'with source => "/file", dnssec_dnskey_kskonly => true' do
         let(:params) do
-          { source: '/file', dnssec_enable: true, dnssec_dnskey_kskonly: true }
+          { source: '/file', dnssec_dnskey_kskonly: true }
         end
 
         it {
@@ -245,9 +245,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec_enable => true, dnssec_secure_to_insecure => true' do
+      context 'with source => "/file", dnssec_secure_to_insecure => true' do
         let(:params) do
-          { source: '/file', dnssec_enable: true, dnssec_secure_to_insecure: true }
+          { source: '/file', dnssec_secure_to_insecure: true }
         end
 
         it {
@@ -264,9 +264,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec_enable => true, dnssec_update_mode => "maintain"' do
+      context 'with source => "/file", dnssec_update_mode => "maintain"' do
         let(:params) do
-          { source: '/file', dnssec_enable: true, dnssec_update_mode: 'maintain' }
+          { source: '/file', dnssec_update_mode: 'maintain' }
         end
 
         it {
@@ -283,9 +283,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec_enable => true, dnskey_sig_validity => 42' do
+      context 'with source => "/file", dnskey_sig_validity => 42' do
         let(:params) do
-          { source: '/file', dnssec_enable: true, dnskey_sig_validity: 42 }
+          { source: '/file', dnskey_sig_validity: 42 }
         end
 
         it {
@@ -302,9 +302,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec_enable => true, inline_signing => true' do
+      context 'with source => "/file", inline_signing => true' do
         let(:params) do
-          { source: '/file', dnssec_enable: true, inline_signing: true }
+          { source: '/file', inline_signing: true }
         end
 
         it {
@@ -321,9 +321,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec_enable => true, notify_secondaries => "explicit"' do
+      context 'with source => "/file", notify_secondaries => "explicit"' do
         let(:params) do
-          { source: '/file', dnssec_enable: true, notify_secondaries: 'explicit' }
+          { source: '/file', notify_secondaries: 'explicit' }
         end
 
         it {
@@ -340,9 +340,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec_enable => true, also_notify => ["192.0.2.42"]' do
+      context 'with source => "/file", also_notify => ["192.0.2.42"]' do
         let(:params) do
-          { source: '/file', dnssec_enable: true, also_notify: ['192.0.2.42'] }
+          { source: '/file', also_notify: ['192.0.2.42'] }
         end
 
         it {
@@ -359,9 +359,9 @@ describe 'bind::zone::primary' do
         }
       end
 
-      context 'with source => "/file", dnssec_enable => true, zone_statistics => true' do
+      context 'with source => "/file", zone_statistics => true' do
         let(:params) do
-          { source: '/file', dnssec_enable: true, zone_statistics: true }
+          { source: '/file', zone_statistics: true }
         end
 
         it {
