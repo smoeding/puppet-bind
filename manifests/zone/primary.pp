@@ -35,7 +35,8 @@
 #   content are not allowed) for a dynamic zone.
 #
 # @param dnssec_enable
-#   Enable DNSSEC for the zone.
+#   Enable DNSSEC for the zone. This parameter is ignored for Bind 9.16.0 or
+#   later.
 #
 # @param dnssec_dnskey_kskonly
 #   Should only key-signing keys be used to to sign the DNSKEY, CDNSKEY and

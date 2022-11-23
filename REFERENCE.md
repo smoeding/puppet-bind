@@ -2314,7 +2314,8 @@ Default value: `[]`
 
 Data type: `Optional[Boolean]`
 
-Enable DNSSEC for the zone.
+Enable DNSSEC for the zone. This parameter is ignored for Bind 9.16.0 or
+later.
 
 Default value: ``undef``
 
