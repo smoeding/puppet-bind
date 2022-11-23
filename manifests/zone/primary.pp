@@ -221,8 +221,7 @@ define bind::zone::primary (
     default => undef,
   }
 
-  $_keydir = (($inline_signing == true) or
-              ($dnssec_policy =~ NotUndef)) ? {
+  $_keydir = (($inline_signing == true) or ($dnssec_policy =~ NotUndef)) ? {
     true    => "${bind::confdir}/keys",
     default => undef,
   }

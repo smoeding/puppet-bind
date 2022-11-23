@@ -407,7 +407,7 @@ class bind (
   }
 
   $_dnssec_lookaside =  (versioncmp($version, '9.16.0') < 0) ? {
-    true => $dnssec_lookaside,
+    true    => $dnssec_lookaside,
     default => undef,
   }
 
