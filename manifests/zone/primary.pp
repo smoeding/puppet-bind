@@ -210,6 +210,16 @@ define bind::zone::primary (
     }
   }
 
+  $version = ('named_version' in $facts) ? {
+    true    => $facts['named_version'],
+    default => '4.9.3',
+  }
+
+  $_dnssec_enable = (versioncmp($version, '9.16.0') < 0) ? {
+    true    => $dnssec_enable,
+    default => undef,
+  }
+
   $_keydir = (($inline_signing == true) or
               ($dnssec_policy =~ NotUndef)) ? {
     true    => "${bind::confdir}/keys",
@@ -219,7 +229,7 @@ define bind::zone::primary (
   $params = {
     'zone'                => $zone,
     'file'                => $zonefile,
-    'dnssec_enable'       => $dnssec_enable,
+    'dnssec_enable'       => $_dnssec_enable,
     'inline_signing'      => $inline_signing,
     'also_notify'         => $also_notify,
     'auto_dnssec'         => $auto_dnssec,
