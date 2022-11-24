@@ -98,12 +98,13 @@ bind::key { 'nsupdate':
 
 bind::zone::primary { 'example.com':
   update_policy => ['grant nsupdate zonesub any'],
+  content       => epp("profile/dynamic-zone-template.epp", $params),
 }
 ```
 
-The zone file must already exist on the server as `/var/lib/bind/primary/com/example/db.example.com`. It can't be managed by Puppet as `named` will periodically need to update the zone file when processing dynamic updates.
+If the zone file `/var/lib/bind/primary/com/example/db.example.com` does not exist on the name server, a new file will be created using the specified template. After that the file content can not be managed by Puppet as `named` will periodically need to update the zone file when processing dynamic updates. The `source` or `content` parameters are ignored in this case.
 
-Remember that you need to use `rndc freeze example.com` and `rndc thaw example.com` when editing the zone file manually.
+Manual updates to the zone file will have to be done locally on the name server. Remember that you need to use `rndc freeze example.com` and `rndc thaw example.com` when editing the zone file manually.
 
 ### Define a DNSSEC policy for a zone
 
