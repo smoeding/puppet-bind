@@ -2234,8 +2234,10 @@ Default value: `'50'`
 
 The parameters `source` or `content` can be used to have Puppet manage the
 content of the zone file. No content is managed if both parameters are left
-undefined. This is useful if the zone has dynamic updates enabled in which
-case `named` will need to rewrite the zone file.
+undefined. For a dynamic updatable zone the parameters `source` and
+`content` are only applied if the zone file does not yet exist. This can be
+used to deploy a zone file template on the first Puppet run and have Bind
+manage the content subsequently.
 
 #### Examples
 
@@ -2257,6 +2259,16 @@ bind::zone::primary { 'example.com':
   dnssec_policy  => 'standard',
   inline_signing => true,
   source         => 'puppet:///modules/profile/example.com.zone',
+}
+```
+
+##### Create a dynamic updatable zone with an initial zone file
+
+```puppet
+
+bind::zone::primary { '_acme-challenge.example.com':
+  update_policy => ['grant certbot name _acme-challenge.example.com. txt'],
+  source        => 'puppet:///modules/profile/acme-template.zone',
 }
 ```
 
@@ -2305,8 +2317,10 @@ can either be the string `local` or an array of strings. Using the string
 on the server. Otherwise the array should contain individual `grant` or
 `deny` rules.
 
-The zone file can not be managed by Puppet (the parameters source or
-content are not allowed) for a dynamic zone.
+The zone file content can not be managed by Puppet for a dynamic zone. If
+the parameters `source` or `content` are set, the zone file will only be
+created by Puppet initially if it does not exist. An existing zone file
+will not be overwritten by Puppet.
 
 Default value: `[]`
 

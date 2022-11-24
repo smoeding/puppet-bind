@@ -20,6 +20,7 @@ describe 'bind::zone::primary' do
             .with_owner('bind')
             .with_group('bind')
             .with_mode('0644')
+            .with_replace(true)
             .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
             .that_requires('Concat[named.conf.zones]')
 
@@ -67,6 +68,7 @@ describe 'bind::zone::primary' do
             .with_owner('bind')
             .with_group('bind')
             .with_mode('0644')
+            .with_replace(true)
             .with_source('/file')
             .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
             .that_requires('Concat[named.conf.zones]')
@@ -99,6 +101,7 @@ describe 'bind::zone::primary' do
             .with_owner('bind')
             .with_group('bind')
             .with_mode('0644')
+            .with_replace(true)
             .with_content('something')
             .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
             .that_requires('Concat[named.conf.zones]')
@@ -131,6 +134,7 @@ describe 'bind::zone::primary' do
             .with_owner('bind')
             .with_group('bind')
             .with_mode('0644')
+            .with_replace(true)
             .with_content('something')
             .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
             .that_requires('Concat[named.conf.zones]')
@@ -388,6 +392,11 @@ describe 'bind::zone::primary' do
           is_expected.to contain_file('/var/lib/bind/primary/com')
           is_expected.to contain_file('/var/lib/bind/primary/com/example')
           is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+            .with_ensure('file')
+            .with_owner('bind')
+            .with_group('bind')
+            .with_mode('0644')
+            .with_replace(false)
 
           is_expected.not_to contain_exec('bind::reload::example.com')
 
@@ -407,6 +416,11 @@ describe 'bind::zone::primary' do
           is_expected.to contain_file('/var/lib/bind/primary/com')
           is_expected.to contain_file('/var/lib/bind/primary/com/example')
           is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+            .with_ensure('file')
+            .with_owner('bind')
+            .with_group('bind')
+            .with_mode('0644')
+            .with_replace(false)
 
           is_expected.not_to contain_exec('bind::reload::example.com')
 
@@ -414,26 +428,6 @@ describe 'bind::zone::primary' do
             .with_target('named.conf.zones')
             .with_order('20')
             .with_content(%r{grant updatekey zonesub any})
-        }
-      end
-
-      context 'with update_policy and source' do
-        let(:params) do
-          { update_policy: 'local', source: '/foo' }
-        end
-
-        it {
-          is_expected.to compile.and_raise_error(%r{may not be used for a dynamic zone})
-        }
-      end
-
-      context 'with update_policy and content' do
-        let(:params) do
-          { update_policy: 'local', content: 'foo' }
-        end
-
-        it {
-          is_expected.to compile.and_raise_error(%r{may not be used for a dynamic zone})
         }
       end
     end
