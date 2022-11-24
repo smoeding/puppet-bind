@@ -1,8 +1,10 @@
-## 2022-xx-yy - Release 0.11.0
+## 2022-11-24 - Release 0.11.0
 
 ### Breaking changes
 
+- The defined type parameter `dnssec` has been renamed to `dnssec_enable` to match the main class parameter.
 - All DNSSEC related zone parameters have been made optional. The config parameter `dnssec-enable` has been made obsolete with Bind 9.16 so that is no longer a prerequisite to activate other config options in the template. Make sure your Puppet code defines all parameters for your DNSSEC enabled primary zones.
+- A primary zone using dynamic updates can now have a `content` or `source` parameter. The content of the zone file is created if the file does not exist. Subsequent puppet runs will not update the zone file as long as dynamic updates are used and the parameter `update_policy` is set for the zone.
 
 ## 2022-10-13 - Release 0.10.0
 
