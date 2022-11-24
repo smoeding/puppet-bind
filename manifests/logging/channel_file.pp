@@ -76,6 +76,6 @@ define bind::logging::channel_file (
   concat::fragment { "named.conf-channel-${title}":
     target  => 'named.conf.logging',
     order   => "30-${channel}",
-    content => epp('bind/logging-channel-file.epp', $params),
+    content => epp("${module_name}/logging-channel-file.epp", $params),
   }
 }

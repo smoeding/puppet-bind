@@ -112,7 +112,7 @@ define bind::key (
         owner   => $owner,
         group   => $group,
         mode    => $mode,
-        content => epp('bind/key.epp', $params),
+        content => epp("${module_name}/key.epp", $params),
         before  => Concat::Fragment["bind::key::${title}"],
         notify  => Service['bind'],
       }

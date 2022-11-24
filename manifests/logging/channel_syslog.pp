@@ -56,6 +56,6 @@ define bind::logging::channel_syslog (
   concat::fragment { "named.conf-channel-${title}":
     target  => 'named.conf.logging',
     order   => "20-${channel}",
-    content => epp('bind/logging-channel-syslog.epp', $params),
+    content => epp("${module_name}/logging-channel-syslog.epp", $params),
   }
 }
