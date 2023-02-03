@@ -27,7 +27,7 @@ describe 'bind::logging::channel_file' do
             .with_ensure('file')
             .with_owner('bind')
             .with_group('bind')
-            .with_mode(nil)
+            .with_mode('0640')
             .that_comes_before('Concat[named.conf.logging]')
 
           is_expected.to contain_concat__fragment('named.conf-channel-foo')
@@ -47,7 +47,7 @@ describe 'bind::logging::channel_file' do
             .with_ensure('file')
             .with_owner('bind')
             .with_group('bind')
-            .with_mode(nil)
+            .with_mode('0640')
             .that_comes_before('Concat[named.conf.logging]')
 
           is_expected.to contain_concat__fragment('named.conf-channel-foo')
@@ -67,7 +67,7 @@ describe 'bind::logging::channel_file' do
             .with_ensure('file')
             .with_owner('bind')
             .with_group('bind')
-            .with_mode(nil)
+            .with_mode('0640')
             .that_comes_before('Concat[named.conf.logging]')
 
           is_expected.to contain_concat__fragment('named.conf-channel-foo')
@@ -87,7 +87,7 @@ describe 'bind::logging::channel_file' do
             .with_ensure('file')
             .with_owner('bind')
             .with_group('bind')
-            .with_mode(nil)
+            .with_mode('0640')
             .that_comes_before('Concat[named.conf.logging]')
 
           is_expected.to contain_concat__fragment('named.conf-channel-foo')
@@ -107,7 +107,7 @@ describe 'bind::logging::channel_file' do
             .with_ensure('file')
             .with_owner('bind')
             .with_group('bind')
-            .with_mode(nil)
+            .with_mode('0640')
             .that_comes_before('Concat[named.conf.logging]')
 
           is_expected.to contain_concat__fragment('named.conf-channel-foo')
@@ -127,7 +127,7 @@ describe 'bind::logging::channel_file' do
             .with_ensure('file')
             .with_owner('bind')
             .with_group('bind')
-            .with_mode(nil)
+            .with_mode('0640')
             .that_comes_before('Concat[named.conf.logging]')
 
           is_expected.to contain_concat__fragment('named.conf-channel-foo')
@@ -147,7 +147,7 @@ describe 'bind::logging::channel_file' do
             .with_ensure('file')
             .with_owner('bind')
             .with_group('bind')
-            .with_mode(nil)
+            .with_mode('0640')
             .that_comes_before('Concat[named.conf.logging]')
 
           is_expected.to contain_concat__fragment('named.conf-channel-foo')
@@ -167,7 +167,7 @@ describe 'bind::logging::channel_file' do
             .with_ensure('file')
             .with_owner('bind')
             .with_group('bind')
-            .with_mode(nil)
+            .with_mode('0640')
             .that_comes_before('Concat[named.conf.logging]')
 
           is_expected.to contain_concat__fragment('named.conf-channel-foo')

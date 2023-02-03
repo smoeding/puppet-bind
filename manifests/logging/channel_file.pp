@@ -9,6 +9,10 @@
 # @param logfile
 #   The filename where the logs are written to.
 #
+# @param mode
+#   The file mode of the logfile. The default allows access only for the user
+#   and group runnung the daemon.
+#
 # @param channel
 #   The name of the channel for the logfile. Use bind::logging::category to
 #   route a given category to this channel.
@@ -33,21 +37,17 @@
 # @param versions
 #   The number of logfiles to keep if log rotation is used.
 #
-# @param mode
-#   The file mode of the logfile. No file mode will be enforced if this is
-#   undefined.
-#
 #
 define bind::logging::channel_file (
-  Stdlib::Absolutepath       $logfile,
-  String                     $channel        = $name,
-  Bind::Syslog::Severity     $severity       = 'notice',
-  Boolean                    $print_category = true,
-  Boolean                    $print_severity = true,
-  Boolean                    $print_time     = true,
-  Optional[String]           $size           = undef,
-  Optional[Integer]          $versions       = undef,
-  Optional[Stdlib::Filemode] $mode           = undef,
+  Stdlib::Absolutepath   $logfile,
+  Stdlib::Filemode       $mode           = '0640',
+  String                 $channel        = $name,
+  Bind::Syslog::Severity $severity       = 'notice',
+  Boolean                $print_category = true,
+  Boolean                $print_severity = true,
+  Boolean                $print_time     = true,
+  Optional[String]       $size           = undef,
+  Optional[Integer]      $versions       = undef,
 ) {
   # The base class must be included first
   unless defined(Class['bind']) {
