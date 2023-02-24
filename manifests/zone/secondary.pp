@@ -25,6 +25,10 @@
 # @param comment
 #   A comment to add to the zone file.
 #
+# @param append_view
+#   Should the view name be appended to the name of the zonefile.
+#   Only valid when 'view' is set
+#
 # @param zone
 #   The name of the zone.
 #
@@ -41,6 +45,7 @@ define bind::zone::secondary (
   Optional[Boolean] $zone_statistics = undef,
   Optional[Boolean] $multi_master    = undef,
   Optional[String]  $comment         = undef,
+  Optional[Boolean]                    $append_view               = undef,
   String            $zone            = $name,
   Bind::Zone::Class $class           = 'IN',
   String            $order           = '30',
@@ -51,7 +56,11 @@ define bind::zone::secondary (
   }
 
   $zonebase = "${bind::vardir}/secondary"
-  $zonepath = bind::zonefile_path($zone)
+  if ($append_view) {
+    $zonepath = bind::zonefile_path($zone, $view)
+  } else {
+    $zonepath = bind::zonefile_path($zone)
+  }
   $zonefile = "${zonebase}/${zonepath}"
 
   $zonedir1 = dirname($zonefile)
