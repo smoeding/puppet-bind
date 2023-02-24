@@ -13,6 +13,12 @@ describe 'bind::zonefile_path' do
     }
   end
 
+  context 'with zone => foo.local and view => undef' do
+    it {
+      is_expected.to run.with_params('foo.local', :undef).and_return('local/foo/db.foo.local')
+    }
+  end
+
   context 'with zone => foo.local and view => internal' do
     it {
       is_expected.to run.with_params('foo.local', 'internal').and_return('local/foo/db.foo.local_internal')

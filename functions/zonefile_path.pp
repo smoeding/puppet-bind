@@ -14,7 +14,7 @@
 #   The relative path and filename where the zonefile should be stored.
 #   Example: 'com/example/db.example.com_internal'
 #
-function bind::zonefile_path(String $zone, String $view = '') >> String {
+function bind::zonefile_path(String $zone, Optional[String] $view = '') >> String {
   $names = split($zone, '[.]')
 
   if (length($names) > 1) {
@@ -32,7 +32,7 @@ function bind::zonefile_path(String $zone, String $view = '') >> String {
     $part = $zone
   }
 
-  if (length($view) > 0 ) {
+  if ($view and length($view) > 0 ) {
     $viewpart = "_${view}"
   } else {
     $viewpart = ''
