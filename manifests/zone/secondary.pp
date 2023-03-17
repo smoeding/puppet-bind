@@ -108,10 +108,10 @@ define bind::zone::secondary (
       content => epp("${module_name}/zone-secondary.epp", $params),
       order   => $order,
       tag     => ["named.conf.views-${view}",],
-      notify  => Exec["bind::reload::${zone}"],
+      notify  => Exec["bind::reload::${view}::${zone}"],
     }
 
-    exec { "bind::reload::${zone}":
+    exec { "bind::reload::${view}::${zone}":
       command     => "${bind::rndc_program} reload ${zone} ${class} ${view}",
       user        => 'root',
       cwd         => '/',
