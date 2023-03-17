@@ -2294,6 +2294,7 @@ The following parameters are available in the `bind::zone::primary` defined type
 * [`content`](#-bind--zone--primary--content)
 * [`zone_statistics`](#-bind--zone--primary--zone_statistics)
 * [`comment`](#-bind--zone--primary--comment)
+* [`append_view`](#-bind--zone--primary--append_view)
 * [`zone`](#-bind--zone--primary--zone)
 * [`class`](#-bind--zone--primary--class)
 * [`order`](#-bind--zone--primary--order)
@@ -2466,6 +2467,15 @@ A comment to add to the zone file.
 
 Default value: `undef`
 
+##### <a name="-bind--zone--primary--append_view"></a>`append_view`
+
+Data type: `Boolean`
+
+Should the view name be appended to the name of the zonefile.
+Only valid when 'view' is set.
+
+Default value: `false`
+
 ##### <a name="-bind--zone--primary--zone"></a>`zone`
 
 Data type: `String`
@@ -2514,6 +2524,7 @@ The following parameters are available in the `bind::zone::secondary` defined ty
 * [`zone_statistics`](#-bind--zone--secondary--zone_statistics)
 * [`multi_master`](#-bind--zone--secondary--multi_master)
 * [`comment`](#-bind--zone--secondary--comment)
+* [`append_view`](#-bind--zone--secondary--append_view)
 * [`zone`](#-bind--zone--secondary--zone)
 * [`class`](#-bind--zone--secondary--class)
 * [`order`](#-bind--zone--secondary--order)
@@ -2559,6 +2570,15 @@ Data type: `Optional[String]`
 A comment to add to the zone file.
 
 Default value: `undef`
+
+##### <a name="-bind--zone--secondary--append_view"></a>`append_view`
+
+Data type: `Boolean`
+
+Should the view name be appended to the name of the zonefile.
+Only valid when 'view' is set.
+
+Default value: `false`
 
 ##### <a name="-bind--zone--secondary--zone"></a>`zone`
 
@@ -3003,12 +3023,12 @@ Type: Puppet Language
 
 Generate the zonefile name from zone
 
-#### `bind::zonefile_path(String $zone)`
+#### `bind::zonefile_path(String $zone, Optional[String] $view = '')`
 
 The bind::zonefile_path function.
 
 Returns: `String` The relative path and filename where the zonefile should be stored.
-Example: 'com/example/db.example.com'
+Example: 'com/example/db.example.com_internal'
 
 ##### `zone`
 
@@ -3016,6 +3036,14 @@ Data type: `String`
 
 The name of the zone for which the path should be returned.  Example:
 'example.com'
+
+##### `view`
+
+Data type: `Optional[String]`
+
+Optional[String]
+The name of the view for which the path should be returned.  Example:
+'internal'
 
 ## Data types
 
