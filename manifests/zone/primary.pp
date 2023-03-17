@@ -109,7 +109,7 @@
 #
 # @param append_view
 #   Should the view name be appended to the name of the zonefile.
-#   Only valid when 'view' is set
+#   Only valid when 'view' is set.
 #
 # @param zone
 #   The name of the zone.
@@ -140,7 +140,7 @@ define bind::zone::primary (
   Optional[String]                     $content                   = undef,
   Optional[Boolean]                    $zone_statistics           = undef,
   Optional[String]                     $comment                   = undef,
-  Optional[Boolean]                    $append_view               = undef,
+  Boolean                              $append_view               = false,
   String                               $zone                      = $name,
   Bind::Zone::Class                    $class                     = 'IN',
   String                               $order                     = '20',
@@ -156,10 +156,13 @@ define bind::zone::primary (
     $zonefile = $file
   }
   else {
-    if ($append_view) {
-      $zonepath = bind::zonefile_path($zone, $view)
-    } else {
-      $zonepath = bind::zonefile_path($zone)
+    if ($append_view and $view =~ Undef) {
+      fail('A view name must be set if append_view is true')
+    }
+
+    $zonepath = $append_view ? {
+      true    => bind::zonefile_path($zone, $view),
+      default => bind::zonefile_path($zone),
     }
     $zonefile = "${zonebase}/${zonepath}"
 

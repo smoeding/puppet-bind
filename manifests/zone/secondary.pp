@@ -27,7 +27,7 @@
 #
 # @param append_view
 #   Should the view name be appended to the name of the zonefile.
-#   Only valid when 'view' is set
+#   Only valid when 'view' is set.
 #
 # @param zone
 #   The name of the zone.
@@ -45,7 +45,7 @@ define bind::zone::secondary (
   Optional[Boolean] $zone_statistics = undef,
   Optional[Boolean] $multi_master    = undef,
   Optional[String]  $comment         = undef,
-  Optional[Boolean]                    $append_view               = undef,
+  Boolean           $append_view     = false,
   String            $zone            = $name,
   Bind::Zone::Class $class           = 'IN',
   String            $order           = '30',
@@ -55,11 +55,14 @@ define bind::zone::secondary (
     fail('You must include the bind base class before using any bind defined resources')
   }
 
+  if ($append_view and $view =~ Undef) {
+    fail('A view name must be set if append_view is true')
+  }
+
   $zonebase = "${bind::vardir}/secondary"
-  if ($append_view) {
-    $zonepath = bind::zonefile_path($zone, $view)
-  } else {
-    $zonepath = bind::zonefile_path($zone)
+  $zonepath = $append_view ? {
+    true    => bind::zonefile_path($zone, $view),
+    default => bind::zonefile_path($zone),
   }
   $zonefile = "${zonebase}/${zonepath}"
 

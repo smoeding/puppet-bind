@@ -62,6 +62,16 @@ describe 'bind::zone::secondary' do
             .that_requires('Service[bind]')
         }
       end
+
+      context 'with masters => ["192.0.2.42"], append_view => true' do
+        let(:params) do
+          { masters: ['192.0.2.42'], append_view: true }
+        end
+
+        it {
+          is_expected.to compile.and_raise_error(%r{view name must be set if append_view is true})
+        }
+      end
     end
   end
 
@@ -119,6 +129,29 @@ describe 'bind::zone::secondary' do
             .with_target('named.conf.views')
             .with_order('10')
             .with_content("\n  zone \"example.com\" IN {\n    type slave;\n    masters { 192.0.2.42; 192.0.2.69; };\n    file \"/var/lib/bind/secondary/com/example/db.example.com\";\n  };\n")
+
+          is_expected.to contain_exec('bind::reload::internal::example.com')
+            .with_command('/usr/sbin/rndc reload example.com IN internal')
+            .with_user('root')
+            .with_cwd('/')
+            .with_refreshonly(true)
+            .that_requires('Service[bind]')
+        }
+      end
+
+      context 'with view => "internal", masters => ["192.0.2.42"], append_view => true' do
+        let(:params) do
+          { view: 'internal', masters: ['192.0.2.42'], append_view: true }
+        end
+
+        it {
+          is_expected.to contain_file('/var/lib/bind/secondary/com')
+          is_expected.to contain_file('/var/lib/bind/secondary/com/example')
+
+          is_expected.to contain_concat__fragment('named.conf.views-internal-60-example.com')
+            .with_target('named.conf.views')
+            .with_order('10')
+            .with_content("\n  zone \"example.com\" IN {\n    type slave;\n    masters { 192.0.2.42; };\n    file \"/var/lib/bind/secondary/com/example/db.example.com_internal\";\n  };\n")
 
           is_expected.to contain_exec('bind::reload::internal::example.com')
             .with_command('/usr/sbin/rndc reload example.com IN internal')
