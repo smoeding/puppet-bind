@@ -6,11 +6,15 @@
 #   The name of the zone for which the path should be returned.  Example:
 #   'example.com'
 #
+# @param view Optional[String]
+#   The name of the view for which the path should be returned.  Example:
+#   'internal'
+#
 # @return [String]
 #   The relative path and filename where the zonefile should be stored.
-#   Example: 'com/example/db.example.com'
+#   Example: 'com/example/db.example.com_internal'
 #
-function bind::zonefile_path(String $zone) >> String {
+function bind::zonefile_path(String $zone, Optional[String] $view = '') >> String {
   $names = split($zone, '[.]')
 
   if (length($names) > 1) {
@@ -28,5 +32,11 @@ function bind::zonefile_path(String $zone) >> String {
     $part = $zone
   }
 
-  "${dir}/db.${part}"
+  if ($view and length($view) > 0 ) {
+    $viewpart = "_${view}"
+  } else {
+    $viewpart = ''
+  }
+
+  "${dir}/db.${part}${viewpart}"
 }

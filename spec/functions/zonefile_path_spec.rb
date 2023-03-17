@@ -13,6 +13,18 @@ describe 'bind::zonefile_path' do
     }
   end
 
+  context 'with zone => foo.local and view => undef' do
+    it {
+      is_expected.to run.with_params('foo.local', :undef).and_return('local/foo/db.foo.local')
+    }
+  end
+
+  context 'with zone => foo.local and view => internal' do
+    it {
+      is_expected.to run.with_params('foo.local', 'internal').and_return('local/foo/db.foo.local_internal')
+    }
+  end
+
   context 'with zone => foo.bar.local' do
     it {
       is_expected.to run.with_params('foo.bar.local').and_return('local/bar/db.foo.bar.local')
@@ -34,6 +46,12 @@ describe 'bind::zonefile_path' do
   context 'with zone => 12.11.10.in-addr.arpa' do
     it {
       is_expected.to run.with_params('12.11.10.in-addr.arpa').and_return('arpa/in-addr/db.10.11.12')
+    }
+  end
+
+  context 'with zone => 12.11.10.in-addr.arpa and view => internal' do
+    it {
+      is_expected.to run.with_params('12.11.10.in-addr.arpa', 'internal').and_return('arpa/in-addr/db.10.11.12_internal')
     }
   end
 end
