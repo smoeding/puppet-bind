@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run pdk validate
         uses: puppets-epic-show-theatre/action-pdk-validate@31b5407676af16b690b2b8c54c0767af72fcc34f
