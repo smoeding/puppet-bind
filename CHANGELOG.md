@@ -1,3 +1,14 @@
+## 2023-03-18 - Release 0.12.0
+
+### Breaking changes
+
+- The directory for DNSSEC keys managed internally by Bind (e.g. using inline-signing) has been changed from `/etc/bind/keys` to `/var/lib/bind/keys`. This is necessary to manage the keys when Bind is running on a host where AppArmor is enabled. Copy all keys managed by Bind from `/etc/bind/keys` to `/var/lib/bind/keys` before updating this module!
+
+### Features
+
+- The defined type `bind::logging::channel_file` has a new parameter `mode` to set the file mode of the log file. The default value for the parameter is `0640`.
+- A new boolean parameter `append_view` has been added to the defined types `bind::zone::primary` and `bind::zone::secondary`. The file name of the zone file includes the view name if you set this parameter to `true`. Enable this if you have the same zone in different views to prevent zones in different views to reference the same zone file.
+
 ## 2022-11-24 - Release 0.11.0
 
 ### Breaking changes
