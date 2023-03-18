@@ -180,7 +180,8 @@ Default: operating system specific
 
 Data type: `Stdlib::Absolutepath`
 
-The directory where Bind stores other files (e.g. primary zone files).
+The directory where Bind stores other files (e.g. primary zone files or
+keys managed by Bind).
 Example: `/var/lib/bind`.
 
 Default: operating system specific

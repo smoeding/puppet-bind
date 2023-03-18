@@ -239,7 +239,7 @@ define bind::zone::primary (
   }
 
   $_keydir = (($inline_signing == true) or ($dnssec_policy =~ NotUndef)) ? {
-    true    => "${bind::confdir}/keys",
+    true    => "${bind::vardir}/keys",
     default => undef,
   }
 

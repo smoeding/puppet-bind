@@ -33,6 +33,13 @@ describe 'bind' do
               .with_mode('0775')
               .that_requires('Package[bind]')
 
+            is_expected.to contain_file('/var/lib/bind/keys')
+              .with_ensure('directory')
+              .with_owner('bind')
+              .with_group('bind')
+              .with_mode('0750')
+              .that_comes_before('Bind::Config[named.conf]')
+
             is_expected.to contain_file('/var/lib/bind/primary')
               .with_ensure('directory')
               .with_owner('bind')

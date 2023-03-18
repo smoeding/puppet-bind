@@ -208,7 +208,7 @@ describe 'bind::zone::primary' do
             .with_target('named.conf.zones')
             .with_order('20')
             .with_content(%r{dnssec-policy\s+"foo";})
-            .with_content(%r{dnssec-policy\s+"foo";\n\s+key-directory\s+"/etc/bind/keys";})
+            .with_content(%r{dnssec-policy\s+"foo";\n\s+key-directory\s+"/var/lib/bind/keys";})
         }
       end
 
@@ -322,7 +322,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.zones-example.com')
             .with_target('named.conf.zones')
             .with_order('20')
-            .with_content(%r{inline-signing\s+yes;\n\s+key-directory\s+"/etc/bind/keys";})
+            .with_content(%r{inline-signing\s+yes;\n\s+key-directory\s+"/var/lib/bind/keys";})
         }
       end
 
@@ -652,7 +652,7 @@ describe 'bind::zone::primary' do
             .with_target('named.conf.views')
             .with_order('10')
             .with_content(%r{dnssec-policy\s+"foo";})
-            .with_content(%r{dnssec-policy\s+"foo";\n  \s+key-directory\s+"/etc/bind/keys";})
+            .with_content(%r{dnssec-policy\s+"foo";\n  \s+key-directory\s+"/var/lib/bind/keys";})
         }
       end
 
@@ -766,7 +766,7 @@ describe 'bind::zone::primary' do
           is_expected.to contain_concat__fragment('named.conf.views-internal-50-example.com')
             .with_target('named.conf.views')
             .with_order('10')
-            .with_content(%r{inline-signing\s+yes;\n  \s+key-directory\s+"/etc/bind/keys";})
+            .with_content(%r{inline-signing\s+yes;\n  \s+key-directory\s+"/var/lib/bind/keys";})
         }
       end
 

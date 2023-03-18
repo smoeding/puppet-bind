@@ -31,7 +31,8 @@
 #   Default: operating system specific
 #
 # @param vardir
-#   The directory where Bind stores other files (e.g. primary zone files).
+#   The directory where Bind stores other files (e.g. primary zone files or
+#   keys managed by Bind).
 #   Example: `/var/lib/bind`.
 #
 #   Default: operating system specific
@@ -440,6 +441,14 @@ class bind (
     group   => $bind_group,
     mode    => '0775',
     require => Package['bind'],
+  }
+
+  file { "${vardir}/keys":
+    ensure => directory,
+    owner  => $bind_user,
+    group  => $bind_group,
+    mode   => '0750',
+    before => Bind::Config['named.conf'],
   }
 
   # Some directories must be writable by the user that named runs as.
