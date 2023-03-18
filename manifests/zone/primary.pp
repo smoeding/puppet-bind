@@ -108,7 +108,8 @@
 #   A comment to add to the zone file.
 #
 # @param append_view
-#   Should the view name be appended to the name of the zonefile.
+#   Should the view name be appended to the name of the zone file. This may
+#   be necessary if you want to have the same domain name in multiple views.
 #   Only valid when 'view' is set.
 #
 # @param zone
