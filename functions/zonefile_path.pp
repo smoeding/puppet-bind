@@ -32,11 +32,8 @@ function bind::zonefile_path(String $zone, Optional[String] $view = '') >> Strin
     $part = $zone
   }
 
-  if ($view and length($view) > 0 ) {
-    $viewpart = "_${view}"
-  } else {
-    $viewpart = ''
+  ($view =~ NotUndef and $view != '') ? {
+    true    => "${dir}/db.${part}_${view}",
+    default => "${dir}/db.${part}",
   }
-
-  "${dir}/db.${part}${viewpart}"
 }
