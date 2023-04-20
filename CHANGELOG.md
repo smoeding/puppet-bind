@@ -1,3 +1,9 @@
+## 2023-04-20 - Release 0.12.1
+
+### Features
+
+- Add support for Concat 8.x
+
 ## 2023-03-18 - Release 0.12.0
 
 ### Breaking changes
