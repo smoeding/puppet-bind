@@ -693,7 +693,7 @@ class bind (
     concat::fragment { 'named.conf.rate-limit':
       target  => 'named.conf.options',
       order   => '80',
-      content => epp("${module_name}/rate-limit.epp", merge($params, $limits)),
+      content => epp("${module_name}/rate-limit.epp", $params + $limits),
     }
   }
 
@@ -917,7 +917,7 @@ class bind (
     default => ['-u', $bind_user,],
   }
 
-  $daemon_options = join(concat($user_options, $network_options), ' ')
+  $daemon_options = join($user_options + $network_options, ' ')
 
   $options_file = "${facts['os']['name']}-${facts['os']['release']['major']}" ? {
     'Debian-10' => '/etc/default/bind9',

@@ -278,7 +278,7 @@ define bind::zone::primary (
     @concat::fragment { "named.conf.views-${view}-50-${zone}":
       target  => 'named.conf.views',
       order   => $order,
-      content => epp("${module_name}/zone-primary.epp", merge($params, $params_dnssec)),
+      content => epp("${module_name}/zone-primary.epp", $params + $params_dnssec),
       tag     => ["named.conf.views-${view}",],
     }
   }
@@ -286,7 +286,7 @@ define bind::zone::primary (
     concat::fragment { "named.conf.zones-${zone}":
       target  => 'named.conf.zones',
       order   => $order,
-      content => epp("${module_name}/zone-primary.epp", merge($params, $params_dnssec)),
+      content => epp("${module_name}/zone-primary.epp", $params + $params_dnssec),
     }
   }
 }
