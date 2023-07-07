@@ -97,7 +97,7 @@ define bind::key (
           'hmac-sha512' => 512,
         }
 
-        $rand = fqdn_rand_string($bits / 8, '', pick($seed, $key))
+        $rand = stdlib::fqdn_rand_string($bits / 8, '', pick($seed, $key))
         $hash = base64('encode', $rand, 'strict')
       }
 
