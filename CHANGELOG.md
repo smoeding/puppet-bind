@@ -1,3 +1,15 @@
+## 2023-07-08 - Release 1.0.0
+
+### Breaking changes
+
+- Drop support for Puppet 6
+- Drop support for Stdlib 8.x
+
+### Features
+
+- Add support for Puppet 8
+- Add support for Concat 9.x and Stdlib 9.x
+
 ## 2023-04-20 - Release 0.12.1
 
 ### Features
