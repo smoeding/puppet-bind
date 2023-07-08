@@ -3,12 +3,12 @@
 ### Breaking changes
 
 - Drop support for Puppet 6
-- Drop support for Stdlib 8.x
+- Require Stdlib 9.x
 
 ### Features
 
 - Add support for Puppet 8
-- Add support for Concat 9.x and Stdlib 9.x
+- Add support for Concat 9.x
 
 ## 2023-04-20 - Release 0.12.1
 
