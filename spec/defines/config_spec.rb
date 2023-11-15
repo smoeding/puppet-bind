@@ -18,8 +18,8 @@ describe 'bind::config' do
             .with_owner('root')
             .with_group('bind')
             .with_mode('0640')
-            .with_source(nil)
-            .with_content(nil)
+            .without_source
+            .without_content
             .that_notifies('Service[bind]')
         }
       end

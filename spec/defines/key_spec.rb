@@ -216,7 +216,7 @@ describe 'bind::key' do
             .with_owner('root')
             .with_group('bind')
             .with_mode('0640')
-            .with_content(nil)
+            .without_content
             .that_comes_before('Concat::Fragment[bind::key::foo]')
 
           is_expected.to contain_concat__fragment('bind::key::foo')
