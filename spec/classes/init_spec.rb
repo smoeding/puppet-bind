@@ -103,6 +103,14 @@ describe 'bind' do
               .with_manage_content(false)
               .that_requires('File[/etc/bind]')
               .that_notifies('Service[bind]')
+
+            is_expected.to contain_file('/etc/bind/rndc.key')
+              .with_ensure('file')
+              .with_owner('root')
+              .with_group('bind')
+              .with_mode('0640')
+              .that_comes_before('Concat::Fragment[bind::key::rndc-key]')
+              .that_notifies('Service[bind]')
           }
 
           #
@@ -284,14 +292,46 @@ describe 'bind' do
             is_expected.to contain_bind__config('db.root')
               .with_source('puppet:///modules/bind/zones/db.root')
 
+            is_expected.to contain_file('/etc/bind/db.root')
+              .with_ensure('file')
+              .with_owner('root')
+              .with_group('bind')
+              .with_mode('0640')
+              .with_source('puppet:///modules/bind/zones/db.root')
+              .that_notifies('Service[bind]')
+
             is_expected.to contain_bind__config('db.localhost')
               .with_source('puppet:///modules/bind/zones/db.localhost')
+
+            is_expected.to contain_file('/etc/bind/db.localhost')
+              .with_ensure('file')
+              .with_owner('root')
+              .with_group('bind')
+              .with_mode('0640')
+              .with_source('puppet:///modules/bind/zones/db.localhost')
+              .that_notifies('Service[bind]')
 
             is_expected.to contain_bind__config('db.127')
               .with_source('puppet:///modules/bind/zones/db.127')
 
+            is_expected.to contain_file('/etc/bind/db.127')
+              .with_ensure('file')
+              .with_owner('root')
+              .with_group('bind')
+              .with_mode('0640')
+              .with_source('puppet:///modules/bind/zones/db.127')
+              .that_notifies('Service[bind]')
+
             is_expected.to contain_bind__config('db.empty')
               .with_source('puppet:///modules/bind/zones/db.empty')
+
+            is_expected.to contain_file('/etc/bind/db.empty')
+              .with_ensure('file')
+              .with_owner('root')
+              .with_group('bind')
+              .with_mode('0640')
+              .with_source('puppet:///modules/bind/zones/db.empty')
+              .that_notifies('Service[bind]')
           }
 
           it {
