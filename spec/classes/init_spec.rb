@@ -282,8 +282,6 @@ describe 'bind' do
 
           it {
             is_expected.not_to contain_bind__zone__hint('.')
-              .with_file('/etc/bind/db.root')
-              .with_comment('Prime server with knowledge of the root servers')
 
             is_expected.not_to contain_bind__zone__mirror('.')
 
