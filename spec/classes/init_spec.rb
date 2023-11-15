@@ -15,7 +15,7 @@ describe 'bind' do
           }
 
           #
-          # Directories
+          # Directories & Files
           #
 
           it {
@@ -47,12 +47,26 @@ describe 'bind' do
               .with_mode('0750')
               .that_comes_before('Bind::Config[named.conf]')
 
+            is_expected.to contain_file('/var/lib/bind/primary/README')
+              .with_ensure('file')
+              .with_owner('bind')
+              .with_group('bind')
+              .with_mode('0444')
+              .with_source('puppet:///modules/bind/README.primary')
+
             is_expected.to contain_file('/var/lib/bind/secondary')
               .with_ensure('directory')
               .with_owner('bind')
               .with_group('bind')
               .with_mode('0750')
               .that_comes_before('Bind::Config[named.conf]')
+
+            is_expected.to contain_file('/var/lib/bind/secondary/README')
+              .with_ensure('file')
+              .with_owner('bind')
+              .with_group('bind')
+              .with_mode('0444')
+              .with_source('puppet:///modules/bind/README.secondary')
 
             is_expected.to contain_file('/var/cache/bind')
               .with_ensure('directory')
