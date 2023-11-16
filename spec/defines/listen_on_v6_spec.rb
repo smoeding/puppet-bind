@@ -17,6 +17,11 @@ describe 'bind::listen_on_v6' do
             .with_target('named.conf.options')
             .with_order('13')
             .with_address_match_list('::1')
+
+          is_expected.to contain_concat__fragment('bind::named.conf.options::listen-on-v6')
+            .with_target('named.conf.options')
+            .with_order('13')
+            .with_content("  listen-on-v6 { ::1; };\n\n")
         }
       end
 
@@ -30,6 +35,11 @@ describe 'bind::listen_on_v6' do
             .with_target('named.conf.options')
             .with_order('14')
             .with_address_match_list('::1')
+
+          is_expected.to contain_concat__fragment('bind::named.conf.options::listen-on-v6 port 53')
+            .with_target('named.conf.options')
+            .with_order('14')
+            .with_content("  listen-on-v6 port 53 { ::1; };\n\n")
         }
       end
 

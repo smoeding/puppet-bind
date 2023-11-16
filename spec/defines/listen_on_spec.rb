@@ -17,6 +17,11 @@ describe 'bind::listen_on' do
             .with_target('named.conf.options')
             .with_order('11')
             .with_address_match_list('127.0.0.1')
+
+          is_expected.to contain_concat__fragment('bind::named.conf.options::listen-on')
+            .with_target('named.conf.options')
+            .with_order('11')
+            .with_content("  listen-on { 127.0.0.1; };\n\n")
         }
       end
 
@@ -30,6 +35,11 @@ describe 'bind::listen_on' do
             .with_target('named.conf.options')
             .with_order('12')
             .with_address_match_list('127.0.0.1')
+
+          is_expected.to contain_concat__fragment('bind::named.conf.options::listen-on port 53')
+            .with_target('named.conf.options')
+            .with_order('12')
+            .with_content("  listen-on port 53 { 127.0.0.1; };\n\n")
         }
       end
 
