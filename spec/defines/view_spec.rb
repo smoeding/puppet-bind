@@ -7,7 +7,7 @@ describe 'bind::view' do
      }'
   end
 
-  let(:title) { 'foo' }
+  let(:title) { 'internal' }
 
   on_supported_os.each do |os, facts|
     context "on #{os}" do
@@ -15,27 +15,27 @@ describe 'bind::view' do
 
       context 'with default parameters' do
         it {
-          is_expected.to contain_concat__fragment('named.conf.views-foo-00')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
             .with_target('named.conf.views')
-            .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n")
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n")
             .with_order('10')
 
-          is_expected.not_to contain_bind__zone__hint('foo/.')
-          is_expected.not_to contain_bind__zone__mirror('foo/.')
+          is_expected.not_to contain_bind__zone__hint('internal/.')
+          is_expected.not_to contain_bind__zone__mirror('internal/.')
 
-          is_expected.to contain_bind__zone__primary('foo/localhost')
+          is_expected.to contain_bind__zone__primary('internal/localhost')
             .with_zone('localhost')
-            .with_view('foo')
+            .with_view('internal')
             .with_file('/etc/bind/db.localhost')
             .with_order('15')
 
-          is_expected.to contain_bind__zone__primary('foo/127.in-addr.arpa')
+          is_expected.to contain_bind__zone__primary('internal/127.in-addr.arpa')
             .with_zone('127.in-addr.arpa')
-            .with_view('foo')
+            .with_view('internal')
             .with_file('/etc/bind/db.127')
             .with_order('15')
 
-          is_expected.to contain_concat__fragment('named.conf.views-foo-99')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-99')
             .with_target('named.conf.views')
             .with_content('};')
             .with_order('10')
@@ -48,12 +48,12 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_concat__fragment('named.conf.views-foo-00')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
             .with_target('named.conf.views')
-            .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n")
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n")
             .with_order('20')
 
-          is_expected.to contain_concat__fragment('named.conf.views-foo-99')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-99')
             .with_target('named.conf.views')
             .with_content('};')
             .with_order('20')
@@ -66,7 +66,7 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_concat__fragment('named.conf.views-foo-00')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
             .with_target('named.conf.views')
             .with_content(%r{match-clients {\n    none;\n  };\n})
             .with_order('10')
@@ -79,9 +79,9 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_concat__fragment('named.conf.views-foo-00')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
             .with_target('named.conf.views')
-            .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n  match_destinations {\n    none;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n")
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n  match_destinations {\n    none;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n")
             .with_order('10')
         }
       end
@@ -92,9 +92,9 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_concat__fragment('named.conf.views-foo-00')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
             .with_target('named.conf.views')
-            .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n  match-recursive-only yes;\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n")
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n  match-recursive-only yes;\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n")
             .with_order('10')
         }
       end
@@ -105,9 +105,9 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_concat__fragment('named.conf.views-foo-00')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
             .with_target('named.conf.views')
-            .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    none;\n  };\n\n  recursion yes;\n")
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    none;\n  };\n\n  recursion yes;\n")
             .with_order('10')
         }
       end
@@ -118,9 +118,9 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_concat__fragment('named.conf.views-foo-00')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
             .with_target('named.conf.views')
-            .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  allow-query-on {\n    eth0;\n  };\n\n  recursion yes;\n")
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  allow-query-on {\n    eth0;\n  };\n\n  recursion yes;\n")
             .with_order('10')
         }
       end
@@ -131,9 +131,9 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_concat__fragment('named.conf.views-foo-00')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
             .with_target('named.conf.views')
-            .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion no;\n")
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion no;\n")
             .with_order('10')
         }
       end
@@ -144,9 +144,9 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_concat__fragment('named.conf.views-foo-00')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
             .with_target('named.conf.views')
-            .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n\n  allow-recursion {\n    any;\n  };\n")
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n\n  allow-recursion {\n    any;\n  };\n")
             .with_order('10')
         }
       end
@@ -157,9 +157,9 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_concat__fragment('named.conf.views-foo-00')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
             .with_target('named.conf.views')
-            .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n\n  allow-recursion-on {\n    eth0;\n  };\n")
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n\n  allow-recursion-on {\n    eth0;\n  };\n")
             .with_order('10')
         }
       end
@@ -170,9 +170,9 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_concat__fragment('named.conf.views-foo-00')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
             .with_target('named.conf.views')
-            .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n\n  allow-query-cache {\n    any;\n  };\n")
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n\n  allow-query-cache {\n    any;\n  };\n")
             .with_order('10')
         }
       end
@@ -183,9 +183,9 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_concat__fragment('named.conf.views-foo-00')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
             .with_target('named.conf.views')
-            .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n\n  allow-query-cache-on {\n    eth0;\n  };\n")
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n\n  allow-query-cache-on {\n    eth0;\n  };\n")
             .with_order('10')
         }
       end
@@ -196,9 +196,9 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_concat__fragment('named.conf.views-foo-00')
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
             .with_target('named.conf.views')
-            .with_content("\nview \"foo\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n\n  allow-transfer {\n    any;\n  };\n")
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n\n  allow-transfer {\n    any;\n  };\n")
             .with_order('10')
         }
       end
@@ -209,9 +209,9 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_bind__zone__hint('foo/.')
+          is_expected.to contain_bind__zone__hint('internal/.')
             .with_zone('.')
-            .with_view('foo')
+            .with_view('internal')
             .with_file('/etc/bind/db.root')
             .with_comment('Prime server with knowledge of the root servers')
         }
@@ -223,7 +223,7 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.not_to contain_bind__zone__hint('foo/.')
+          is_expected.not_to contain_bind__zone__hint('internal/.')
         }
       end
 
@@ -233,9 +233,9 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_bind__zone__primary('foo/localhost')
+          is_expected.to contain_bind__zone__primary('internal/localhost')
             .with_zone('localhost')
-            .with_view('foo')
+            .with_view('internal')
             .with_file('/etc/bind/db.localhost')
             .with_order('15')
         }
@@ -247,7 +247,7 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.not_to contain_bind__zone__primary('foo/localhost')
+          is_expected.not_to contain_bind__zone__primary('internal/localhost')
         }
       end
 
@@ -257,9 +257,9 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.to contain_bind__zone__primary('foo/127.in-addr.arpa')
+          is_expected.to contain_bind__zone__primary('internal/127.in-addr.arpa')
             .with_zone('127.in-addr.arpa')
-            .with_view('foo')
+            .with_view('internal')
             .with_file('/etc/bind/db.127')
             .with_order('15')
         }
@@ -271,7 +271,7 @@ describe 'bind::view' do
         end
 
         it {
-          is_expected.not_to contain_bind__zone__primary('foo/127.in-addr.arpa')
+          is_expected.not_to contain_bind__zone__primary('internal/127.in-addr.arpa')
         }
       end
     end
