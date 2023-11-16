@@ -214,6 +214,8 @@ describe 'bind::view' do
             .with_view('internal')
             .with_file('/etc/bind/db.root')
             .with_comment('Prime server with knowledge of the root servers')
+
+          is_expected.to contain_concat__fragment('named.conf.views-internal-50-.')
         }
       end
 
@@ -238,6 +240,8 @@ describe 'bind::view' do
             .with_view('internal')
             .with_file('/etc/bind/db.localhost')
             .with_order('15')
+
+          is_expected.to contain_concat__fragment('named.conf.views-internal-50-localhost')
         }
       end
 
@@ -262,6 +266,8 @@ describe 'bind::view' do
             .with_view('internal')
             .with_file('/etc/bind/db.127')
             .with_order('15')
+
+          is_expected.to contain_concat__fragment('named.conf.views-internal-50-127.in-addr.arpa')
         }
       end
 

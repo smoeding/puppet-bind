@@ -111,6 +111,11 @@ describe 'bind' do
               .with_mode('0640')
               .that_comes_before('Concat::Fragment[bind::key::rndc-key]')
               .that_notifies('Service[bind]')
+
+            is_expected.to contain_concat__fragment('bind::key::rndc-key')
+              .with_target('named.conf.keys')
+              .with_order('10')
+              .with_content("include \"/etc/bind/rndc.key\";")
           }
 
           #
@@ -278,6 +283,12 @@ describe 'bind' do
           it {
             is_expected.to contain_bind__config('named.conf')
 
+            is_expected.to contain_file('/etc/bind/named.conf')
+              .with_ensure('file')
+              .with_owner('root')
+              .with_group('bind')
+              .with_mode('0640')
+
             is_expected.to contain_file('/etc/bind/named.conf.local')
               .with_ensure('file')
               .with_owner('root')
@@ -343,9 +354,13 @@ describe 'bind' do
               .with_file('/etc/bind/db.localhost')
               .with_order('15')
 
+            is_expected.to contain_concat__fragment('named.conf.zones-localhost')
+
             is_expected.to contain_bind__zone__primary('127.in-addr.arpa')
               .with_file('/etc/bind/db.127')
               .with_order('15')
+
+            is_expected.to contain_concat__fragment('named.conf.zones-127.in-addr.arpa')
           }
         end
 
@@ -487,6 +502,8 @@ describe 'bind' do
           is_expected.to contain_bind__zone__hint('.')
             .with_file('/etc/bind/db.root')
             .with_comment('Prime server with knowledge of the root servers')
+
+          is_expected.to contain_concat__fragment('named.conf.zones-.')
         }
       end
 
@@ -623,6 +640,10 @@ describe 'bind' do
             .with_omit_empty_list(true)
             .with_final_empty_line(false)
 
+          is_expected.to contain_concat__fragment('bind::named.conf.options::forwarders')
+            .with_target('named.conf.options')
+            .with_order('20')
+
           is_expected.to contain_concat__fragment('named.conf.options-forward')
             .with_target('named.conf.options')
             .with_order('21')
@@ -660,6 +681,13 @@ describe 'bind' do
             .with_address_match_list(['192.0.2.42'])
             .with_target('named.conf.options')
             .with_order('40')
+            .with_initial_empty_line(true)
+            .with_final_empty_line(false)
+
+          is_expected.to contain_concat__fragment('bind::named.conf.options::blackhole')
+            .with_target('named.conf.options')
+            .with_order('40')
+            .with_content("\n  blackhole { 192.0.2.42; };\n")
         }
       end
 
@@ -671,6 +699,10 @@ describe 'bind' do
         it {
           is_expected.to contain_bind__aml('allow-query')
             .with_address_match_list(['any'])
+            .with_target('named.conf.options')
+            .with_order('30')
+
+          is_expected.to contain_concat__fragment('bind::named.conf.options::allow-query')
             .with_target('named.conf.options')
             .with_order('30')
 
@@ -688,6 +720,10 @@ describe 'bind' do
 
           is_expected.to contain_bind__aml('allow-query-cache')
             .with_address_match_list(['any'])
+            .with_target('named.conf.options')
+            .with_order('31')
+
+          is_expected.to contain_concat__fragment('bind::named.conf.options::allow-query-cache')
             .with_target('named.conf.options')
             .with_order('31')
         }
