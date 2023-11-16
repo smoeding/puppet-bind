@@ -115,7 +115,7 @@ describe 'bind' do
             is_expected.to contain_concat__fragment('bind::key::rndc-key')
               .with_target('named.conf.keys')
               .with_order('10')
-              .with_content("include \"/etc/bind/rndc.key\";")
+              .with_content('include "/etc/bind/rndc.key";')
           }
 
           #
