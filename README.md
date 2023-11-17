@@ -27,7 +27,7 @@ The module manages the `named` process and related service files. It also manage
 
 ### Setup Requirements
 
-The module uses the `stdlib` and `concat` modules. It is tested on Debian and Ubuntu using Puppet 7.
+The module uses the `stdlib` and `concat` modules. It is tested on Debian and Ubuntu using Puppet 8.
 
 ### Beginning with bind
 
