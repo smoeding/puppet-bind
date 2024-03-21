@@ -1,3 +1,9 @@
+## 2024-03-21 - Release 1.1.0
+
+### Features
+
+- Add support for Debian-12, Ubuntu-22.04 and Ubuntu-24.04
+
 ## 2023-07-08 - Release 1.0.0
 
 ### Breaking changes
