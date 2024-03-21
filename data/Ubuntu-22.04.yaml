@@ -1,0 +1,4 @@
+# Ubuntu-22.04.yaml --- Settings for Ubuntu-22.04 Jammy
+---
+
+bind::checkzone_program: '/usr/bin/named-checkzone'

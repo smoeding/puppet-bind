@@ -21,7 +21,6 @@ describe 'bind::zone::primary' do
             .with_group('bind')
             .with_mode('0644')
             .with_replace(true)
-            .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
             .that_requires('Concat[named.conf.zones]')
 
           is_expected.to contain_exec('bind::reload::example.com')
@@ -37,6 +36,19 @@ describe 'bind::zone::primary' do
             .with_order('20')
             .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n};\n")
         }
+
+        case "#{facts[:os]['name']}-#{facts[:os]['release']['major']}"
+        when 'Debian-12', 'Ubuntu-22.04', 'Ubuntu-24.04'
+          it {
+            is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+              .with_validate_cmd('/usr/bin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
+          }
+        else
+          it {
+            is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+              .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
+          }
+        end
       end
 
       context 'with file => "/file"' do
@@ -70,7 +82,6 @@ describe 'bind::zone::primary' do
             .with_mode('0644')
             .with_replace(true)
             .with_source('/file')
-            .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
             .that_requires('Concat[named.conf.zones]')
 
           is_expected.to contain_exec('bind::reload::example.com')
@@ -103,7 +114,6 @@ describe 'bind::zone::primary' do
             .with_mode('0644')
             .with_replace(true)
             .with_content('something')
-            .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
             .that_requires('Concat[named.conf.zones]')
 
           is_expected.to contain_exec('bind::reload::example.com')
@@ -136,7 +146,6 @@ describe 'bind::zone::primary' do
             .with_mode('0644')
             .with_replace(true)
             .with_content('something')
-            .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
             .that_requires('Concat[named.conf.zones]')
 
           is_expected.to contain_exec('bind::reload::example.com')
@@ -465,7 +474,6 @@ describe 'bind::zone::primary' do
             .with_group('bind')
             .with_mode('0644')
             .with_replace(true)
-            .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
             .that_requires('Concat[named.conf.zones]')
 
           is_expected.to contain_exec('bind::reload::internal::example.com')
@@ -514,7 +522,6 @@ describe 'bind::zone::primary' do
             .with_mode('0644')
             .with_replace(true)
             .with_source('/file')
-            .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
             .that_requires('Concat[named.conf.zones]')
 
           is_expected.to contain_exec('bind::reload::internal::example.com')
@@ -547,7 +554,6 @@ describe 'bind::zone::primary' do
             .with_mode('0644')
             .with_replace(true)
             .with_content('something')
-            .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
             .that_requires('Concat[named.conf.zones]')
 
           is_expected.to contain_exec('bind::reload::internal::example.com')
@@ -580,7 +586,6 @@ describe 'bind::zone::primary' do
             .with_mode('0644')
             .with_replace(true)
             .with_content('something')
-            .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
             .that_requires('Concat[named.conf.zones]')
 
           is_expected.to contain_exec('bind::reload::internal::example.com')
@@ -889,7 +894,6 @@ describe 'bind::zone::primary' do
             .with_group('bind')
             .with_mode('0644')
             .with_replace(true)
-            .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
             .that_requires('Concat[named.conf.zones]')
 
           is_expected.to contain_exec('bind::reload::internal::example.com')

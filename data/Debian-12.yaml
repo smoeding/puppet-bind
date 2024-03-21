@@ -1,0 +1,4 @@
+# Debian-12.yaml --- Settings for Debian-12 Bookworm
+---
+
+bind::checkzone_program: '/usr/bin/named-checkzone'

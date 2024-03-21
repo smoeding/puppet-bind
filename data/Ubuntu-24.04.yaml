@@ -1,0 +1,4 @@
+# Ubuntu-24.04.yaml --- Settings for Ubuntu-24.04 Noble
+---
+
+bind::checkzone_program: '/usr/bin/named-checkzone'
