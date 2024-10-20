@@ -45,6 +45,10 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
       :ECDSAP256SHA256
     when 14
       :ECDSAP384SHA384
+    when 15
+      :ED25519
+    when 16
+      :ED448
     when 157
       :HMAC_MD5
     when 161
