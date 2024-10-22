@@ -1,3 +1,9 @@
+## 2024-10-22 - Release 1.2.0
+
+### Features
+
+- Add support for ED25519 & ED448 keys to the dnssec_key type.
+
 ## 2024-03-21 - Release 1.1.0
 
 ### Features
