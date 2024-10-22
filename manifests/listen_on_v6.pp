@@ -26,7 +26,7 @@ define bind::listen_on_v6 (
   Optional[Stdlib::Port]          $port    = undef,
 ) {
   $_resource = $port ? {
-    undef => 'listen-on-v6',
+    undef   => 'listen-on-v6',
     default => "listen-on-v6 port ${port}"
   }
 
