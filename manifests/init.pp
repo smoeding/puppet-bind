@@ -933,7 +933,6 @@ class bind (
     bind::config { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   #
