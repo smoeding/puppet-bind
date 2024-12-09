@@ -1034,118 +1034,101 @@ class bind (
     bind::acl { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $amls.each |$key, $value| {
     bind::aml { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $dnssec_policys.each |$key, $value| {
     bind::dnssec_policy { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $keys.each |$key, $value| {
     bind::key { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $statistics_channels.each |$key, $value| {
     bind::statistics_channel { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $views.each |$key, $value| {
     bind::view { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $controls_inets.each |$key, $value| {
     bind::controls::inet { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $controls_unixs.each |$key, $value| {
     bind::controls::unix { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $logging_categorys.each |$key, $value| {
     bind::logging::category { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $logging_channel_files.each |$key, $value| {
     bind::logging::channel_file { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $logging_channel_syslogs.each |$key, $value| {
     bind::logging::channel_syslog { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $zone_forwards.each |$key, $value| {
     bind::zone::forward { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $zone_hints.each |$key, $value| {
     bind::zone::hint { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $zone_in_views.each |$key, $value| {
     bind::zone::in_view { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $zone_mirrors.each |$key, $value| {
     bind::zone::mirror { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $zone_primarys.each |$key, $value| {
     bind::zone::primary { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 
   $zone_secondarys.each |$key, $value| {
     bind::zone::secondary { $key:
       * => $value,
     }
-    notify         => Service['bind'],
   }
 }
