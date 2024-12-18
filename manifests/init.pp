@@ -329,9 +329,9 @@
 #   Hash of `bind::amls` resources.
 #   source the hash of bind::amls and trigger the class bind::aml 
 #
-# @param dnssec_policys
-#   Hash of `bind::dnssec_policys` resources.
-#   source the hash of bind::dnssec_policys and trigger the class bind::dnssec_policy
+# @param dnssec_policies
+#   Hash of `bind::dnssec_policies` resources.
+#   source the hash of bind::dnssec_policies and trigger the class bind::dnssec_policy
 #
 # @param keys
 #   Hash of `bind::keys` resources.
@@ -353,9 +353,9 @@
 #   Hash of `bind::controls::unixs` resources.
 #   source the hash of bind::controls::unixs and trigger the class bind::controls::unix
 #
-# @param logging_categorys
-#   Hash of `bind::logging::categorys` resources.
-#   source the hash of bind::logging::categorys and trigger the class bind::logging::category
+# @param logging_categories
+#   Hash of `bind::logging::categories` resources.
+#   source the hash of bind::logging::categories and trigger the class bind::logging::category
 #
 # @param logging_channel_files
 #   Hash of `bind::logging::channel_files` resources.
@@ -381,13 +381,13 @@
 #   Hash of `bind::zone::mirrors` resources.
 #   source the hash of bind::zone::mirrors and trigger the class bind::zone::mirror
 #
-# @param zone_primarys
-#   Hash of `bind::zone::primarys` resources.
-#   source the hash of bind::zone::primarys and trigger the class bind::zone::primary
+# @param zone_primaries
+#   Hash of `bind::zone::primaries` resources.
+#   source the hash of bind::zone::primaries and trigger the class bind::zone::primary
 #
-# @param zone_secondarys
-#   Hash of `bind::zone::secondarys` resources.
-#   source the hash of bind::zone::secondarys and trigger the class bind::zone::secondary
+# @param zone_secondaries
+#   Hash of `bind::zone::secondaries` resources.
+#   source the hash of bind::zone::secondaries and trigger the class bind::zone::secondary
 #
 class bind (
   Stdlib::Absolutepath      $confdir,
@@ -1042,7 +1042,7 @@ class bind (
     }
   }
 
-  $dnssec_policys.each |$key, $value| {
+  $dnssec_policies.each |$key, $value| {
     bind::dnssec_policy { $key:
       * => $value,
     }
@@ -1072,13 +1072,13 @@ class bind (
     }
   }
 
-  $controls_unixs.each |$key, $value| {
+  $controls_unixes.each |$key, $value| {
     bind::controls::unix { $key:
       * => $value,
     }
   }
 
-  $logging_categorys.each |$key, $value| {
+  $logging_categories.each |$key, $value| {
     bind::logging::category { $key:
       * => $value,
     }
@@ -1120,13 +1120,13 @@ class bind (
     }
   }
 
-  $zone_primarys.each |$key, $value| {
+  $zone_primaries.each |$key, $value| {
     bind::zone::primary { $key:
       * => $value,
     }
   }
 
-  $zone_secondarys.each |$key, $value| {
+  $zone_secondaries.each |$key, $value| {
     bind::zone::secondary { $key:
       * => $value,
     }

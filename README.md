@@ -124,7 +124,7 @@ bind::zone::primary { 'example.com':
 ```
 Or with hiera
 ```puppet
-bind::zone::primarys:
+bind::zone::primaries:
   example.com:
     source: 'puppet:///modules/profile/dns/example.com.zone'
 ```
@@ -181,12 +181,12 @@ bind::zone::primary { 'example.net':
 ```
 Or with hiera
 ```puppet
-bind::dnssec_policys:
+bind::dnssec_policies:
   standard:
     csk_lifetime: unlimited
     csk_algorithm: ecdsap256sha256
 
-bind::zone::primarys:
+bind::zone::primaries:
   example.net:
     dnssec_policy: standard
     inline_signing: true
