@@ -460,16 +460,16 @@ class bind (
   Optional[Hash]            $statistics_channels      = {},
   Optional[Hash]            $views                    = {},
   Optional[Hash]            $controls_inets           = lookup(bind::controls::inets,         undef, undef, {}),
-  Optional[Hash]            $controls_unixs           = lookup(bind::controls::unixs,         undef, undef, {}),
-  Optional[Hash]            $logging_categorys        = lookup(bind::logging::categorys,      undef, undef, {}),
+  Optional[Hash]            $controls_unixes          = lookup(bind::controls::unixs,         undef, undef, {}),
+  Optional[Hash]            $logging_categories        = lookup(bind::logging::categorys,      undef, undef, {}),
   Optional[Hash]            $logging_channel_files    = lookup(bind::logging::channel_files,  undef, undef, {}),
   Optional[Hash]            $logging_channel_syslogs  = lookup(bind::logging::syslogs,        undef, undef, {}),
   Optional[Hash]            $zone_forwards            = lookup(bind::zone::forwards,          undef, undef, {}),
   Optional[Hash]            $zone_hints               = lookup(bind::zone::hints,             undef, undef, {}),
   Optional[Hash]            $zone_in_views            = lookup(bind::zone::in_views,          undef, undef, {}),
   Optional[Hash]            $zone_mirrors             = lookup(bind::zone::in_views,          undef, undef, {}),
-  Optional[Hash]            $zone_primarys            = lookup(bind::zone::primarys,          undef, undef, {}),
-  Optional[Hash]            $zone_secondarys          = lookup(bind::zone::secondarys,        undef, undef, {}),
+  Optional[Hash]            $zone_primares            = lookup(bind::zone::primarys,          undef, undef, {}),
+  Optional[Hash]            $zone_secondaries          = lookup(bind::zone::secondarys,        undef, undef, {}),
 ) {
   $header_message = '// This file is managed by Puppet. DO NOT EDIT.'
 

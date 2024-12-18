@@ -153,7 +153,7 @@ bind::keys:
     secret: TopSecret
     keyfile: /etc/bind/nsupdate.key
 
-bind::zone::primarys:
+bind::zone::primaries:
   example.com:
     update_policy: grant nsupdate zonesub any
     content: 'epp("profile/dynamic-zone-template.epp", $params)'
