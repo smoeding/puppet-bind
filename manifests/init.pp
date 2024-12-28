@@ -321,6 +321,73 @@
 #   once a day the DNSSEC trust anchors in use will be transmitted to the zon
 #   owners. This is enabled by default.
 #
+# @param bind:acls
+#   Hash of `bind::acls` resources.
+#   source the hash of bind::acls and trigger the class bind::acl 
+#
+# @param bind:amls
+#   Hash of `bind::amls` resources.
+#   source the hash of bind::amls and trigger the class bind::aml 
+#
+# @param dnssec_policies
+#   Hash of `bind::dnssec_policies` resources.
+#   source the hash of bind::dnssec_policies and trigger the class bind::dnssec_policy
+#
+# @param keys
+#   Hash of `bind::keys` resources.
+#   source the hash of bind::keys and trigger the class bind::key
+#
+# @param views
+#   Hash of `bind::views` resources.
+#   source the hash of bind::views and trigger the class bind::view
+#
+# @param statistics_channels
+#   Hash of `bind::statistics_channels` resources.
+#   source the hash of bind::statistics_channels and trigger the class bind::statistics_channel
+#
+# @param controls_inets
+#   Hash of `bind::controls::inets` resources.
+#   source the hash of bind::controls::inets and trigger the class bind::controls::inet
+#
+# @param controls_unixs
+#   Hash of `bind::controls::unixs` resources.
+#   source the hash of bind::controls::unixs and trigger the class bind::controls::unix
+#
+# @param logging_categories
+#   Hash of `bind::logging::categories` resources.
+#   source the hash of bind::logging::categories and trigger the class bind::logging::category
+#
+# @param logging_channel_files
+#   Hash of `bind::logging::channel_files` resources.
+#   source the hash of bind::logging::channel_files and trigger the class bind::logging::channel_file
+#
+# @param logging_channel_syslogs
+#   Hash of `bind::logging::channel_syslogs` resources.
+#   source the hash of bind::logging::channel_syslogs and trigger the class bind::logging::channel_syslog
+#
+# @param zone_forwards
+#   Hash of `bind::zone::forwards` resources.
+#   source the hash of bind::zone::forwards and trigger the class bind::zone::forward
+#
+# @param zone_hints
+#   Hash of `bind::zone::hints` resources.
+#   source the hash of bind::zone::hints and trigger the class bind::zone::hint
+#
+# @param zone_in_views
+#   Hash of `bind::zone::in_views` resources.
+#   source the hash of bind::zone::in_views and trigger the class bind::zone::in_view
+#
+# @param zone_mirrors
+#   Hash of `bind::zone::mirrors` resources.
+#   source the hash of bind::zone::mirrors and trigger the class bind::zone::mirror
+#
+# @param zone_primaries
+#   Hash of `bind::zone::primaries` resources.
+#   source the hash of bind::zone::primaries and trigger the class bind::zone::primary
+#
+# @param zone_secondaries
+#   Hash of `bind::zone::secondaries` resources.
+#   source the hash of bind::zone::secondaries and trigger the class bind::zone::secondary
 #
 class bind (
   Stdlib::Absolutepath      $confdir,
@@ -385,6 +452,24 @@ class bind (
   Optional[String]          $report_version           = undef,
   Optional[Boolean]         $querylog_enable          = undef,
   Optional[Boolean]         $trust_anchor_telemetry   = undef,
+  Optional[Hash]            $acls                     = {},
+  Optional[Hash]            $amls                     = {},
+  Optional[Hash]            $configs                  = {},
+  Optional[Hash]            $dnssec_policies          = {},
+  Optional[Hash]            $keys                     = {},
+  Optional[Hash]            $statistics_channels      = {},
+  Optional[Hash]            $views                    = {},
+  Optional[Hash]            $controls_inets           = lookup(bind::controls::inets,         undef, undef, {}),
+  Optional[Hash]            $controls_unixes          = lookup(bind::controls::unixes,        undef, undef, {}),
+  Optional[Hash]            $logging_categories       = lookup(bind::logging::categories,     undef, undef, {}),
+  Optional[Hash]            $logging_channel_files    = lookup(bind::logging::channel_files,  undef, undef, {}),
+  Optional[Hash]            $logging_channel_syslogs  = lookup(bind::logging::syslogs,        undef, undef, {}),
+  Optional[Hash]            $zone_forwards            = lookup(bind::zone::forwards,          undef, undef, {}),
+  Optional[Hash]            $zone_hints               = lookup(bind::zone::hints,             undef, undef, {}),
+  Optional[Hash]            $zone_in_views            = lookup(bind::zone::in_views,          undef, undef, {}),
+  Optional[Hash]            $zone_mirrors             = lookup(bind::zone::mirrors,           undef, undef, {}),
+  Optional[Hash]            $zone_primaries           = lookup(bind::zone::primaries,         undef, undef, {}),
+  Optional[Hash]            $zone_secondaries         = lookup(bind::zone::secondaries,       undef, undef, {}),
 ) {
   $header_message = '// This file is managed by Puppet. DO NOT EDIT.'
 
@@ -844,6 +929,12 @@ class bind (
     before  => Service['bind'],
   }
 
+  $configs.each |$key, $value| {
+    bind::config { $key:
+      * => $value,
+    }
+  }
+
   #
   # Misc zone files
   #
@@ -937,5 +1028,107 @@ class bind (
     enable  => $service_enable,
     name    => $service_name,
     restart => "${rndc_program} reconfig",
+  }
+
+  $acls.each |$key, $value| {
+    bind::acl { $key:
+      * => $value,
+    }
+  }
+
+  $amls.each |$key, $value| {
+    bind::aml { $key:
+      * => $value,
+    }
+  }
+
+  $dnssec_policies.each |$key, $value| {
+    bind::dnssec_policy { $key:
+      * => $value,
+    }
+  }
+
+  $keys.each |$key, $value| {
+    bind::key { $key:
+      * => $value,
+    }
+  }
+
+  $statistics_channels.each |$key, $value| {
+    bind::statistics_channel { $key:
+      * => $value,
+    }
+  }
+
+  $views.each |$key, $value| {
+    bind::view { $key:
+      * => $value,
+    }
+  }
+
+  $controls_inets.each |$key, $value| {
+    bind::controls::inet { $key:
+      * => $value,
+    }
+  }
+
+  $controls_unixes.each |$key, $value| {
+    bind::controls::unix { $key:
+      * => $value,
+    }
+  }
+
+  $logging_categories.each |$key, $value| {
+    bind::logging::category { $key:
+      * => $value,
+    }
+  }
+
+  $logging_channel_files.each |$key, $value| {
+    bind::logging::channel_file { $key:
+      * => $value,
+    }
+  }
+
+  $logging_channel_syslogs.each |$key, $value| {
+    bind::logging::channel_syslog { $key:
+      * => $value,
+    }
+  }
+
+  $zone_forwards.each |$key, $value| {
+    bind::zone::forward { $key:
+      * => $value,
+    }
+  }
+
+  $zone_hints.each |$key, $value| {
+    bind::zone::hint { $key:
+      * => $value,
+    }
+  }
+
+  $zone_in_views.each |$key, $value| {
+    bind::zone::in_view { $key:
+      * => $value,
+    }
+  }
+
+  $zone_mirrors.each |$key, $value| {
+    bind::zone::mirror { $key:
+      * => $value,
+    }
+  }
+
+  $zone_primaries.each |$key, $value| {
+    bind::zone::primary { $key:
+      * => $value,
+    }
+  }
+
+  $zone_secondaries.each |$key, $value| {
+    bind::zone::secondary { $key:
+      * => $value,
+    }
   }
 }
