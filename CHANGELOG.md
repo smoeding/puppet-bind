@@ -1,3 +1,9 @@
+## 2025-01-02 - Release 1.3.0
+
+### Features
+
+- Add class parameters to manage most settings using Hiera.
+
 ## 2024-10-22 - Release 1.2.0
 
 ### Features
