@@ -215,6 +215,60 @@
 # @param exempt_clients
 #   An array of IP addresses/networks or ACL names that are never limited.
 #
+# @param acls
+#   Hash of `bind::acl` resources.
+#
+# @param amls
+#   Hash of `bind::aml` resources.
+#
+# @param configs
+#   Hash of `bind::config` resources.
+#
+# @param dnssec_policies
+#   Hash of `bind::dnssec_policy` resources.
+#
+# @param keys
+#   Hash of `bind::key` resources.
+#
+# @param statistics_channels
+#   Hash of `bind::statistics_channel` resources.
+#
+# @param views
+#   Hash of `bind::view` resources.
+#
+# @param controls_inet
+#   Hash of `bind::controls::inet` resources.
+#
+# @param controls_unix
+#   Hash of `bind::controls::unix` resources.
+#
+# @param logging_categories
+#   Hash of `bind::logging::category` resources.
+#
+# @param logging_channel_files
+#   Hash of `bind::logging::channel_file` resources.
+#
+# @param logging_channel_syslog
+#   Hash of `bind::logging::channel_syslog` resources.
+#
+# @param zone_forwards
+#   Hash of `bind::zone::forward` resources.
+#
+# @param zone_hints
+#   Hash of `bind::zone::hint` resources.
+#
+# @param zone_in_views
+#   Hash of `bind::zone::in_view` resources.
+#
+# @param zone_mirrors
+#   Hash of `bind::zone::mirror` resources.
+#
+# @param zone_primaries
+#   Hash of `bind::zone::primary` resources.
+#
+# @param zone_secondaries
+#   Hash of `bind::zone::secondary` resources.
+#
 # @param all_per_second
 #   Limit the number of total answers per second for an IP address to the
 #   given value.
@@ -321,74 +375,6 @@
 #   once a day the DNSSEC trust anchors in use will be transmitted to the zon
 #   owners. This is enabled by default.
 #
-# @param bind:acls
-#   Hash of `bind::acls` resources.
-#   source the hash of bind::acls and trigger the class bind::acl 
-#
-# @param bind:amls
-#   Hash of `bind::amls` resources.
-#   source the hash of bind::amls and trigger the class bind::aml 
-#
-# @param dnssec_policies
-#   Hash of `bind::dnssec_policies` resources.
-#   source the hash of bind::dnssec_policies and trigger the class bind::dnssec_policy
-#
-# @param keys
-#   Hash of `bind::keys` resources.
-#   source the hash of bind::keys and trigger the class bind::key
-#
-# @param views
-#   Hash of `bind::views` resources.
-#   source the hash of bind::views and trigger the class bind::view
-#
-# @param statistics_channels
-#   Hash of `bind::statistics_channels` resources.
-#   source the hash of bind::statistics_channels and trigger the class bind::statistics_channel
-#
-# @param controls_inets
-#   Hash of `bind::controls::inets` resources.
-#   source the hash of bind::controls::inets and trigger the class bind::controls::inet
-#
-# @param controls_unixs
-#   Hash of `bind::controls::unixs` resources.
-#   source the hash of bind::controls::unixs and trigger the class bind::controls::unix
-#
-# @param logging_categories
-#   Hash of `bind::logging::categories` resources.
-#   source the hash of bind::logging::categories and trigger the class bind::logging::category
-#
-# @param logging_channel_files
-#   Hash of `bind::logging::channel_files` resources.
-#   source the hash of bind::logging::channel_files and trigger the class bind::logging::channel_file
-#
-# @param logging_channel_syslogs
-#   Hash of `bind::logging::channel_syslogs` resources.
-#   source the hash of bind::logging::channel_syslogs and trigger the class bind::logging::channel_syslog
-#
-# @param zone_forwards
-#   Hash of `bind::zone::forwards` resources.
-#   source the hash of bind::zone::forwards and trigger the class bind::zone::forward
-#
-# @param zone_hints
-#   Hash of `bind::zone::hints` resources.
-#   source the hash of bind::zone::hints and trigger the class bind::zone::hint
-#
-# @param zone_in_views
-#   Hash of `bind::zone::in_views` resources.
-#   source the hash of bind::zone::in_views and trigger the class bind::zone::in_view
-#
-# @param zone_mirrors
-#   Hash of `bind::zone::mirrors` resources.
-#   source the hash of bind::zone::mirrors and trigger the class bind::zone::mirror
-#
-# @param zone_primaries
-#   Hash of `bind::zone::primaries` resources.
-#   source the hash of bind::zone::primaries and trigger the class bind::zone::primary
-#
-# @param zone_secondaries
-#   Hash of `bind::zone::secondaries` resources.
-#   source the hash of bind::zone::secondaries and trigger the class bind::zone::secondary
-#
 class bind (
   Stdlib::Absolutepath      $confdir,
   Stdlib::Absolutepath      $vardir,
@@ -440,6 +426,24 @@ class bind (
   Integer[0,128]            $ipv6_prefix_length       = 0,
   Boolean                   $log_only                 = false,
   Array[String]             $exempt_clients           = [],
+  Hash                      $acls                     = {},
+  Hash                      $amls                     = {},
+  Hash                      $configs                  = {},
+  Hash                      $dnssec_policies          = {},
+  Hash                      $keys                     = {},
+  Hash                      $statistics_channels      = {},
+  Hash                      $views                    = {},
+  Hash                      $controls_inet            = {},
+  Hash                      $controls_unix            = {},
+  Hash                      $logging_categories       = {},
+  Hash                      $logging_channel_files    = {},
+  Hash                      $logging_channel_syslog   = {},
+  Hash                      $zone_forwards            = {},
+  Hash                      $zone_hints               = {},
+  Hash                      $zone_in_views            = {},
+  Hash                      $zone_mirrors             = {},
+  Hash                      $zone_primaries           = {},
+  Hash                      $zone_secondaries         = {},
   Optional[Integer[0,1000]] $all_per_second           = undef,
   Optional[Integer[0,1000]] $errors_per_second        = undef,
   Optional[Integer[0,1000]] $responses_per_second     = undef,
@@ -452,24 +456,6 @@ class bind (
   Optional[String]          $report_version           = undef,
   Optional[Boolean]         $querylog_enable          = undef,
   Optional[Boolean]         $trust_anchor_telemetry   = undef,
-  Optional[Hash]            $acls                     = {},
-  Optional[Hash]            $amls                     = {},
-  Optional[Hash]            $configs                  = {},
-  Optional[Hash]            $dnssec_policies          = {},
-  Optional[Hash]            $keys                     = {},
-  Optional[Hash]            $statistics_channels      = {},
-  Optional[Hash]            $views                    = {},
-  Optional[Hash]            $controls_inets           = lookup(bind::controls::inets,         undef, undef, {}),
-  Optional[Hash]            $controls_unixes          = lookup(bind::controls::unixes,        undef, undef, {}),
-  Optional[Hash]            $logging_categories       = lookup(bind::logging::categories,     undef, undef, {}),
-  Optional[Hash]            $logging_channel_files    = lookup(bind::logging::channel_files,  undef, undef, {}),
-  Optional[Hash]            $logging_channel_syslogs  = lookup(bind::logging::syslogs,        undef, undef, {}),
-  Optional[Hash]            $zone_forwards            = lookup(bind::zone::forwards,          undef, undef, {}),
-  Optional[Hash]            $zone_hints               = lookup(bind::zone::hints,             undef, undef, {}),
-  Optional[Hash]            $zone_in_views            = lookup(bind::zone::in_views,          undef, undef, {}),
-  Optional[Hash]            $zone_mirrors             = lookup(bind::zone::mirrors,           undef, undef, {}),
-  Optional[Hash]            $zone_primaries           = lookup(bind::zone::primaries,         undef, undef, {}),
-  Optional[Hash]            $zone_secondaries         = lookup(bind::zone::secondaries,       undef, undef, {}),
 ) {
   $header_message = '// This file is managed by Puppet. DO NOT EDIT.'
 
@@ -1066,13 +1052,13 @@ class bind (
     }
   }
 
-  $controls_inets.each |$key, $value| {
+  $controls_inet.each |$key, $value| {
     bind::controls::inet { $key:
       * => $value,
     }
   }
 
-  $controls_unixes.each |$key, $value| {
+  $controls_unix.each |$key, $value| {
     bind::controls::unix { $key:
       * => $value,
     }
@@ -1090,7 +1076,7 @@ class bind (
     }
   }
 
-  $logging_channel_syslogs.each |$key, $value| {
+  $logging_channel_syslog.each |$key, $value| {
     bind::logging::channel_syslog { $key:
       * => $value,
     }

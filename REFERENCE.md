@@ -143,6 +143,24 @@ The following parameters are available in the `bind` class:
 * [`ipv6_prefix_length`](#-bind--ipv6_prefix_length)
 * [`log_only`](#-bind--log_only)
 * [`exempt_clients`](#-bind--exempt_clients)
+* [`acls`](#-bind--acls)
+* [`amls`](#-bind--amls)
+* [`configs`](#-bind--configs)
+* [`dnssec_policies`](#-bind--dnssec_policies)
+* [`keys`](#-bind--keys)
+* [`statistics_channels`](#-bind--statistics_channels)
+* [`views`](#-bind--views)
+* [`controls_inet`](#-bind--controls_inet)
+* [`controls_unix`](#-bind--controls_unix)
+* [`logging_categories`](#-bind--logging_categories)
+* [`logging_channel_files`](#-bind--logging_channel_files)
+* [`logging_channel_syslog`](#-bind--logging_channel_syslog)
+* [`zone_forwards`](#-bind--zone_forwards)
+* [`zone_hints`](#-bind--zone_hints)
+* [`zone_in_views`](#-bind--zone_in_views)
+* [`zone_mirrors`](#-bind--zone_mirrors)
+* [`zone_primaries`](#-bind--zone_primaries)
+* [`zone_secondaries`](#-bind--zone_secondaries)
 * [`all_per_second`](#-bind--all_per_second)
 * [`errors_per_second`](#-bind--errors_per_second)
 * [`responses_per_second`](#-bind--responses_per_second)
@@ -532,6 +550,150 @@ Data type: `Array[String]`
 An array of IP addresses/networks or ACL names that are never limited.
 
 Default value: `[]`
+
+##### <a name="-bind--acls"></a>`acls`
+
+Data type: `Hash`
+
+Hash of `bind::acl` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--amls"></a>`amls`
+
+Data type: `Hash`
+
+Hash of `bind::aml` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--configs"></a>`configs`
+
+Data type: `Hash`
+
+Hash of `bind::config` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--dnssec_policies"></a>`dnssec_policies`
+
+Data type: `Hash`
+
+Hash of `bind::dnssec_policy` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--keys"></a>`keys`
+
+Data type: `Hash`
+
+Hash of `bind::key` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--statistics_channels"></a>`statistics_channels`
+
+Data type: `Hash`
+
+Hash of `bind::statistics_channel` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--views"></a>`views`
+
+Data type: `Hash`
+
+Hash of `bind::view` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--controls_inet"></a>`controls_inet`
+
+Data type: `Hash`
+
+Hash of `bind::controls::inet` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--controls_unix"></a>`controls_unix`
+
+Data type: `Hash`
+
+Hash of `bind::controls::unix` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--logging_categories"></a>`logging_categories`
+
+Data type: `Hash`
+
+Hash of `bind::logging::category` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--logging_channel_files"></a>`logging_channel_files`
+
+Data type: `Hash`
+
+Hash of `bind::logging::channel_file` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--logging_channel_syslog"></a>`logging_channel_syslog`
+
+Data type: `Hash`
+
+Hash of `bind::logging::channel_syslog` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--zone_forwards"></a>`zone_forwards`
+
+Data type: `Hash`
+
+Hash of `bind::zone::forward` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--zone_hints"></a>`zone_hints`
+
+Data type: `Hash`
+
+Hash of `bind::zone::hint` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--zone_in_views"></a>`zone_in_views`
+
+Data type: `Hash`
+
+Hash of `bind::zone::in_view` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--zone_mirrors"></a>`zone_mirrors`
+
+Data type: `Hash`
+
+Hash of `bind::zone::mirror` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--zone_primaries"></a>`zone_primaries`
+
+Data type: `Hash`
+
+Hash of `bind::zone::primary` resources.
+
+Default value: `{}`
+
+##### <a name="-bind--zone_secondaries"></a>`zone_secondaries`
+
+Data type: `Hash`
+
+Hash of `bind::zone::secondary` resources.
+
+Default value: `{}`
 
 ##### <a name="-bind--all_per_second"></a>`all_per_second`
 

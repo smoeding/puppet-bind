@@ -42,13 +42,15 @@ class { 'bind':
   allow_recursion   => [ 'localhost', ],
 }
 ```
-Or with hiera
+
+Or with hiera:
+
 ```puppet
-bind::listen_on: 127.0.0.1
-bind::listen_on_v6: none
-bind::allow_query: localhost
-bind::allow_query_cache: localhost
-bind::allow_recursion: localhost
+bind::listen_on: ['127.0.0.1']
+bind::listen_on_v6: ['none']
+bind::allow_query: ['localhost']
+bind::allow_query_cache: ['localhost']
+bind::allow_recursion: ['localhost']
 ```
 
 ## Usage
@@ -68,7 +70,9 @@ bind::acl { 'lan':
   address_match_list => [ '192.168.10.0/24' ],
 }
 ```
-Or with hiera
+
+Or with hiera:
+
 ```puppet
 bind::allow_query:
   - localhost
@@ -82,7 +86,7 @@ bind::allow_recursion:
 
 bind::acls:
   lan:
-    address_match_list: 192.168.10.0/24
+    address_match_list: ['192.168.10.0/24']
 ```
 
 ### Caching name server with forwarders
@@ -97,7 +101,9 @@ class { 'bind':
   forwarders        => [ '10.0.0.53', '10.1.1.53', ],
 }
 ```
-Or with hiera
+
+Or with hiera:
+
 ```puppet
 bind::allow_query:
   - localhost
@@ -122,7 +128,9 @@ bind::zone::primary { 'example.com':
   source => 'puppet:///modules/profile/dns/example.com.zone',
 }
 ```
-Or with hiera
+
+Or with hiera:
+
 ```puppet
 bind::zone::primaries:
   example.com:
@@ -146,7 +154,9 @@ bind::zone::primary { 'example.com':
   content       => epp("profile/dynamic-zone-template.epp", $params),
 }
 ```
-Or with hiera
+
+Or with hiera:
+
 ```puppet
 bind::keys:
   nsupdate:
@@ -155,8 +165,8 @@ bind::keys:
 
 bind::zone::primaries:
   example.com:
-    update_policy: grant nsupdate zonesub any
-    content: 'epp("profile/dynamic-zone-template.epp", $params)'
+    update_policy: ['grant nsupdate zonesub any']
+    source: 'puppet:///modules/profile/dns/example.com.zone'
 ```
 
 If the zone file `/var/lib/bind/primary/com/example/db.example.com` does not exist on the name server, a new file will be created using the specified template. After that the file content can not be managed by Puppet as `named` will periodically need to update the zone file when processing dynamic updates. The `source` or `content` parameters are ignored in this case.
@@ -179,7 +189,9 @@ bind::zone::primary { 'example.net':
   source         => 'puppet:///modules/profile/dns/example.net.zone',
 }
 ```
-Or with hiera
+
+Or with hiera:
+
 ```puppet
 bind::dnssec_policies:
   standard:
@@ -209,15 +221,17 @@ bind::view { 'internal':
   order           => '10',
 }
 ```
-Or with hiera
+
+Or with hiera:
+
 ```puppet
 bind::views:
   internal:
-    match_clients: localnets
-    allow_query: localnets
-    allow_recursion: localnets
+    match_clients: ['localnets']
+    allow_query: ['localnets']
+    allow_recursion: ['localnets']
     recursion: true
-    order: 10
+    order: '10'
 ```
 
 The view `external` is for all other hosts and should only be used for your primary or secondary zones.
@@ -232,16 +246,18 @@ bind::view { 'external':
   order                    => '20',
 }
 ```
-Or with hiera
+
+Or with hiera:
+
 ```puppet
 bind::views:
   external:
-    match_clients: any
-    allow_query: any
+    match_clients: ['any']
+    allow_query: ['any']
     recursion: false
     localhost_forward_enable: false
     localhost_reverse_enable: false
-    order: 20
+    order: '20'
 ```
 
 The defined types `bind::zone::primary` and `bind::zone::secondary` can be used to add zones to this view.
