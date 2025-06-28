@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'bind::controls::unix' do
@@ -134,7 +136,7 @@ describe 'bind::controls::unix' do
 
       context 'with owner => 0, group => 0, perm => "0640", keys => ["key1", "key2"]' do
         let(:params) do
-          { owner: 0, group: 0, perm: '0640', keys: ['key1', 'key2'] }
+          { owner: 0, group: 0, perm: '0640', keys: %w[key1 key2] }
         end
 
         it {

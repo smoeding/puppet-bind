@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'bind::gencfg' do
@@ -81,7 +83,7 @@ describe 'bind::gencfg' do
 
   context 'with config => Array 2 elements' do
     let(:config) do
-      { 'foo' => ['item1', 'item2'] }
+      { 'foo' => %w[item1 item2] }
     end
 
     it {

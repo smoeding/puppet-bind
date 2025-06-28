@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'bind::statistics_channel' do
@@ -61,7 +63,7 @@ describe 'bind::statistics_channel' do
 
       context 'with allow => ["x","y"]' do
         let(:params) do
-          { allow: ['x', 'y'] }
+          { allow: %w[x y] }
         end
 
         it {

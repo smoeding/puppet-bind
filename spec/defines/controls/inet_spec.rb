@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'bind::controls::inet' do
@@ -124,7 +126,7 @@ describe 'bind::controls::inet' do
 
       context 'with keys => ["key1", "key2"]' do
         let(:params) do
-          { keys: ['key1', 'key2'] }
+          { keys: %w[key1 key2] }
         end
 
         it {

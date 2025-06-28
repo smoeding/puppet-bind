@@ -1,4 +1,4 @@
-# dnssec_key.rb --- The dnssec_key type
+# frozen_string_literal: true
 
 Puppet::Type.newtype(:dnssec_key) do
   desc <<-EOT
@@ -62,9 +62,7 @@ Puppet::Type.newtype(:dnssec_key) do
 
     match = value.match(%r{^([0-9]+)(y|mo|w|d|h|mi)?$})
 
-    if match.nil?
-      raise(Puppet::Error, "Conversion of duration failed: #{value}")
-    end
+    raise(Puppet::Error, "Conversion of duration failed: #{value}") if match.nil?
 
     time, unit = match.captures
     case unit
@@ -158,8 +156,6 @@ Puppet::Type.newtype(:dnssec_key) do
         2048
       when :DSA, :NSEC3DSA
         1024
-      else
-        nil
       end
     end
   end
@@ -240,17 +236,11 @@ Puppet::Type.newtype(:dnssec_key) do
   end
 
   validate do
-    if self[:key_directory].nil?
-      raise(Puppet::Error, 'key_directory is a required attribute')
-    end
+    raise(Puppet::Error, 'key_directory is a required attribute') if self[:key_directory].nil?
 
-    if self[:revoke] && (self[:ksk].to_s != 'true')
-      raise(Puppet::Error, 'revoke is only supported if ksk => true')
-    end
+    raise(Puppet::Error, 'revoke is only supported if ksk => true') if self[:revoke] && (self[:ksk].to_s != 'true')
 
-    if self[:precreate] && self[:prepublish] && (self[:precreate] < self[:prepublish])
-      raise(Puppet::Error, 'precreate interval must be longer than the prepublish interval')
-    end
+    raise(Puppet::Error, 'precreate interval must be longer than the prepublish interval') if self[:precreate] && self[:prepublish] && (self[:precreate] < self[:prepublish])
   end
 
   autorequire(:file) do

@@ -1,4 +1,4 @@
-# dnssec_key.rb --- Provider for dnssec_key type
+# frozen_string_literal: true
 
 Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
   desc 'Provider for dnssec_key type'
@@ -61,8 +61,6 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
       :HMAC_SHA384
     when 165
       :HMAC_SHA512
-    else
-      nil
     end
   end
 
@@ -268,9 +266,7 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
       args << '-D' << "+#{duration}"
     end
 
-    if resource[:prepublish] && @refkey
-      args << '-i' << resource[:prepublish]
-    end
+    args << '-i' << resource[:prepublish] if resource[:prepublish] && @refkey
 
     args << '-f' << 'KSK' if resource[:ksk].to_s == 'true'
 

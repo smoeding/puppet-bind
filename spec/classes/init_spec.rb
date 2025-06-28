@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'bind' do
@@ -793,7 +795,7 @@ describe 'bind' do
 
       context 'with custom_options => { foo => ["bar", "baz"] }' do
         let(:params) do
-          { custom_options: { 'foo' => ['bar', 'baz'] } }
+          { custom_options: { 'foo' => %w[bar baz] } }
         end
 
         it {

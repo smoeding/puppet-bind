@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'bind::logging::category' do
@@ -45,7 +47,7 @@ describe 'bind::logging::category' do
 
       context 'with channels => ["chan1", "chan2"]' do
         let(:params) do
-          { channels: ['chan1', 'chan2'] }
+          { channels: %w[chan1 chan2] }
         end
 
         it {

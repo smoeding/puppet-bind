@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'bind::key' do
@@ -18,7 +20,7 @@ describe 'bind::key' do
             .with_owner('root')
             .with_group('bind')
             .with_mode('0640')
-            .with_content(%r{key \"foo\" {\n\s+algorithm hmac-sha256;\n\s+secret\s+\"[a-zA-Z0-9=]+\";\n}})
+            .with_content(%r{key "foo" {\n\s+algorithm hmac-sha256;\n\s+secret\s+"[a-zA-Z0-9=]+";\n}})
             .that_notifies('Service[bind]')
             .that_comes_before('Concat::Fragment[bind::key::foo]')
 
@@ -40,7 +42,7 @@ describe 'bind::key' do
             .with_owner('root')
             .with_group('bind')
             .with_mode('0640')
-            .with_content(%r{key \"bar\" {\n\s+algorithm hmac-sha256;\n\s+secret\s+\"[a-zA-Z0-9=]+\";\n}})
+            .with_content(%r{key "bar" {\n\s+algorithm hmac-sha256;\n\s+secret\s+"[a-zA-Z0-9=]+";\n}})
             .that_notifies('Service[bind]')
             .that_comes_before('Concat::Fragment[bind::key::foo]')
 
@@ -62,7 +64,7 @@ describe 'bind::key' do
             .with_owner('root')
             .with_group('bind')
             .with_mode('0640')
-            .with_content(%r{key \"foo\" {\n\s+algorithm hmac-md5;\n\s+secret\s+\"[a-zA-Z0-9=]+\";\n}})
+            .with_content(%r{key "foo" {\n\s+algorithm hmac-md5;\n\s+secret\s+"[a-zA-Z0-9=]+";\n}})
             .that_notifies('Service[bind]')
             .that_comes_before('Concat::Fragment[bind::key::foo]')
 
@@ -84,7 +86,7 @@ describe 'bind::key' do
             .with_owner('foo')
             .with_group('bind')
             .with_mode('0640')
-            .with_content(%r{key \"foo\" {\n\s+algorithm hmac-sha256;\n\s+secret\s+\"[a-zA-Z0-9=]+\";\n}})
+            .with_content(%r{key "foo" {\n\s+algorithm hmac-sha256;\n\s+secret\s+"[a-zA-Z0-9=]+";\n}})
             .that_notifies('Service[bind]')
             .that_comes_before('Concat::Fragment[bind::key::foo]')
 
@@ -106,7 +108,7 @@ describe 'bind::key' do
             .with_owner('root')
             .with_group('foo')
             .with_mode('0640')
-            .with_content(%r{key \"foo\" {\n\s+algorithm hmac-sha256;\n\s+secret\s+\"[a-zA-Z0-9=]+\";\n}})
+            .with_content(%r{key "foo" {\n\s+algorithm hmac-sha256;\n\s+secret\s+"[a-zA-Z0-9=]+";\n}})
             .that_notifies('Service[bind]')
             .that_comes_before('Concat::Fragment[bind::key::foo]')
 
@@ -128,7 +130,7 @@ describe 'bind::key' do
             .with_owner('root')
             .with_group('bind')
             .with_mode('0642')
-            .with_content(%r{key \"foo\" {\n\s+algorithm hmac-sha256;\n\s+secret\s+\"[a-zA-Z0-9=]+\";\n}})
+            .with_content(%r{key "foo" {\n\s+algorithm hmac-sha256;\n\s+secret\s+"[a-zA-Z0-9=]+";\n}})
             .that_notifies('Service[bind]')
             .that_comes_before('Concat::Fragment[bind::key::foo]')
 
@@ -150,7 +152,7 @@ describe 'bind::key' do
             .with_owner('root')
             .with_group('bind')
             .with_mode('0640')
-            .with_content(%r{key \"foo\" {\n\s+algorithm hmac-sha256;\n\s+secret\s+\"[a-zA-Z0-9=]+\";\n}})
+            .with_content(%r{key "foo" {\n\s+algorithm hmac-sha256;\n\s+secret\s+"[a-zA-Z0-9=]+";\n}})
             .that_notifies('Service[bind]')
             .that_comes_before('Concat::Fragment[bind::key::foo]')
 
@@ -172,7 +174,7 @@ describe 'bind::key' do
             .with_owner('root')
             .with_group('bind')
             .with_mode('0640')
-            .with_content(%r{key \"foo\" {\n\s+algorithm hmac-sha256;\n\s+secret\s+\"deadbeef\";\n}})
+            .with_content(%r{key "foo" {\n\s+algorithm hmac-sha256;\n\s+secret\s+"deadbeef";\n}})
             .that_notifies('Service[bind]')
             .that_comes_before('Concat::Fragment[bind::key::foo]')
 
@@ -194,7 +196,7 @@ describe 'bind::key' do
             .with_owner('root')
             .with_group('bind')
             .with_mode('0640')
-            .with_content(%r{key \"foo\" {\n\s+algorithm hmac-sha256;\n\s+secret\s+\"ZGVhZGJlZWY=\";\n}})
+            .with_content(%r{key "foo" {\n\s+algorithm hmac-sha256;\n\s+secret\s+"ZGVhZGJlZWY=";\n}})
             .that_notifies('Service[bind]')
             .that_comes_before('Concat::Fragment[bind::key::foo]')
 

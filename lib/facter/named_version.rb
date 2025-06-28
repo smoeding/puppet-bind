@@ -1,4 +1,4 @@
-# named_version.rb -- Get the Bind/named version
+# frozen_string_literal: true
 
 Facter.add(:named_version) do
   setcode do
@@ -7,11 +7,7 @@ Facter.add(:named_version) do
 
     begin
       version = Facter::Core::Execution.execute(cmd, opt)
-      if version =~ %r{^BIND ([0-9.]+).*$}
-        Regexp.last_match(1)
-      else
-        nil
-      end
+      Regexp.last_match(1) if version =~ %r{^BIND ([0-9.]+).*$}
     rescue Facter::Core::Execution::ExecutionFailure
       nil
     end
