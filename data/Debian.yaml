@@ -1,8 +1,8 @@
 # Debian.yaml --- Settings for Debian
 ---
 
-bind::confdir:  '/etc/bind'
-bind::vardir:   '/var/lib/bind'
+bind::confdir: '/etc/bind'
+bind::vardir: '/var/lib/bind'
 bind::cachedir: '/var/cache/bind'
 
 bind::rndc_keyfile: '/etc/bind/rndc.key'
