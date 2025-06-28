@@ -9,8 +9,8 @@ describe 'Bind::Syslog::Facility' do
 
       describe 'valid handling' do
         %w[auth authpriv cron daemon ftp kern
-         local0 local1 local2 local3 local4 local5 local6 local7
-         lpr mail news syslog user uucp].each do |value|
+           local0 local1 local2 local3 local4 local5 local6 local7
+           lpr mail news syslog user uucp].each do |value|
           describe value.inspect do
             it { is_expected.to allow_value(value) }
           end
