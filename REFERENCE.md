@@ -161,6 +161,7 @@ The following parameters are available in the `bind` class:
 * [`zone_mirrors`](#-bind--zone_mirrors)
 * [`zone_primaries`](#-bind--zone_primaries)
 * [`zone_secondaries`](#-bind--zone_secondaries)
+* [`response_policies`](#-bind--response_policies)
 * [`all_per_second`](#-bind--all_per_second)
 * [`errors_per_second`](#-bind--errors_per_second)
 * [`responses_per_second`](#-bind--responses_per_second)
@@ -694,6 +695,14 @@ Data type: `Hash`
 Hash of `bind::zone::secondary` resources.
 
 Default value: `{}`
+
+##### <a name="-bind--response_policies"></a>`response_policies`
+
+Data type: `Array[String]`
+
+An array of response policy zones.
+
+Default value: `[]`
 
 ##### <a name="-bind--all_per_second"></a>`all_per_second`
 
@@ -1946,6 +1955,8 @@ The following parameters are available in the `bind::view` defined type:
 * [`localhost_reverse_enable`](#-bind--view--localhost_reverse_enable)
 * [`view`](#-bind--view--view)
 * [`order`](#-bind--view--order)
+* [`response_policies`](#-bind--view--response_policies)
+
 
 ##### <a name="-bind--view--match_clients"></a>`match_clients`
 
@@ -2096,6 +2107,14 @@ match_clients contains `any` then this view should probably have the
 highest order value.
 
 Default value: `'10'`
+
+##### <a name="-bind--view--response_policies"></a>`response_policies`
+
+Data type: `Array[String]`
+
+An array of response policy zones.
+
+Default value: `[]`
 
 ### <a name="bind--zone--forward"></a>`bind::zone::forward`
 

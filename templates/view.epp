@@ -75,3 +75,11 @@ view "<%= $view -%>" {
 <% } -%>
   };
 <% } -%>
+
+<% unless empty($response_policies) { -%>
+  response-policy {
+<%   $response_policies.each |$item| { -%>
+    <%= $item %>;
+<%   } -%>
+  };
+<% } -%>

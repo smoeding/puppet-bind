@@ -269,6 +269,9 @@
 # @param zone_secondaries
 #   Hash of `bind::zone::secondary` resources.
 #
+# @param response_policies 
+#   An array of response policy zones.
+#
 # @param all_per_second
 #   Limit the number of total answers per second for an IP address to the
 #   given value.
@@ -444,6 +447,7 @@ class bind (
   Hash                      $zone_mirrors             = {},
   Hash                      $zone_primaries           = {},
   Hash                      $zone_secondaries         = {},
+  Array[String]             $response_policies        = [],
   Optional[Integer[0,1000]] $all_per_second           = undef,
   Optional[Integer[0,1000]] $errors_per_second        = undef,
   Optional[Integer[0,1000]] $responses_per_second     = undef,
@@ -695,6 +699,7 @@ class bind (
     'dnssec_validation'      => $dnssec_validation,
     'trust_anchor_telemetry' => $trust_anchor_telemetry,
     'empty_zones_enable'     => $empty_zones_enable,
+    'response_policies'      => $response_policies,
   }
 
   concat { 'named.conf.options':
