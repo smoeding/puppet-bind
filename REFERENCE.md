@@ -1957,7 +1957,6 @@ The following parameters are available in the `bind::view` defined type:
 * [`order`](#-bind--view--order)
 * [`response_policies`](#-bind--view--response_policies)
 
-
 ##### <a name="-bind--view--match_clients"></a>`match_clients`
 
 Data type: `Array[String]`

@@ -72,7 +72,7 @@
 #   match_clients contains `any` then this view should probably have the
 #   highest order value.
 #
-# @param response_policies 
+# @param response_policies
 #   An array of response policy zones.
 #
 #

@@ -269,7 +269,7 @@
 # @param zone_secondaries
 #   Hash of `bind::zone::secondary` resources.
 #
-# @param response_policies 
+# @param response_policies
 #   An array of response policy zones.
 #
 # @param all_per_second
