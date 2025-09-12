@@ -1,3 +1,15 @@
+## 2025-09-12 - Release 2.0.0
+
+### Features
+
+- Add support for Debian-13 Trixie.
+- Add support for Response Policy Zones (RPZ).
+
+### Breaking changes
+
+- Drop support for Debian-10 Buster.
+- Drop support for Puppet; add support for OpenVox.
+
 ## 2025-01-02 - Release 1.3.0
 
 ### Features
