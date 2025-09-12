@@ -72,6 +72,9 @@
 #   match_clients contains `any` then this view should probably have the
 #   highest order value.
 #
+# @param response_policies 
+#   An array of response policy zones.
+#
 #
 define bind::view (
   Array[String]     $match_clients            = ['any',],
@@ -89,6 +92,7 @@ define bind::view (
   Boolean           $root_mirror_enable       = false,
   String            $view                     = $name,
   String            $order                    = '10',
+  Array[String]     $response_policies        = [],
   Optional[Boolean] $localhost_forward_enable = undef,
   Optional[Boolean] $localhost_reverse_enable = undef,
 ) {
@@ -115,6 +119,7 @@ define bind::view (
     'allow_query_cache'    => $allow_query_cache,
     'allow_query_cache_on' => $allow_query_cache_on,
     'allow_transfer'       => $allow_transfer,
+    'response_policies'    => $response_policies,
   }
 
   concat::fragment { "named.conf.views-${view}-00":

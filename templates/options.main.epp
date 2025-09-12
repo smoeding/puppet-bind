@@ -64,3 +64,11 @@
 
   empty-zones-enable <%= bool2str($empty_zones_enable, 'yes', 'no') -%>;
 <% } -%>
+
+<% unless empty($response_policies) { -%>
+  response-policy {
+<%   $response_policies.each |$item| { -%>
+    <%= $liitemne %>;
+<%   } -%>
+  };
+<% } -%>
