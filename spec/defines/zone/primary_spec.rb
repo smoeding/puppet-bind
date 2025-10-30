@@ -40,15 +40,15 @@ describe 'bind::zone::primary' do
         }
 
         case "#{facts[:os]['name']}-#{facts[:os]['release']['major']}"
-        when 'Debian-12', 'Ubuntu-22.04', 'Ubuntu-24.04'
+        when 'Debian-11', 'Ubuntu-20.04'
           it {
             is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
-              .with_validate_cmd('/usr/bin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
+              .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
           }
         else
           it {
             is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
-              .with_validate_cmd('/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
+              .with_validate_cmd('/usr/bin/named-checkzone -k fail -m fail -M fail -n fail example.com %')
           }
         end
       end

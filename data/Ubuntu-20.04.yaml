@@ -1,0 +1,4 @@
+# Ubuntu-20.04.yaml --- Settings for Ubuntu-20.04 Focal
+---
+
+bind::checkzone_program: '/usr/sbin/named-checkzone'

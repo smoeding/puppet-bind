@@ -1,0 +1,4 @@
+# Debian-11.yaml --- Settings for Debian-11 Bullseye
+---
+
+bind::checkzone_program: '/usr/sbin/named-checkzone'

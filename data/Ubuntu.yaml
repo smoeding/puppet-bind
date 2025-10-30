@@ -9,7 +9,7 @@ bind::rndc_keyfile: '/etc/bind/rndc.key'
 bind::rndc_program: '/usr/sbin/rndc'
 bind::rndc_key_algorithm: 'hmac-md5'
 
-bind::checkzone_program: '/usr/sbin/named-checkzone'
+bind::checkzone_program: '/usr/bin/named-checkzone'
 
 bind::bind_user: 'bind'
 bind::bind_group: 'bind'

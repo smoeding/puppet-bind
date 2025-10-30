@@ -1,4 +1,0 @@
-# Debian-10.yaml --- Settings for Debian
----
-
-bind::service_name: 'bind9'
