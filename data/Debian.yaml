@@ -15,3 +15,7 @@ bind::bind_user: 'bind'
 bind::bind_group: 'bind'
 bind::package_name: 'bind9'
 bind::service_name: 'named'
+
+bind::logdir_owner: 'bind'
+bind::logdir_group: 'bind'
+bind::logdir_mode: '0750'

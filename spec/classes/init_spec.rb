@@ -1039,6 +1039,20 @@ describe 'bind' do
             .with_content("\n  rate-limit {\n    all-per-second       1000;\n\n    exempt-clients {\n      192.0.2.42;\n      192.0.2.69;\n    };\n\n    //log-only yes;\n  };\n")
         }
       end
+
+      context 'with logdir => /var/log/named' do
+        let(:params) do
+          { logdir: '/var/log/named' }
+        end
+
+        it {
+          is_expected.to contain_file('/var/log/named')
+            .with_ensure('directory')
+            .with_owner('bind')
+            .with_group('bind')
+            .with_mode('0750')
+        }
+      end
     end
 
     context "on #{os} with bind 9.16.0" do

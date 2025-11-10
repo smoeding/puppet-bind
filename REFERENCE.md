@@ -124,6 +124,9 @@ The following parameters are available in the `bind` class:
 * [`dnssec_validation`](#-bind--dnssec_validation)
 * [`empty_zones_enable`](#-bind--empty_zones_enable)
 * [`control_channels_enable`](#-bind--control_channels_enable)
+* [`logdir_owner`](#-bind--logdir_owner)
+* [`logdir_group`](#-bind--logdir_group)
+* [`logdir_mode`](#-bind--logdir_mode)
 * [`allow_query`](#-bind--allow_query)
 * [`allow_query_cache`](#-bind--allow_query_cache)
 * [`allow_recursion`](#-bind--allow_recursion)
@@ -185,6 +188,7 @@ The following parameters are available in the `bind` class:
 * [`report_version`](#-bind--report_version)
 * [`querylog_enable`](#-bind--querylog_enable)
 * [`trust_anchor_telemetry`](#-bind--trust_anchor_telemetry)
+* [`logdir`](#-bind--logdir)
 
 ##### <a name="-bind--confdir"></a>`confdir`
 
@@ -371,6 +375,25 @@ explicit channels are created using the `bind::controls::unix` or
 `bind::controls::inet` defined type.
 
 Default value: `true`
+
+##### <a name="-bind--logdir_owner"></a>`logdir_owner`
+
+Data type: `String`
+
+The owner of the log directory if the parameter `logdir` has been set.
+
+##### <a name="-bind--logdir_group"></a>`logdir_group`
+
+Data type: `String`
+
+The group of the log directory if the parameter `logdir` has been set.
+
+##### <a name="-bind--logdir_mode"></a>`logdir_mode`
+
+Data type: `Stdlib::Filemode`
+
+The file mode of the log directory if the parameter `logdir` has been
+set.
 
 ##### <a name="-bind--allow_query"></a>`allow_query`
 
@@ -922,6 +945,15 @@ Data type: `Optional[Boolean]`
 Should the trust anchor telemetry transmission be enable. When enabled,
 once a day the DNSSEC trust anchors in use will be transmitted to the zon
 owners. This is enabled by default.
+
+Default value: `undef`
+
+##### <a name="-bind--logdir"></a>`logdir`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+The directory to be used for logfiles. This parameter is optional and
+is only used to manage the logfile directory.
 
 Default value: `undef`
 

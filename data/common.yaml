@@ -85,6 +85,8 @@ bind::trust_anchor_telemetry: null
 bind::report_hostname: null
 bind::report_version: null
 
+bind::logdir: null
+
 bind::package_ensure: 'installed'
 bind::service_ensure: 'running'
 bind::service_enable: true
