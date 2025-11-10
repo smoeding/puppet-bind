@@ -718,10 +718,10 @@ class bind (
 
   if $logdir {
     file { $logdir:
-      ensure => directory,
-      owner  => $logdir_owner,
-      group  => $logdir_group,
-      mode   => $logdir_mode,
+      ensure  => directory,
+      owner   => $logdir_owner,
+      group   => $logdir_group,
+      mode    => $logdir_mode,
       require => Package['bind'],
       before  => Bind::Config['named.conf'],
     }
