@@ -1,3 +1,13 @@
+## 2025-11-10 - Release 2.1.0
+
+### Bugfix
+
+- The path to the checkzone program has been fixed on Debian-13.
+
+### Features
+
+- The main class supports a new optional parameter logdir to manage the log directory.
+
 ## 2025-09-12 - Release 2.0.0
 
 ### Features
