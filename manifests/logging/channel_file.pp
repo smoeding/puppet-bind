@@ -3,7 +3,7 @@
 # @example Define a logfile channel for Bind9
 #
 #   bind::logging::channel_file { 'security':
-#     logfile => '/var/lob/bind/security',
+#     logfile => '/var/log/bind/security',
 #   }
 #
 # @param logfile
