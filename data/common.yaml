@@ -1,1 +1,90 @@
---- {}
+# common.yaml --- Common settings
+---
+
+bind::listen_on: []
+bind::listen_on_v6: []
+bind::ipv4_enable: true
+bind::ipv6_enable: true
+
+bind::views_enable: false
+bind::empty_zones_enable: true
+bind::control_channels_enable: true
+bind::querylog_enable: null
+
+bind::dnssec_enable: true
+bind::dnssec_lookaside: false
+bind::dnssec_validation: 'auto'
+
+bind::allow_query: []
+bind::allow_query_cache: []
+bind::allow_recursion: []
+bind::blackhole: []
+bind::forwarders: []
+bind::forward: 'first'
+
+bind::root_mirror_enable: false
+bind::root_hints_enable: false
+bind::root_hints_source: "puppet:///modules/%{module_name}/zones/db.root"
+
+bind::localhost_forward_enable: true
+bind::localhost_forward_source: "puppet:///modules/%{module_name}/zones/db.localhost"
+
+bind::localhost_reverse_enable: true
+bind::localhost_reverse_source: "puppet:///modules/%{module_name}/zones/db.127"
+
+bind::max_cache_size: 0
+bind::min_cache_ttl: 0
+bind::max_cache_ttl: 0
+bind::min_ncache_ttl: 0
+bind::max_ncache_ttl: 0
+bind::servfail_ttl: 0
+
+bind::custom_options: {}
+
+bind::manage_rndc_keyfile: true
+
+bind::filter_aaaa_on_v4: null
+
+bind::window: 0
+bind::ipv4_prefix_length: 0
+bind::ipv6_prefix_length: 0
+
+bind::log_only: false
+
+bind::exempt_clients: []
+bind::acls: {}
+bind::amls: {}
+bind::configs: {}
+bind::dnssec_policies: {}
+bind::keys: {}
+bind::statistics_channels: {}
+bind::views: {}
+bind::controls_inet: {}
+bind::controls_unix: {}
+bind::logging_categories: {}
+bind::logging_channel_files: {}
+bind::logging_channel_syslog: {}
+bind::zone_forwards: {}
+bind::zone_hints: {}
+bind::zone_in_views: {}
+bind::zone_mirrors: {}
+bind::zone_primaries: {}
+bind::zone_secondaries: {}
+bind::response_policies: []
+bind::all_per_second: null
+bind::errors_per_second: null
+bind::responses_per_second: null
+bind::referrals_per_second: null
+bind::nodata_per_second: null
+bind::nxdomains_per_second: null
+bind::qps_scale: null
+bind::slip: null
+
+bind::trust_anchor_telemetry: null
+
+bind::report_hostname: null
+bind::report_version: null
+
+bind::package_ensure: 'installed'
+bind::service_ensure: 'running'
+bind::service_enable: true
