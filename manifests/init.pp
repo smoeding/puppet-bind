@@ -525,8 +525,8 @@
 #
 # @param trust_anchor_telemetry
 #   Should the trust anchor telemetry transmission be enable. When enabled,
-#   once a day the DNSSEC trust anchors in use will be transmitted to the zon
-#   owners. This is enabled by default.
+#   once a day the DNSSEC trust anchors in use will be transmitted to the
+#   zone owners. This is enabled by default.
 #
 #   Default value: `undef`
 #
