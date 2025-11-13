@@ -3,32 +3,31 @@
 require 'spec_helper'
 
 describe 'Bind::AddressMatchList' do
-  on_supported_os.each do |os, facts|
-    context "on #{os}" do
-      let(:facts) { facts }
+  # we only need to test this on one os
+  debian = {
+    supported_os: [
+      {
+        'operatingsystem'        => 'Debian',
+        'operatingsystemrelease' => '13',
+      },
+    ],
+  }
 
-      describe 'valid handling' do
-        ['', 'foo', [''], ['foo']].each do |value|
-          describe value.inspect do
-            it { is_expected.to allow_value(value) }
-          end
-        end
-      end
+  on_supported_os(debian).each do |_os, facts|
+    let(:facts) { facts }
 
-      describe 'invalid handling' do
-        context 'with garbage inputs' do
-          [
-            { 'foo' => 'bar' },
-            {},
-            true,
-            42
-          ].each do |value|
-            describe value.inspect do
-              it { is_expected.not_to allow_value(value) }
-            end
-          end
-        end
-      end
+    context 'with valid values' do
+      it { is_expected.to allow_value('') }
+      it { is_expected.to allow_value('foo') }
+      it { is_expected.to allow_value(['']) }
+      it { is_expected.to allow_value(['foo']) }
+    end
+
+    context 'with invalid values' do
+      it { is_expected.not_to allow_value(42) }
+      it { is_expected.not_to allow_value(true) }
+      it { is_expected.not_to allow_value({ 'foo' => 'bar' }) }
+      it { is_expected.not_to allow_value({}) }
     end
   end
 end
