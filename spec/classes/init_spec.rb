@@ -1053,6 +1053,72 @@ describe 'bind' do
             .with_mode('0750')
         }
       end
+
+      context 'with max_cache_size => default' do
+        let(:params) do
+          { max_cache_size: 'default' }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_target('named.conf.options')
+            .with_order('75')
+            .with_content(%r{max-cache-size default;})
+        }
+      end
+
+      context 'with max_cache_size => unlimited' do
+        let(:params) do
+          { max_cache_size: 'unlimited' }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_target('named.conf.options')
+            .with_order('75')
+            .with_content(%r{max-cache-size unlimited;})
+        }
+      end
+
+      context 'with max_cache_size => 0' do
+        let(:params) do
+          { max_cache_size: 0 }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_target('named.conf.options')
+            .with_order('75')
+            .with_content(%r{max-cache-size 0;})
+        }
+      end
+
+      context 'with max_cache_size => 10%' do
+        let(:params) do
+          { max_cache_size: '10%' }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_target('named.conf.options')
+            .with_order('75')
+            .with_content(%r{max-cache-size 10%;})
+        }
+      end
+
+      context 'with max_cache_size => 2g' do
+        let(:params) do
+          { max_cache_size: '2g' }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.options-main')
+            .with_target('named.conf.options')
+            .with_order('75')
+            .with_content(%r{max-cache-size 2g;})
+        }
+      end
+
     end
 
     context "on #{os} with bind 9.16.0" do

@@ -49,7 +49,7 @@
 <% if ($max_ncache_ttl > 0) { -%>
   max-ncache-ttl <%= $max_ncache_ttl -%>;
 <% } -%>
-<% if ($max_cache_size > 0) { -%>
+<% unless ($max_cache_size =~ Undef) { -%>
   max-cache-size <%= $max_cache_size -%>;
 <% } -%>
 <% unless ($filter_aaaa_on_v4 =~ Undef) { -%>

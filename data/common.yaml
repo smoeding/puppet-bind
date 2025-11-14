@@ -32,7 +32,7 @@ bind::localhost_forward_source: "puppet:///modules/%{module_name}/zones/db.local
 bind::localhost_reverse_enable: true
 bind::localhost_reverse_source: "puppet:///modules/%{module_name}/zones/db.127"
 
-bind::max_cache_size: 0
+bind::max_cache_size: null
 bind::min_cache_ttl: 0
 bind::max_cache_ttl: 0
 bind::min_ncache_ttl: 0

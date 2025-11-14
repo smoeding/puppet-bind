@@ -423,11 +423,12 @@
 #   Default value: `undef`
 #
 # @param max_cache_size
-#   The maximum number of bytes to use for the server's cache. If views are
-#   used then the size applies to every view separately. If this value is
-#   zero then no limit is configured.
+#   The maximum size to use for the server's cache. This can be one of the
+#   strings `default` or `unlimited` or an integer or percentage value. If
+#   views are used then the size applies to every view separately. If this
+#   value is zero then no limit is configured.
 #
-#   Default value: `0`
+#   Default value: `undef`
 #
 # @param min_cache_ttl
 #   The minimum number of seconds for which the server will cache positive
@@ -573,7 +574,6 @@ class bind (
   String                         $localhost_forward_source,
   Boolean                        $localhost_reverse_enable,
   String                         $localhost_reverse_source,
-  Integer                        $max_cache_size,
   Integer                        $min_cache_ttl,
   Integer                        $max_cache_ttl,
   Integer                        $min_ncache_ttl,
@@ -621,6 +621,7 @@ class bind (
   Optional[String]               $report_version,
   Optional[Boolean]              $querylog_enable,
   Optional[Boolean]              $trust_anchor_telemetry,
+  Optional[Bind::Cachesize]      $max_cache_size,
   Optional[Stdlib::Absolutepath] $logdir,
 ) {
   $header_message = '// This file is managed by Puppet. DO NOT EDIT.'

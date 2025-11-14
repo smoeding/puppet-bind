@@ -49,6 +49,7 @@
 
 * [`Bind::AddressMatchList`](#Bind--AddressMatchList): Type to match allowed values for an address match list
 * [`Bind::Auto_dnssec`](#Bind--Auto_dnssec): Type to match allowed values for the auto-dnssec option
+* [`Bind::Cachesize`](#Bind--Cachesize): Type to match the maximum cache size
 * [`Bind::DNSSEC::Algorithm`](#Bind--DNSSEC--Algorithm): Type to match allowed values for DNSSEC key algorithms
 * [`Bind::DNSSEC::Updatemode`](#Bind--DNSSEC--Updatemode): Type to match allowed values for the dnssec-update-mode option
 * [`Bind::DNSSEC::Validation`](#Bind--DNSSEC--Validation): Type to match allowed values for the dnssec-validation option
@@ -58,6 +59,8 @@
 * [`Bind::Key::Algorithm`](#Bind--Key--Algorithm): Type to match allowed values for the key algorithm
 * [`Bind::Key::Lifetime`](#Bind--Key--Lifetime): Type to match allowed values for the key lifetime
 * [`Bind::Notify_secondaries`](#Bind--Notify_secondaries): Type to match allowed values for the notify option
+* [`Bind::Percentage`](#Bind--Percentage): Type to match a percentage value
+* [`Bind::Sizeval`](#Bind--Sizeval): Type to match a memory size value
 * [`Bind::Syslog::Facility`](#Bind--Syslog--Facility): Type to match allowed values for the syslog facility
 * [`Bind::Syslog::Severity`](#Bind--Syslog--Severity): Type to match allowed values for the syslog severity
 * [`Bind::Zone::Class`](#Bind--Zone--Class): Type to match allowed values for the zone class
@@ -797,13 +800,14 @@ Default value: `undef`
 
 ##### <a name="-bind--max_cache_size"></a>`max_cache_size`
 
-Data type: `Integer`
+Data type: `Optional[Bind::Cachesize]`
 
-The maximum number of bytes to use for the server's cache. If views are
-used then the size applies to every view separately. If this value is
-zero then no limit is configured.
+The maximum size to use for the server's cache. This can be one of the
+strings `default` or `unlimited` or an integer or percentage value. If
+views are used then the size applies to every view separately. If this
+value is zero then no limit is configured.
 
-Default value: `0`
+Default value: `undef`
 
 ##### <a name="-bind--min_cache_ttl"></a>`min_cache_ttl`
 
@@ -943,8 +947,8 @@ Default value: `undef`
 Data type: `Optional[Boolean]`
 
 Should the trust anchor telemetry transmission be enable. When enabled,
-once a day the DNSSEC trust anchors in use will be transmitted to the zon
-owners. This is enabled by default.
+once a day the DNSSEC trust anchors in use will be transmitted to the
+zone owners. This is enabled by default.
 
 Default value: `undef`
 
@@ -3274,6 +3278,12 @@ Type to match allowed values for the auto-dnssec option
 
 Alias of `Enum['allow', 'maintain', 'off']`
 
+### <a name="Bind--Cachesize"></a>`Bind::Cachesize`
+
+Type to match the maximum cache size
+
+Alias of `Variant[Enum['default', 'unlimited'], Bind::Sizeval, Bind::Percentage]`
+
 ### <a name="Bind--DNSSEC--Algorithm"></a>`Bind::DNSSEC::Algorithm`
 
 Type to match allowed values for DNSSEC key algorithms
@@ -3327,6 +3337,18 @@ Alias of `Pattern[/^(-?)P(?=\d|T\d)(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)([DW]))?(?:T(?:
 Type to match allowed values for the notify option
 
 Alias of `Enum['yes', 'no', 'explicit']`
+
+### <a name="Bind--Percentage"></a>`Bind::Percentage`
+
+Type to match a percentage value
+
+Alias of `Pattern[/\A\d+%\z/]`
+
+### <a name="Bind--Sizeval"></a>`Bind::Sizeval`
+
+Type to match a memory size value
+
+Alias of `Variant[Integer, Pattern[/\A\d+[kKmMgG]?\z/]]`
 
 ### <a name="Bind--Syslog--Facility"></a>`Bind::Syslog::Facility`
 
