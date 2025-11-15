@@ -39,7 +39,7 @@ describe 'bind::zone::primary' do
             .with_content("\nzone \"example.com\" IN {\n  type master;\n  file \"/var/lib/bind/primary/com/example/db.example.com\";\n};\n")
         }
 
-        case "#{facts[:os]['name']}-#{facts[:os]['release']['major']}"
+        case "#{facts['os']['name']}-#{facts['os']['release']['major']}"
         when 'Debian-11', 'Ubuntu-20.04'
           it {
             is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')

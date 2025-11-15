@@ -8,7 +8,7 @@ describe 'bind' do
       let(:facts) { facts }
 
       context 'with default parameters' do
-        case facts[:os]['name']
+        case facts['os']['name']
         when 'Debian', 'Ubuntu'
           it {
             is_expected.to contain_package('bind')
@@ -398,7 +398,7 @@ describe 'bind' do
         end
 
         it {
-          case facts[:os]['name']
+          case facts['os']['name']
           when 'Debian', 'Ubuntu'
             is_expected.to contain_concat('named.conf.views')
               .with_ensure('present')
@@ -425,7 +425,7 @@ describe 'bind' do
         end
 
         it {
-          case facts[:os]['name']
+          case facts['os']['name']
           when 'Debian'
             is_expected.to contain_file_line('named-options')
               .with_line('OPTIONS="-u bind -6"')
@@ -448,7 +448,7 @@ describe 'bind' do
         end
 
         it {
-          case facts[:os]['name']
+          case facts['os']['name']
           when 'Debian'
             is_expected.to contain_file_line('named-options')
               .with_line('OPTIONS="-u bind -4"')
@@ -1098,7 +1098,6 @@ describe 'bind' do
             .with_content(%r{max-cache-size 2g;})
         }
       end
-
     end
 
     context "on #{os} with bind 9.16.0" do
