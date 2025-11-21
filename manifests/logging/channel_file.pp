@@ -7,7 +7,10 @@
 #   }
 #
 # @param logfile
-#   The filename where the logs are written to.
+#   The filename where the logs are written to. This can also be a relative
+#   file name If the class parameter bind::logdir is defined. In this case
+#   the log file will be created in specified log directory and the file
+#   extension `.log` will also be added automatically.
 #
 # @param mode
 #   The file mode of the logfile. The default allows access only for the user
@@ -39,22 +42,32 @@
 #
 #
 define bind::logging::channel_file (
-  Stdlib::Absolutepath   $logfile,
-  Stdlib::Filemode       $mode           = '0640',
-  String                 $channel        = $name,
-  Bind::Syslog::Severity $severity       = 'notice',
-  Boolean                $print_category = true,
-  Boolean                $print_severity = true,
-  Boolean                $print_time     = true,
-  Optional[String]       $size           = undef,
-  Optional[Integer]      $versions       = undef,
+  Variant[Stdlib::Absolutepath,String] $logfile,
+  Stdlib::Filemode                     $mode           = '0640',
+  String                               $channel        = $name,
+  Bind::Syslog::Severity               $severity       = 'notice',
+  Boolean                              $print_category = true,
+  Boolean                              $print_severity = true,
+  Boolean                              $print_time     = true,
+  Optional[String]                     $size           = undef,
+  Optional[Integer]                    $versions       = undef,
 ) {
   # The base class must be included first
   unless defined(Class['bind']) {
     fail('You must include the bind base class before using any bind defined resources')
   }
 
-  file { $logfile:
+  if $logfile =~ Stdlib::Absolutepath {
+    $_logfile = $logfile
+  }
+  elsif $bind::logdir {
+    $_logfile = "${bind::logdir}/${logfile}.log"
+  }
+  else {
+    fail('Parameter `logfile` must be an absolute path if the class parameter `bind::logdir` is undefined.')
+  }
+
+  file { $_logfile:
     ensure => file,
     owner  => $bind::bind_user,
     group  => $bind::bind_group,
@@ -64,7 +77,7 @@ define bind::logging::channel_file (
 
   $params = {
     'channel'        => $channel,
-    'logfile'        => $logfile,
+    'logfile'        => $_logfile,
     'severity'       => $severity,
     'size'           => $size,
     'versions'       => $versions,

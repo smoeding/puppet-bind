@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'bind::logging::channel_file' do
   let(:pre_condition) do
-    'class { "bind": }'
+    'class { "bind": logdir => "/var/log/named" }'
   end
 
   let(:title) { 'foo' }
@@ -36,6 +36,26 @@ describe 'bind::logging::channel_file' do
             .with_target('named.conf.logging')
             .with_order('30-foo')
             .with_content("  channel foo {\n    file \"/log.log\";\n    severity notice;\n    print-category yes;\n    print-severity yes;\n    print-time yes;\n  };\n\n")
+        }
+      end
+
+      context 'with logfile => "foo"' do
+        let(:params) do
+          { logfile: 'foo' }
+        end
+
+        it {
+          is_expected.to contain_file('/var/log/named/foo.log')
+            .with_ensure('file')
+            .with_owner('bind')
+            .with_group('bind')
+            .with_mode('0640')
+            .that_comes_before('Concat[named.conf.logging]')
+
+          is_expected.to contain_concat__fragment('named.conf-channel-foo')
+            .with_target('named.conf.logging')
+            .with_order('30-foo')
+            .with_content("  channel foo {\n    file \"/var/log/named/foo.log\";\n    severity notice;\n    print-category yes;\n    print-severity yes;\n    print-time yes;\n  };\n\n")
         }
       end
 
