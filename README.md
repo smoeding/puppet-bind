@@ -133,7 +133,7 @@ bind::zone::primary { 'example.com':
 Or with hiera:
 
 ```puppet
-bind::zone::primaries:
+bind::zone_primaries:
   example.com:
     source: 'puppet:///modules/profile/dns/example.com.zone'
 ```
@@ -164,7 +164,7 @@ bind::keys:
     secret: TopSecret
     keyfile: /etc/bind/nsupdate.key
 
-bind::zone::primaries:
+bind::zone_primaries:
   example.com:
     update_policy: ['grant nsupdate zonesub any']
     source: 'puppet:///modules/profile/dns/example.com.zone'
@@ -199,7 +199,7 @@ bind::dnssec_policies:
     csk_lifetime: unlimited
     csk_algorithm: ecdsap256sha256
 
-bind::zone::primaries:
+bind::zone_primaries:
   example.net:
     dnssec_policy: standard
     inline_signing: true
