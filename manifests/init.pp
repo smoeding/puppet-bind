@@ -1075,6 +1075,7 @@ class bind (
     'confdir'                 => $confdir,
     'views_enable'            => $views_enable,
     'dnssec_policy_available' => $dnssec_policy_available,
+    'custom_configs'          => $configs,
   }
 
   bind::config { 'named.conf':
