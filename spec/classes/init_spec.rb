@@ -1101,7 +1101,7 @@ describe 'bind' do
 
       context "on #{os} with configs defined" do
         let(:params) do
-          { configs: { 'foo' => { 'content' => 'bar' }} }
+          { configs: { 'foo' => { 'content' => 'bar' } } }
         end
 
         it {
