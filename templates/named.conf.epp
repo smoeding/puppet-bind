@@ -15,9 +15,11 @@ include "<%= $confdir -%>/named.conf.views";
 
 include "<%= $confdir -%>/named.conf.zones";
 <% } -%>
+<% unless empty($custom_configs) { -%>
 
 <% $custom_configs.keys.sort.each |$entry| { -%>
 include "<%= $confdir -%>/<%= $entry -%>";
+<% } -%>
 <% } -%>
 
 include "<%= $confdir -%>/named.conf.local";
