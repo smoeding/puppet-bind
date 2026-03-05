@@ -598,7 +598,9 @@ Default value: `{}`
 
 Data type: `Hash`
 
-Hash of `bind::config` resources.
+Hash of `bind::config` resources. These are included in the main
+configuration after the standard includes have been processed and before
+the local config is read.
 
 Default value: `{}`
 

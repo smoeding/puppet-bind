@@ -1098,6 +1098,20 @@ describe 'bind' do
             .with_content(%r{max-cache-size 2g;})
         }
       end
+
+      context "on #{os} with configs defined" do
+        let(:params) do
+          { configs: { 'foo' => { 'content' => 'bar' }} }
+        end
+
+        it {
+          is_expected.to contain_file('/etc/bind/named.conf')
+            .with_content(%r{include "/etc/bind/foo";})
+
+          is_expected.to contain_bind__config('foo')
+            .with_content(%r{bar})
+        }
+      end
     end
 
     context "on #{os} with bind 9.16.0" do
