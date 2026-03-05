@@ -4,15 +4,11 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [ main, master ]
   pull_request:
-    branches:
-      - main
-      - master
-  schedule:
-    - cron: '52 2 * * 0'
+    branches: [ main, master ]
+
+  workflow_dispatch:
 
 jobs:
   checks:
@@ -32,7 +28,7 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Syntax
         run: rake -f /Rakefile syntax
