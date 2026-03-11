@@ -8,7 +8,7 @@
 #
 # @param logfile
 #   The filename where the logs are written to. This can also be a relative
-#   file name If the class parameter bind::logdir is defined. In this case
+#   file name if the class parameter bind::logdir is defined. In this case
 #   the log file will be created in specified log directory and the file
 #   extension `.log` will also be added automatically.
 #
