@@ -1,3 +1,11 @@
+## 2026-03-11 - Release 2.2.0
+
+### Features
+
+- Log file names defined with `bind::logging::channel_file` can now also be relative file names. In this case the names are relative to the directory defined using `bind::logdir`.
+
+- The new class parameter `custom_configs` allows to add custom configuration files that are included in the main config.
+
 ## 2025-11-10 - Release 2.1.0
 
 ### Bugfix
