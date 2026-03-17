@@ -83,3 +83,7 @@ view "<%= $view -%>" {
 <%   } -%>
   };
 <% } -%>
+<% unless empty($custom_options) { -%>
+
+<%= $custom_options -%>
+<% } -%>

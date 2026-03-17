@@ -263,6 +263,30 @@ bind::views:
 
 The defined types `bind::zone::primary` and `bind::zone::secondary` can be used to add zones to this view.
 
+Global options that are not modeled as dedicated class parameters can be
+set with `custom_options`. 
+
+```puppet
+class { 'bind':
+  custom_options => {
+    'minimal-responses' => 'no-auth-recursive',
+  },
+}
+```
+
+The `bind::view` defined type supports the same pattern for per-view options:
+
+```puppet
+bind::view { 'internal':
+  match_clients   => [ 'localnets', ],
+  allow_query     => [ 'localnets', ],
+  allow_recursion => [ 'localnets', ],
+  custom_options  => {
+    'minimal-responses' => true,
+  },
+}
+```
+
 ## Reference
 
 See [REFERENCE.md](https://github.com/smoeding/puppet-bind/blob/master/REFERENCE.md)

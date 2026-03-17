@@ -75,6 +75,14 @@
 # @param response_policies
 #   An array of response policy zones.
 #
+# @param custom_options
+#   Additional config options that are not implemented as parameters of this
+#   defined type can be set by a hash of custom options. Each key of the hash
+#   will be added to the view block of the configuration. For string or numeric
+#   values the value will be added as a normal option value. If the value is a
+#   hash or an array it will be included as an additional block enclosed in
+#   braces.
+#
 #
 define bind::view (
   Array[String]     $match_clients            = ['any',],
@@ -93,6 +101,7 @@ define bind::view (
   String            $view                     = $name,
   String            $order                    = '10',
   Array[String]     $response_policies        = [],
+  Hash[String,Data] $custom_options           = {},
   Optional[Boolean] $localhost_forward_enable = undef,
   Optional[Boolean] $localhost_reverse_enable = undef,
 ) {
@@ -120,6 +129,7 @@ define bind::view (
     'allow_query_cache_on' => $allow_query_cache_on,
     'allow_transfer'       => $allow_transfer,
     'response_policies'    => $response_policies,
+    'custom_options'       => bind::gencfg($custom_options, 2),
   }
 
   concat::fragment { "named.conf.views-${view}-00":

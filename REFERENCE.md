@@ -1997,6 +1997,7 @@ The following parameters are available in the `bind::view` defined type:
 * [`view`](#-bind--view--view)
 * [`order`](#-bind--view--order)
 * [`response_policies`](#-bind--view--response_policies)
+* [`custom_options`](#-bind--view--custom_options)
 
 ##### <a name="-bind--view--match_clients"></a>`match_clients`
 
@@ -2155,6 +2156,19 @@ Data type: `Array[String]`
 An array of response policy zones.
 
 Default value: `[]`
+
+##### <a name="-bind--view--custom_options"></a>`custom_options`
+
+Data type: `Hash[String,Data]`
+
+Additional config options that are not implemented as parameters of this
+defined type can be set by a hash of custom options. Each key of the hash
+will be added to the view block of the configuration. For string or numeric
+values the value will be added as a normal option value. If the value is a
+hash or an array it will be included as an additional block enclosed in
+braces.
+
+Default value: `{}`
 
 ### <a name="bind--zone--forward"></a>`bind::zone::forward`
 
@@ -3392,3 +3406,4 @@ Alias of `Enum['critical', 'error', 'warning', 'notice', 'info', 'debug', 'dynam
 Type to match allowed values for the zone class
 
 Alias of `Enum['IN', 'HS', 'CH']`
+

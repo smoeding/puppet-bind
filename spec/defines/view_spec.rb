@@ -205,6 +205,48 @@ describe 'bind::view' do
         }
       end
 
+      context 'with custom_options => { "minimal-responses" => true }' do
+        let(:params) do
+          { custom_options: { 'minimal-responses' => true } }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
+            .with_target('named.conf.views')
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n\n  minimal-responses yes;\n")
+            .with_order('10')
+
+          is_expected.to contain_concat__fragment('named.conf.views-internal-99')
+            .with_content('};')
+        }
+      end
+
+      context 'with custom_options => { "minimal-responses" => "no-auth-recursive" }' do
+        let(:params) do
+          { custom_options: { 'minimal-responses' => 'no-auth-recursive' } }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
+            .with_target('named.conf.views')
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n\n  minimal-responses no-auth-recursive;\n")
+            .with_order('10')
+        }
+      end
+
+      context 'with custom_options => { "sortlist" => ["localnets", "localhost"] }' do
+        let(:params) do
+          { custom_options: { 'sortlist' => ['localnets', 'localhost'] } }
+        end
+
+        it {
+          is_expected.to contain_concat__fragment('named.conf.views-internal-00')
+            .with_target('named.conf.views')
+            .with_content("\nview \"internal\" {\n  match-clients {\n    any;\n  };\n\n  allow-query {\n    any;\n  };\n\n  recursion yes;\n\n  sortlist {\n    localnets;\n    localhost;\n  };\n")
+            .with_order('10')
+        }
+      end
+
       context 'with root_hints_enable => true' do
         let(:params) do
           { root_hints_enable: true }
