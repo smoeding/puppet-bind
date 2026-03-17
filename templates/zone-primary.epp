@@ -29,6 +29,14 @@
 <% } -%>
 <%= $indent %>  };
 <% } -%>
+<% unless empty($allow_transfer) { -%>
+
+<%= $indent %>  allow-transfer {
+<% $allow_transfer.each |$item| { -%>
+<%= $indent %>    <%= $item -%>;
+<% } -%>
+<%= $indent %>  };
+<% } -%>
 <% if $dnssec_params { -%>
 
 <% if $dnssec_enable =~ NotUndef { -%>

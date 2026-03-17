@@ -375,6 +375,44 @@ describe 'bind::zone::primary' do
         }
       end
 
+      context 'with source => "/file", allow_transfer => ["any"]' do
+        let(:params) do
+          { source: '/file', allow_transfer: ['any'] }
+        end
+
+        it {
+          is_expected.to contain_file('/var/lib/bind/primary/com')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+
+          is_expected.to contain_exec('bind::reload::example.com')
+
+          is_expected.to contain_concat__fragment('named.conf.zones-example.com')
+            .with_target('named.conf.zones')
+            .with_order('20')
+            .with_content(%r{allow-transfer {\n\s+any;\n\s+};})
+        }
+      end
+
+      context 'with source => "/file", allow_transfer => ["acl1", "192.0.2.42"]' do
+        let(:params) do
+          { source: '/file', allow_transfer: ['acl1', '192.0.2.42'] }
+        end
+
+        it {
+          is_expected.to contain_file('/var/lib/bind/primary/com')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+
+          is_expected.to contain_exec('bind::reload::example.com')
+
+          is_expected.to contain_concat__fragment('named.conf.zones-example.com')
+            .with_target('named.conf.zones')
+            .with_order('20')
+            .with_content(%r{allow-transfer {\n\s+acl1;\n\s+192.0.2.42;\n\s+};})
+        }
+      end
+
       context 'with source => "/file", zone_statistics => true' do
         let(:params) do
           { source: '/file', zone_statistics: true }
@@ -812,6 +850,25 @@ describe 'bind::zone::primary' do
             .with_target('named.conf.views')
             .with_order('10')
             .with_content(%r{also-notify {\n  \s+192.0.2.42;\n  \s+};})
+        }
+      end
+
+      context 'with view => "internal", source => "/file", allow_transfer => ["any"]' do
+        let(:params) do
+          { view: 'internal', source: '/file', allow_transfer: ['any'] }
+        end
+
+        it {
+          is_expected.to contain_file('/var/lib/bind/primary/com')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example')
+          is_expected.to contain_file('/var/lib/bind/primary/com/example/db.example.com')
+
+          is_expected.to contain_exec('bind::reload::internal::example.com')
+
+          is_expected.to contain_concat__fragment('named.conf.views-internal-50-example.com')
+            .with_target('named.conf.views')
+            .with_order('10')
+            .with_content(%r{allow-transfer {\n  \s+any;\n  \s+};})
         }
       end
 

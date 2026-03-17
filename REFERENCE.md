@@ -2472,6 +2472,16 @@ bind::zone::primary { 'example.com':
 }
 ```
 
+##### Restrict zone transfers for a primary zone
+
+```puppet
+
+bind::zone::primary { 'example.com':
+  source         => 'puppet:///modules/profile/example.com.zone',
+  allow_transfer => ['192.0.2.42'],
+}
+```
+
 ##### Use DNSSEC signing for a primary zone using a DNSSEC policy
 
 ```puppet
@@ -2499,6 +2509,7 @@ bind::zone::primary { '_acme-challenge.example.com':
 The following parameters are available in the `bind::zone::primary` defined type:
 
 * [`also_notify`](#-bind--zone--primary--also_notify)
+* [`allow_transfer`](#-bind--zone--primary--allow_transfer)
 * [`update_policy`](#-bind--zone--primary--update_policy)
 * [`dnssec_enable`](#-bind--zone--primary--dnssec_enable)
 * [`dnssec_dnskey_kskonly`](#-bind--zone--primary--dnssec_dnskey_kskonly)
@@ -2527,6 +2538,15 @@ Data type: `Array[String]`
 
 Secondary servers that should be notified in addition to the
 nameservers that are listed in the zone file.
+
+Default value: `[]`
+
+##### <a name="-bind--zone--primary--allow_transfer"></a>`allow_transfer`
+
+Data type: `Array[String]`
+
+An array of ACL names or networks that are allowed to transfer zone
+information for this zone.
 
 Default value: `[]`
 
@@ -3372,4 +3392,3 @@ Alias of `Enum['critical', 'error', 'warning', 'notice', 'info', 'debug', 'dynam
 Type to match allowed values for the zone class
 
 Alias of `Enum['IN', 'HS', 'CH']`
-

@@ -13,6 +13,13 @@
 #     source => 'puppet:///modules/profile/example.com.zone',
 #   }
 #
+# @example Restrict zone transfers for a primary zone
+#
+#   bind::zone::primary { 'example.com':
+#     source         => 'puppet:///modules/profile/example.com.zone',
+#     allow_transfer => ['192.0.2.42'],
+#   }
+#
 # @example Use DNSSEC signing for a primary zone using a DNSSEC policy
 #
 #   bind::zone::primary { 'example.com':
@@ -32,6 +39,10 @@
 # @param also_notify
 #   Secondary servers that should be notified in addition to the
 #   nameservers that are listed in the zone file.
+#
+# @param allow_transfer
+#   An array of ACL names or networks that are allowed to transfer zone
+#   information for this zone.
 #
 # @param update_policy
 #   Enable dynamic updates for the zone and define the update policy. This
@@ -124,6 +135,7 @@
 #
 define bind::zone::primary (
   Array[String]                        $also_notify               = [],
+  Array[String]                        $allow_transfer            = [],
   Variant[Enum['local'],Array[String]] $update_policy             = [],
   Optional[Boolean]                    $dnssec_enable             = undef,
   Optional[Boolean]                    $dnssec_dnskey_kskonly     = undef,
@@ -257,17 +269,18 @@ define bind::zone::primary (
   }
 
   $params = {
-    'zone'          => $zone,
-    'file'          => $zonefile,
-    'also_notify'   => $also_notify,
-    'notify'        => $notify_secondaries,
-    'statistics'    => $zone_statistics,
-    'update_policy' => $update_policy,
-    'class'         => $class,
-    'comment'       => $comment,
-    'indent'        => bool2str($bind::views_enable, '  ', ''),
-    'zone_in_view'  => ($view =~ NotUndef),
-    'dnssec_params' => !empty(delete_undef_values($params_dnssec)),
+    'zone'           => $zone,
+    'file'           => $zonefile,
+    'also_notify'    => $also_notify,
+    'allow_transfer' => $allow_transfer,
+    'notify'         => $notify_secondaries,
+    'statistics'     => $zone_statistics,
+    'update_policy'  => $update_policy,
+    'class'          => $class,
+    'comment'        => $comment,
+    'indent'         => bool2str($bind::views_enable, '  ', ''),
+    'zone_in_view'   => ($view =~ NotUndef),
+    'dnssec_params'  => !empty(delete_undef_values($params_dnssec)),
   }
 
   if $bind::views_enable {
