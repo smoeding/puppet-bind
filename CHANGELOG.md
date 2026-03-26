@@ -1,3 +1,10 @@
+## 2026-03-26 - Release 2.3.0
+
+### Features
+
+- Add custom view options support.
+- Add per-zone `allow_transfer` for primary zones.
+
 ## 2026-03-11 - Release 2.2.0
 
 ### Features
