@@ -263,8 +263,7 @@ bind::views:
 
 The defined types `bind::zone::primary` and `bind::zone::secondary` can be used to add zones to this view.
 
-Global options that are not modeled as dedicated class parameters can be
-set with `custom_options`. 
+Global options that are not modeled as dedicated class parameters can be set with `custom_options`.
 
 ```puppet
 class { 'bind':
