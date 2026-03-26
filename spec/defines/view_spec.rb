@@ -236,7 +236,7 @@ describe 'bind::view' do
 
       context 'with custom_options => { "sortlist" => ["localnets", "localhost"] }' do
         let(:params) do
-          { custom_options: { 'sortlist' => ['localnets', 'localhost'] } }
+          { custom_options: { 'sortlist' => %w[localnets localhost] } }
         end
 
         it {
