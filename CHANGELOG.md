@@ -1,3 +1,11 @@
+## 2026-07-28 - Release 2.4.0
+
+### Features
+
+- Add support for Ubuntu 26.04.
+- Add support for Concat 10.x
+- Add support for Stdlib 10.x
+
 ## 2026-03-26 - Release 2.3.0
 
 ### Features
