@@ -4,11 +4,13 @@ name: CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches:
+      - main
+      - master
   pull_request:
-    branches: [ main, master ]
-
-  workflow_dispatch:
+    branches:
+      - main
+      - master
 
 jobs:
   checks:
@@ -31,23 +33,23 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Syntax
-        run: rake -f /Rakefile syntax
+        run: bundle exec rake -f /opt/voxbox/Rakefile syntax
 
       - name: Check
-        run: rake -f /Rakefile check
+        run: bundle exec rake -f /opt/voxbox/Rakefile check
 
       - name: Lint code
-        run: rake -f /Rakefile lint
+        run: bundle exec rake -f /opt/voxbox/Rakefile lint
 
       - name: Lint YAML
         if: ${{ hashFiles('data') != '' }}
         run: yamllint data/
 
       - name: Lint Metadata
-        run: rake -f /Rakefile metadata_lint
+        run: bundle exec rake -f /opt/voxbox/Rakefile metadata_lint
 
       - name: Rubocop
-        run: rake -f /Rakefile rubocop
+        run: bundle exec rake -f /opt/voxbox/Rakefile rubocop
 
       - name: Unit Tests
-        run: rake -f /Rakefile spec
+        run: bundle exec rake -f /opt/voxbox/Rakefile spec
