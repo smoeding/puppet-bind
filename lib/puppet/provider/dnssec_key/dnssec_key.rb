@@ -6,7 +6,7 @@ Puppet::Type.type(:dnssec_key).provide(:dnssec_key) do
   commands dnssec_keygen: 'dnssec-keygen'
 
   def initialize(value = {})
-    super(value)
+    super
 
     @now = Time.now
 

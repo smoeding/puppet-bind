@@ -12,7 +12,7 @@ describe 'Bind::Sizeval' do
     ],
   }
 
-  on_supported_os(debian).each do |_os, facts|
+  on_supported_os(debian).each_value do |facts|
     let(:facts) { facts }
 
     context 'with valid values' do
