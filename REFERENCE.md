@@ -483,7 +483,7 @@ Data type: `String`
 The source file to use for the root hints. The default is a file provided
 by this module.
 
-Default value: `"puppet:///modules/${module_name}/zones/db.root"`
+Default value: `'puppet:///modules/%{module_name}/zones/db.root'`
 
 ##### <a name="-bind--localhost_forward_enable"></a>`localhost_forward_enable`
 
@@ -500,7 +500,7 @@ Data type: `String`
 The source file to use for the localhost forward zone. The default is
 a file provided by this module.
 
-Default value: `"puppet:///modules/${module_name}/zones/db.localhost"`
+Default value: `'puppet:///modules/%{module_name}/zones/db.localhost'`
 
 ##### <a name="-bind--localhost_reverse_enable"></a>`localhost_reverse_enable`
 
@@ -517,7 +517,7 @@ Data type: `String`
 The source file to use for the localhost reverse zone. The default is
 a file provided by this module.
 
-Default value: `"puppet:///modules/${module_name}/zones/db.127"`
+Default value: `'puppet:///modules/%{module_name}/zones/db.127'`
 
 ##### <a name="-bind--filter_aaaa_on_v4"></a>`filter_aaaa_on_v4`
 

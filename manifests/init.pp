@@ -88,8 +88,6 @@
 #
 #   Use `bind::listen_on` to define more complex configurations.
 #
-#   Default value: `[]`
-#
 # @param listen_on_v6
 #   An array of strings to define the IPv6 address(es) on which the daemon
 #   will listen for queries. The string `any` may be used to listen on all
@@ -98,46 +96,30 @@
 #
 #   Use `bind::listen_on_v6` to define more complex configurations.
 #
-#   Default value: `[]`
-#
 # @param ipv4_enable
 #   Should Bind use IPv4. At least one of `ipv4_enable` and `ipv6_enable`
 #   must be set to true.
-#
-#   Default value: `true`
 #
 # @param ipv6_enable
 #   Should Bind use IPv6. At least one of `ipv4_enable` and `ipv6_enable`
 #   must be set to true.
 #
-#   Default value: `true`
-#
 # @param views_enable
 #   Should views be enabled.
-#
-#   Default value: `false`
 #
 # @param dnssec_enable
 #   Should DNSSEC be enabled. This parameter is ignored for Bind 9.16.0 or
 #   later where DNSSEC is always enabled.
 #
-#   Default value: `true`
-#
 # @param dnssec_lookaside
 #   Should DNSSEC Lookaside Validation be enabled. This parameter is ignored
 #   for Bind 9.16.0 or later where DNSSEC Lookaside Validation is obsolete.
 #
-#   Default value: `false`
-#
 # @param dnssec_validation
 #   Should DNSSEC Validation be enabled.
 #
-#   Default value: `'auto'`
-#
 # @param empty_zones_enable
 #   Should automatic empty zones be enabled.
-#
-#   Default value: `true`
 #
 # @param control_channels_enable
 #   Should control channels be enabled. All `bind::controls::unix` and
@@ -147,8 +129,6 @@
 #   channel will be enabled automatically if this parameter is `true` and no
 #   explicit channels are created using the `bind::controls::unix` or
 #   `bind::controls::inet` defined type.
-#
-#   Default value: `true`
 #
 # @param logdir_owner
 #   The owner of the log directory if the parameter `logdir` has been set.
@@ -164,32 +144,22 @@
 #   An array of IP addresses/networks or ACL names that are allowed to query
 #   this Bind server.
 #
-#   Default value: `[]`
-#
 # @param allow_query_cache
 #   An array of IP addresses/networks or ACL names that are allowed to use
 #   the query cache on this Bind server.
-#
-#   Default value: `[]`
 #
 # @param allow_recursion
 #   An array of IP addresses/networks or ACL names that are allowed to use
 #   this Bind server for recursion. Recursion is automatically turned on if
 #   this parameter is not empty.
 #
-#   Default value: `[]`
-#
 # @param blackhole
 #   An array of IP addresses/networks that are ignored by the server. Requests
 #   from sources matching this list will not be answered.
 #
-#   Default value: `[]`
-#
 # @param forwarders
 #   An array of other DNS servers that can be used to forward unresolvable
 #   queries to.
-#
-#   Default value: `[]`
 #
 # @param forward
 #   The type of forwarding used. This parameter is only used if forwarders
@@ -197,13 +167,9 @@
 #   automatic empty zones for RFC 6303 are ignored if this parameter
 #   is set to `only`.
 #
-#   Default value: `'first'`
-#
 # @param root_mirror_enable
 #   Should a mirror for the root domain "." be installed locally. See RFC
 #   7706 for details.
-#
-#   Default value: `false`
 #
 # @param root_hints_enable
 #   Should a local copy of the list of servers that are authoritative for the
@@ -212,35 +178,23 @@
 #   servers in the list until an authoritative response is received. Normally
 #   this parameter can be left at default.
 #
-#   Default value: `false`
-#
 # @param root_hints_source
 #   The source file to use for the root hints. The default is a file provided
 #   by this module.
 #
-#   Default value: `"puppet:///modules/${module_name}/zones/db.root"`
-#
 # @param localhost_forward_enable
 #   Should the forward zone for localhost be enabled.
-#
-#   Default value: `true`
 #
 # @param localhost_forward_source
 #   The source file to use for the localhost forward zone. The default is
 #   a file provided by this module.
 #
-#   Default value: `"puppet:///modules/${module_name}/zones/db.localhost"`
-#
 # @param localhost_reverse_enable
 #   Should the reverse zone for localhost be enabled.
-#
-#   Default value: `true`
 #
 # @param localhost_reverse_source
 #   The source file to use for the localhost reverse zone. The default is
 #   a file provided by this module.
-#
-#   Default value: `"puppet:///modules/${module_name}/zones/db.127"`
 #
 # @param filter_aaaa_on_v4
 #   Should AAAA records be omitted from the response if the IPv4 transport is
@@ -250,179 +204,113 @@
 #   `yes`, `break-dnssec`. This parameter is ignored for Bind 9.16.0 or
 #   later.
 #
-#   Default value: `undef`
-#
 # @param window
 #   The size of the rolling window measured in seconds over which the rate
 #   limits are calculated.
-#
-#   Default value: `0`
 #
 # @param ipv4_prefix_length
 #   Define the number of bits that are used to group IPv4 addresses (like
 #   a netmask). The rate limits are applied to all requests having the same
 #   network prefix.
 #
-#   Default value: `0`
-#
 # @param ipv6_prefix_length
 #   Define the number of bits that are used to group IPv6 addresses (like
 #   a netmask). The rate limits are applied to all requests having the same
 #   network prefix.
 #
-#   Default value: `0`
-#
 # @param log_only
 #   Do not really limit the queries but only log that it would happen. This
 #   can be used to test rate limits before enforcing them.
 #
-#   Default value: `false`
-#
 # @param exempt_clients
 #   An array of IP addresses/networks or ACL names that are never limited.
-#
-#   Default value: `[]`
 #
 # @param acls
 #   Hash of `bind::acl` resources.
 #
-#   Default value: `{}`
-#
 # @param amls
 #   Hash of `bind::aml` resources.
-#
-#   Default value: `{}`
 #
 # @param configs
 #   Hash of `bind::config` resources. These are included in the main
 #   configuration after the standard includes have been processed and before
 #   the local config is read.
 #
-#   Default value: `{}`
-#
 # @param dnssec_policies
 #   Hash of `bind::dnssec_policy` resources.
-#
-#   Default value: `{}`
 #
 # @param keys
 #   Hash of `bind::key` resources.
 #
-#   Default value: `{}`
-#
 # @param statistics_channels
 #   Hash of `bind::statistics_channel` resources.
-#
-#   Default value: `{}`
 #
 # @param views
 #   Hash of `bind::view` resources.
 #
-#   Default value: `{}`
-#
 # @param controls_inet
 #   Hash of `bind::controls::inet` resources.
-#
-#   Default value: `{}`
 #
 # @param controls_unix
 #   Hash of `bind::controls::unix` resources.
 #
-#   Default value: `{}`
-#
 # @param logging_categories
 #   Hash of `bind::logging::category` resources.
-#
-#   Default value: `{}`
 #
 # @param logging_channel_files
 #   Hash of `bind::logging::channel_file` resources.
 #
-#   Default value: `{}`
-#
 # @param logging_channel_syslog
 #   Hash of `bind::logging::channel_syslog` resources.
-#
-#   Default value: `{}`
 #
 # @param zone_forwards
 #   Hash of `bind::zone::forward` resources.
 #
-#   Default value: `{}`
-#
 # @param zone_hints
 #   Hash of `bind::zone::hint` resources.
-#
-#   Default value: `{}`
 #
 # @param zone_in_views
 #   Hash of `bind::zone::in_view` resources.
 #
-#   Default value: `{}`
-#
 # @param zone_mirrors
 #   Hash of `bind::zone::mirror` resources.
-#
-#   Default value: `{}`
 #
 # @param zone_primaries
 #   Hash of `bind::zone::primary` resources.
 #
-#   Default value: `{}`
-#
 # @param zone_secondaries
 #   Hash of `bind::zone::secondary` resources.
 #
-#   Default value: `{}`
-#
 # @param response_policies
 #   An array of response policy zones.
-#
-#   Default value: `[]`
 #
 # @param all_per_second
 #   Limit the number of total answers per second for an IP address to the
 #   given value.
 #
-#   Default value: `undef`
-#
 # @param errors_per_second
 #   Limit the number of total error answers per second for an IP address to
 #   the given value.
-#
-#   Default value: `undef`
 #
 # @param responses_per_second
 #   Limit the number of identical responses per second for an IP address to
 #   the given value.
 #
-#   Default value: `undef`
-#
 # @param referrals_per_second
 #   Limit the number of referrals per second to the given value.
-#
-#   Default value: `undef`
 #
 # @param nodata_per_second
 #   Limit the number of NODATA responses per second to the given value.
 #
-#   Default value: `undef`
-#
 # @param nxdomains_per_second
 #   Limit the number of NXDOMAIN responses per second to the given value.
-#
-#   Default value: `undef`
 #
 # @param qps_scale
 #   Value to define the query per second scaling when using rate limiting.
 #
-#   Default value: `undef`
-#
 # @param slip
 #   Set the rate at which queries over the defined limit are returned with
 #   the truncate bit.
-#
-#   Default value: `undef`
 #
 # @param max_cache_size
 #   The maximum size to use for the server's cache. This can be one of the
@@ -430,39 +318,27 @@
 #   views are used then the size applies to every view separately. If this
 #   value is zero then no limit is configured.
 #
-#   Default value: `undef`
-#
 # @param min_cache_ttl
 #   The minimum number of seconds for which the server will cache positive
 #   answers.
-#
-#   Default value: `0`
 #
 # @param max_cache_ttl
 #   The maximum number of seconds for which the server will cache positive
 #   answers. If this value is zero then the config parameter will be omitted
 #   and the Bind default of 1 week will be used.
 #
-#   Default value: `0`
-#
 # @param min_ncache_ttl
 #   The minimum number of seconds for which the server will cache negative
 #   answers.
-#
-#   Default value: `0`
 #
 # @param max_ncache_ttl
 #   The maximum number of seconds for which the server will cache negative
 #   answers. If this value is zero then the config parameter will be omitted
 #   and the Bind default of 3 hours will be used.
 #
-#   Default value: `0`
-#
 # @param servfail_ttl
 #   The number of seconds that SERVFAIL responses caused by DNSSEC validation
 #   errors are cached. Can be set to 0 to disable caching.
-#
-#   Default value: `0`
 #
 # @param custom_options
 #   Additional config options that are not implemented as class parameters
@@ -472,23 +348,15 @@
 #   a hash or an array it will be included as an additional block enclosed in
 #   braces.
 #
-#   Default value: `{}`
-#
 # @param package_ensure
 #   The state of the Bind package. Normally this is set to `installed` or a
 #   specific version number.
 #
-#   Default value: `'installed'`
-#
 # @param service_ensure
 #   Whether the Bind service should be running.
 #
-#   Default value: `'running'`
-#
 # @param service_enable
 #   Should the Bind service be enabled.
-#
-#   Default value: `true`
 #
 # @param manage_rndc_keyfile
 #   Should the rndc key file be managed by the main class. If this is `true`
@@ -501,15 +369,11 @@
 #   restart the service after the key file has been updated because the daemon
 #   still uses the old key.
 #
-#   Default value: `true`
-#
 # @param report_hostname
 #   The hostname the will be reported by Bind. If this is undefined
 #   (default), then Bind will report the local hostname. Set this to a string
 #   to hide the hostname and report the given string instead. Use the empty
 #   string to disable hostname reporting completely.
-#
-#   Default value: `undef`
 #
 # @param report_version
 #   The version string that will be reported by Bind. If this is undefined
@@ -519,25 +383,17 @@
 #
 #   Use the following command to test: dig @127.0.0.1 version.bind chaos txt
 #
-#   Default value: `undef`
-#
 # @param querylog_enable
 #   Should the querylog be enabled.
-#
-#   Default value: `undef`
 #
 # @param trust_anchor_telemetry
 #   Should the trust anchor telemetry transmission be enable. When enabled,
 #   once a day the DNSSEC trust anchors in use will be transmitted to the
 #   zone owners. This is enabled by default.
 #
-#   Default value: `undef`
-#
 # @param logdir
 #   The directory to be used for logfiles. This parameter is optional and
 #   is only used to manage the logfile directory.
-#
-#   Default value: `undef`
 #
 class bind (
   Stdlib::Absolutepath           $confdir,
